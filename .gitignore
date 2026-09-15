@@ -1,0 +1,6 @@
+# Dieses Repo ist die Webseite: Bilder und Videos gehoeren hier ausdruecklich
+# dazu und duerfen nicht ignoriert werden -- anders als im reports-Repo, das
+# textfrei bleibt. Ignoriert wird nur oertlicher Kram.
+.DS_Store
+__pycache__/
+*.pyc

@@ -1,0 +1,609 @@
+/* ---------------------------------------------------------------------------
+ * tud-dark — the reveal.js theme every presentation in this repository uses.
+ *
+ * Dark variant of the TU Dresden corporate design (CD 2025): Noto Sans on
+ * black, the CD palette for accents, the logos on the title slide only and a
+ * bare slide number in the footer of every slide. Colours are
+ * taken from S00_main/material/CD-Elemente_Farben.jpg and named as the CD names
+ * them, so a value can be checked against the sheet without a conversion step.
+ *
+ * Loaded instead of a stock reveal theme, after dist/reveal.css.
+ * ------------------------------------------------------------------------ */
+
+/* --- Noto Sans, the CD typeface ----------------------------------------- */
+
+@font-face {
+  font-family: 'Noto Sans TUD';
+  src: url('fonts/NotoSans-Light.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans TUD';
+  src: url('fonts/NotoSans-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans TUD';
+  src: url('fonts/NotoSans-Italic.woff2') format('woff2');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans TUD';
+  src: url('fonts/NotoSans-Medium.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans TUD';
+  src: url('fonts/NotoSans-SemiBold.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans TUD';
+  src: url('fonts/NotoSans-Bold.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+/* --- CD palette and layout metrics -------------------------------------- */
+
+:root {
+  /* CD 2025 blues */
+  --tud-brillantblau: #00008c;
+  --tud-dunkelblau:   #001450;
+  --tud-blau-1:       #2f57b2;
+  --tud-blau-2:       #97c6ff;
+  /* CD 2025 accents */
+  --tud-violett-1:    #7369be;
+  --tud-violett-2:    #c8c8ff;
+  --tud-magenta-1:    #bc1589;
+  --tud-magenta-2:    #ffb9ff;
+  --tud-rot-1:        #d20f41;
+  --tud-rot-2:        #ffaaa5;
+  --tud-orange-1:     #c85000;
+  --tud-orange-2:     #ffbe78;
+  --tud-gelb-1:       #ffc700;
+  --tud-gelb-2:       #ffe483;
+  --tud-oliv-1:       #767a23;
+  --tud-oliv-2:       #d2dc46;
+  --tud-gruen-1:      #007d4b;
+  --tud-gruen-2:      #8ce6aa;
+  --tud-tuerkis-1:    #0a777f;
+  --tud-tuerkis-2:    #8ce6d7;
+  /* CD 2025 neutrals */
+  --tud-schwarz:      #000000;
+  --tud-weiss:        #ffffff;
+  --tud-grau-100:     #323f4b;
+  --tud-grau-80:      #566371;
+  --tud-grau-60:      #7d8894;
+  --tud-grau-40:      #a5aeb8;
+  --tud-grau-20:      #d0d5dc;
+  --tud-grau-10:      #e7e9ed;
+
+  /* Roles. Only these are used below, so a light variant of this theme would
+     redefine the roles and leave the palette alone. */
+  /* Not CD Schwarz: a projector renders pure black as a dead patch and any
+     stray non-black pixel around a figure shows up against it. #191919 is
+     dark enough for the CD's light accents and forgiving of both. */
+  --tud-bg:           #191919;
+  --tud-fg:           var(--tud-grau-10);
+  --tud-fg-strong:    var(--tud-weiss);
+  --tud-fg-muted:     var(--tud-grau-60);
+  --tud-accent:       var(--tud-blau-2);
+  --tud-accent-2:     var(--tud-tuerkis-2);
+  --tud-rule:         var(--tud-grau-100);
+  --tud-surface:      #0d1218;
+
+  /* One margin on all four edges. The slide number is the last line inside
+     it, not a band below it, so the frame reads the same all the way round. */
+  --tud-margin: 72px;
+  --tud-margin-x: var(--tud-margin);
+  --tud-margin-y: var(--tud-margin);
+  --tud-footer-h: 30px;            /* the number's own line */
+}
+
+/* --- Deck ---------------------------------------------------------------- */
+
+html, body { background: var(--tud-bg); }
+
+.reveal-viewport { background: var(--tud-bg); }
+
+.reveal {
+  font-family: 'Noto Sans TUD', 'Noto Sans', -apple-system, 'Segoe UI', sans-serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: var(--tud-fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal ::selection { background: var(--tud-blau-1); color: var(--tud-weiss); }
+
+/* Slides sit above the footer band rather than on top of it. */
+.reveal .slides { text-align: left; }
+.reveal .slides section {
+  padding: 0 var(--tud-margin-x) calc(var(--tud-footer-h) + var(--tud-margin-y));
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* --- Headings ------------------------------------------------------------ */
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: 'Noto Sans TUD', 'Noto Sans', sans-serif;
+  font-weight: 500;              /* Noto Sans Medium — the CD heading weight */
+  color: var(--tud-fg-strong);
+  text-transform: none;
+  letter-spacing: -0.005em;
+  line-height: 1.15;
+  margin: 0 0 0.6em;
+  text-shadow: none;
+}
+.reveal h1 { font-size: 2.0em; }
+.reveal h2 { font-size: 1.05em; }   /* the slide title; see STYLE_LOG */
+.reveal h3 { font-size: 1.05em; color: var(--tud-accent); }
+.reveal h4 { font-size: 0.9em;  color: var(--tud-accent); font-weight: 600; }
+
+/* A slide title carries the CD's blue rule under it. The wrapper variants are
+   for the slides whose content tud-slides.js wraps in a grid — the heading is
+   then a child of the wrapper, not of the section. */
+.reveal section > h2:first-child,
+.reveal section > h3:first-child,
+.reveal .fill-grid > h2:first-child,
+.reveal .fill-grid > h3:first-child {
+  padding-top: var(--tud-margin-y);
+  padding-bottom: 0.35em;
+  border-bottom: 3px solid var(--tud-accent);
+  margin-bottom: 0.8em;
+}
+
+/* --- Body copy ----------------------------------------------------------- */
+
+.reveal p { line-height: 1.4; margin: 0 0 0.7em; }
+.reveal strong, .reveal b { color: var(--tud-fg-strong); font-weight: 600; }
+.reveal em, .reveal i { font-style: italic; }
+.reveal small { font-size: 0.62em; color: var(--tud-fg-muted); }
+
+.reveal a { color: var(--tud-accent); text-decoration: none; border-bottom: 1px solid var(--tud-grau-100); }
+.reveal a:hover { color: var(--tud-accent-2); border-bottom-color: currentColor; }
+
+.reveal ul, .reveal ol { display: block; margin: 0 0 0.7em; }
+.reveal ul { list-style: none; padding-left: 1.1em; }
+.reveal ul li { position: relative; }
+.reveal ul li::before {
+  content: '';
+  position: absolute;
+  left: -0.95em; top: 0.55em;
+  width: 0.34em; height: 0.34em;
+  background: var(--tud-accent);
+}
+.reveal ul ul li::before { background: none; border: 1px solid var(--tud-grau-60); }
+.reveal ol { padding-left: 1.4em; }
+.reveal ol li::marker { color: var(--tud-accent); }
+.reveal li { line-height: 1.35; margin-bottom: 0.35em; }
+.reveal li li { font-size: 0.9em; }
+
+.reveal blockquote {
+  width: auto;
+  background: none;
+  box-shadow: none;
+  border-left: 3px solid var(--tud-accent);
+  padding: 0.2em 0 0.2em 0.9em;
+  font-style: normal;
+  color: var(--tud-grau-20);
+}
+
+.reveal .muted   { color: var(--tud-fg-muted); }
+.reveal .accent  { color: var(--tud-accent); }
+.reveal .accent2 { color: var(--tud-accent-2); }
+
+/* --- Code ---------------------------------------------------------------- */
+
+.reveal code,
+.reveal pre code {
+  font-family: 'DejaVu Sans Mono', 'Noto Sans Mono', ui-monospace, monospace;
+}
+.reveal :not(pre) > code {
+  color: var(--tud-tuerkis-2);
+  background: var(--tud-surface);
+  padding: 0.05em 0.3em;
+  border-radius: 2px;
+  font-size: 0.85em;
+}
+.reveal pre {
+  width: 100%;
+  box-shadow: none;
+  margin: 0 0 0.7em;
+  font-size: 0.5em;
+}
+.reveal pre code {
+  background: var(--tud-surface);
+  border: 1px solid var(--tud-rule);
+  border-radius: 3px;
+  padding: 0.8em 1em;
+  max-height: 22em;
+  line-height: 1.35;
+}
+
+/* --- Tables -------------------------------------------------------------- */
+
+.reveal table { border-collapse: collapse; width: 100%; font-size: 0.8em; }
+.reveal table th,
+.reveal table td {
+  border: none;
+  border-bottom: 1px solid var(--tud-rule);
+  padding: 0.3em 0.6em;
+  text-align: left;
+  vertical-align: top;
+}
+.reveal table th {
+  color: var(--tud-fg-strong);
+  font-weight: 600;
+  border-bottom: 2px solid var(--tud-accent);
+}
+.reveal table tr:last-child td { border-bottom: none; }
+.reveal table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* --- Figures ------------------------------------------------------------- */
+
+.reveal img, .reveal svg.figure { max-width: 100%; max-height: 100%; }
+.reveal figure { margin: 0; }
+.reveal figure img {
+  display: block;
+  margin: 0 auto 0.4em;
+  background: var(--tud-weiss);   /* most plots are exported on white */
+  border-radius: 2px;
+}
+.reveal figure img.transparent,
+.reveal figure img.on-dark { background: none; }
+.reveal figcaption {
+  font-size: 0.6em;
+  color: var(--tud-fg-muted);
+  line-height: 1.3;
+}
+
+/* --- Layout helpers ------------------------------------------------------ */
+
+.reveal .cols {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr));
+  gap: 1.2em;
+  align-items: start;
+}
+.reveal .cols.w-2-1 { grid-template-columns: 2fr 1fr; }
+.reveal .cols.w-1-2 { grid-template-columns: 1fr 2fr; }
+.reveal .cols.center { align-items: center; }
+/* A tall figure in a column would otherwise take the whole slide and push the
+   text beside it, or its own caption, past the footer. The deck is a fixed
+   1280 x 720 with a 546 px type area, so this is a slide measurement rather
+   than a guess; a slide that wants more overrides it. */
+.reveal .cols figure img { max-height: 400px; }
+/* Columns are narrow, so they carry slightly smaller type by default. */
+.reveal .cols { font-size: 0.86em; }
+.reveal .cols .cols { font-size: 1em; }
+
+.reveal .sm { font-size: 0.78em; }
+.reveal .xs { font-size: 0.64em; }
+
+.reveal .box {
+  background: var(--tud-surface);
+  border-left: 3px solid var(--tud-accent);
+  padding: 0.6em 0.9em;
+  font-size: 0.85em;
+}
+.reveal .box.warn  { border-left-color: var(--tud-orange-1); }
+.reveal .box.good  { border-left-color: var(--tud-gruen-2); }
+.reveal .box > :last-child { margin-bottom: 0; }
+
+.reveal .fill { position: absolute; inset: 0; padding: 0; }
+
+/* --- Vector graphics with typeset labels --------------------------------- */
+/* A sketch is an inline <svg>; its labels are HTML laid over it, because
+   MathJax renders into HTML and cannot typeset into SVG. The box carries an
+   explicit pixel size and the svg's viewBox is the same size, so `left`/`top`
+   on a label is the sketch's own coordinate — nothing has to be converted, and
+   a label can be moved by reading the coordinate off the drawing.
+
+   The deck is a fixed 1280 x 720 that reveal scales as a whole, so px here are
+   slide units, not screen pixels.
+
+   The one rule: the box's width and height must equal the viewBox's. Give the
+   box a different aspect and the svg is letterboxed inside it, the drawing no
+   longer sits where its coordinates say, and every label is off by the same
+   silent amount. Resize a sketch by editing the viewBox and the box together. */
+.reveal .vg { position: relative; }
+.reveal .vg > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.reveal .vg .lbl {
+  position: absolute;
+  transform: translate(-50%, -50%);   /* left/top is the label's centre */
+  white-space: nowrap;
+  line-height: 1;
+  font-size: 17px;
+  color: var(--tud-fg);
+}
+/* ...unless it is hung off a point: .l ends at it, .r starts at it. */
+.reveal .vg .lbl.l { transform: translate(-100%, -50%); }
+.reveal .vg .lbl.r { transform: translate(0, -50%); }
+.reveal .vg .lbl.sm { font-size: 14px; }
+.reveal .vg .lbl.muted { color: var(--tud-fg-muted); }
+
+/* A slide that positions its parts in slide coordinates: the sketches, the
+   photos beside them and the leader lines between the two all measure from the
+   same origin, which is the only way a leader can land on a point of a sketch. */
+.reveal .stage { position: relative; height: 100%; }
+.reveal .stage > * { position: absolute; }
+/* Sized in slide units rather than percentages, so the viewBox maps onto the
+   stage one-to-one however tall the stage turns out to be — a leader has to
+   land on a point of a sketch, and a scaled viewBox would move it. */
+.reveal .stage > svg.leaders {          /* drawn under the parts it connects */
+  left: 0; top: 0; width: 1136px; height: 453px;
+  overflow: visible; pointer-events: none;
+}
+
+/* --- Title slide --------------------------------------------------------- */
+/* Three rows: the title, the authors, and the logos beside the grey imprint.
+   The third row is assembled by tud-slides.js, which injects the logo band and
+   moves .affiliation and .occasion in beside it. */
+
+/* Positioned with padding rather than by centring a flex column: reveal's own
+   `.reveal .slides>section.present { display: block }` outranks a rule written
+   as `.reveal section.title-slide`, and a rule specific enough to win would
+   also override the `display: none` that hides the slide. Padding behaves the
+   same on screen, in the overview and in the PDF export; the deck check
+   catches a title that outgrows it. */
+.reveal section.title-slide {
+  padding-top: var(--tud-margin-y);
+}
+
+/* Injected by tud-slides.js around the three rows; see the note there.
+   Two groups, not three evenly spaced rows: the title and the authors belong
+   together and are set close, the logos and the imprint sit at the foot, and
+   the free space goes between them. The two `auto` margins below do the work —
+   the first centres the title group in whatever is left above the foot, so the
+   composition holds for a one-line title and a three-line one alike. */
+.reveal .title-grid {
+  height: 100%;
+  box-sizing: border-box;         /* the padding below has to come out of the
+                                     height, not add to it */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* The two auto margins would split the free space evenly. This much of it is
+     taken off the top first, so what is left splits into a larger gap above the
+     title than below the authors, and the foot sits closer to them. Kept well
+     under the free space a full title slide has, so a three-line title with
+     wrapped authors runs the gaps down to nothing rather than overflowing. */
+  padding-top: 2.6em;
+}
+/* A slide whose figure should take the height left under the heading. The
+   figure flexes, the image is contained inside it, and the caption keeps its
+   own line — so a tall plan or chart never pushes its caption past the footer.
+   Written on the deck as <section data-layout="fill">. */
+.reveal .fill-grid {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+.reveal .fill-grid > figure {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.reveal .fill-grid > figure > img {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  object-fit: contain;
+}
+.reveal .fill-grid > figure > figcaption { flex: 0 0 auto; padding-top: 0.5em; }
+.reveal .fill-grid > .stage { flex: 1 1 auto; min-height: 0; }
+.reveal .fill-grid > * { flex: 0 0 auto; }
+
+/* The same wrapper for a section divider, which is centred outright. */
+.reveal .center-grid {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.reveal section.title-slide h1 {
+  font-size: 1.75em;
+  font-weight: 500;
+  color: var(--tud-accent);
+  margin: auto 0 0.42em;          /* the auto centres the title group; see above */
+  max-width: 16em;
+}
+.reveal section.title-slide .subtitle {
+  font-size: 1.0em;
+  color: var(--tud-fg);
+  margin: -0.15em 0 0.2em;
+  max-width: 24em;
+}
+
+/* Row 2 — one column per author, wrapping to a second line past four or so. */
+.reveal section.title-slide .authors {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 100%;
+  column-gap: 2.2em;
+  row-gap: 0.9em;
+  margin: 0 0 auto;               /* pairs with the auto on the title */
+}
+.reveal section.title-slide .author-block > * { margin: 0; }
+.reveal section.title-slide .author {
+  font-size: 0.82em;
+  color: var(--tud-fg-strong);
+  font-weight: 500;
+  margin: 0 0 0.1em;
+  white-space: nowrap;
+}
+.reveal section.title-slide .email {
+  font-size: 0.72em;
+  color: var(--tud-fg-strong);
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Row 3 — the logos and the imprint share a baseline. */
+.reveal section.title-slide .title-bottom {
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+  margin: 0;
+}
+.reveal .title-logos {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1.1em;
+}
+.reveal .title-logos .tud-logo { height: 100px; width: auto; }
+.reveal .title-logos .ism-logo { height: 90px; width: auto; }
+
+.reveal .title-imprint { flex: 0 1 auto; text-align: left; }
+.reveal section.title-slide .affiliation,
+.reveal section.title-slide .occasion {
+  font-size: 0.62em;
+  color: var(--tud-fg-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* --- Section divider ----------------------------------------------------- */
+
+.reveal section.section-slide {
+  padding-top: var(--tud-margin-y);
+}
+.reveal section.section-slide h2 {
+  border: none;
+  padding: 0;
+  font-size: 1.7em;
+  margin: 0;
+}
+.reveal section.section-slide h2::before {
+  content: '';
+  display: block;
+  width: 2.2em;
+  border-top: 3px solid var(--tud-accent);
+  margin-bottom: 0.45em;
+}
+.reveal section.section-slide .lead {
+  color: var(--tud-fg-muted);
+  font-size: 0.8em;
+  margin-top: 0.8em;
+  max-width: 26em;
+}
+
+/* --- Footer: the slide number, on every slide ---------------------------- */
+
+.reveal .tud-footer {
+  position: absolute;
+  bottom: var(--tud-margin-y);
+  left: var(--tud-margin-x);
+  right: var(--tud-margin-x);
+  height: var(--tud-footer-h);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--tud-fg-muted);
+  pointer-events: none;
+  z-index: 30;
+}
+
+/* The slide number, drawn into the footer rather than into reveal's own
+   viewport-anchored element, so it shares the footer's baseline. */
+.reveal .tud-footer .slide-no {
+  flex: 0 0 auto;
+  color: var(--tud-fg);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.reveal .tud-footer .slide-no .sep { color: var(--tud-grau-80); margin: 0 0.25em; }
+.reveal .tud-footer .slide-no .total { color: var(--tud-grau-60); }
+
+/* --- Maths --------------------------------------------------------------- */
+/* Formulas keep the maths typeface; only the surrounding text is Noto Sans. */
+
+.reveal mjx-container { color: inherit; }
+.reveal p > mjx-container[display='true'] { color: var(--tud-fg-strong); }
+.reveal mjx-container[display='true'] { margin: 0.7em 0; }
+.reveal mjx-container svg { max-width: 100%; }
+
+.reveal .eq {                      /* display equation with a right-hand tag */
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  margin: 0.6em 0;
+}
+.reveal .eq .tag { color: var(--tud-fg-muted); font-size: 0.7em; }
+
+/* --- Citations and the generated back matter ----------------------------- */
+
+.reveal .cite {
+  color: var(--tud-accent);
+  font-size: 0.85em;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.reveal h2 .page-of {
+  color: var(--tud-fg-muted);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.reveal h2 .page-of .sep { margin: 0 0.15em; color: var(--tud-grau-80); }
+
+.reveal .backmatter { font-size: 0.62em; }
+.reveal .backmatter h4 {
+  margin: 0.9em 0 0.3em;
+  font-size: 1.05em;
+  color: var(--tud-accent);
+  font-weight: 600;
+}
+.reveal .backmatter h4:first-child { margin-top: 0; }
+
+.reveal table.nomenclature { font-size: 1em; }
+.reveal table.nomenclature td.sym  { width: 4.5em; white-space: nowrap; }
+.reveal table.nomenclature td.unit { width: 7em;  color: var(--tud-grau-40); white-space: nowrap; }
+.reveal table.nomenclature td.desc .note {
+  display: block;
+  color: var(--tud-fg-muted);
+  font-size: 0.85em;
+}
+
+.reveal ol.bibliography { padding-left: 2.2em; }
+.reveal ol.bibliography li { margin-bottom: 0.45em; line-height: 1.35; }
+.reveal ol.bibliography .bib-title  { color: var(--tud-fg-strong); }
+.reveal ol.bibliography .bib-source { font-style: italic; }
+
+/* Back matter is dense; let it scroll rather than overflow the slide. */
+.reveal section.backmatter-slide {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* --- Progress bar and controls ------------------------------------------ */
+
+.reveal .progress {
+  color: var(--tud-accent);
+  height: 3px;
+  background: var(--tud-rule);
+  top: 0;
+  bottom: auto;                     /* the footer owns the bottom edge */
+}
+.reveal .controls { color: var(--tud-grau-80); }
+.reveal .controls .navigate-left.enabled,
+.reveal .controls .navigate-right.enabled,
+.reveal .controls .navigate-up.enabled,
+.reveal .controls .navigate-down.enabled { color: var(--tud-accent); }
+
+/* --- Printing (?print-pdf) ----------------------------------------------- */
+
+@media print {
+  .reveal section.backmatter-slide { overflow: visible; }
+}

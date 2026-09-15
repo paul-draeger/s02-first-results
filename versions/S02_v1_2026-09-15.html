@@ -1,0 +1,813 @@
+<!-- Uebernommen aus S01_v17_2026-09-15 am 2026-09-15; von da an eine eigene Reihe. -->
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>COSMIC: Erste Ergebnisse</title>
+
+  <link rel="stylesheet" href="../reveal/dist/reset.css">
+  <link rel="stylesheet" href="../reveal/dist/reveal.css">
+  <link rel="stylesheet" href="../reveal/plugin/highlight/monokai.css">
+  <!-- after reveal.css, so the TUD theme wins -->
+  <link rel="stylesheet" href="../theme/tud-dark.css">
+
+  <style>
+    /* Deck-local only. Anything here that proves generally useful belongs in
+       theme/tud-dark.css instead — see S00_main/STYLE_LOG.md. */
+
+    /* One colour code across the whole deck, the same one the plan is drawn
+       with: the flight-mechanics chair is Blau 2, fluid mechanics is Gelb 2. */
+    .reveal { --fmr: var(--tud-blau-2); --psm: var(--tud-gelb-2); }
+
+    /* --- Titelfolie: die Anlasszeile -------------------------------------- */
+    /* Sie liegt hinter .authors, dessen `margin-bottom: auto` den freien Raum
+       der Titelfolie aufbraucht -- die Zeile sitzt damit ueber der Logozeile
+       und nicht an der Gruppe aus Titel und Autoren. Das Grau des Impressums,
+       damit sie den Autoren darueber nicht die Aufmerksamkeit nimmt, aber eine
+       Stufe groesser als dieses: hier steht sie allein auf ihrer Zeile. */
+    .reveal section.title-slide .event {
+      font-size: 0.72em;
+      color: var(--tud-fg-muted);
+      margin: 0 0 1.1em;
+    }
+
+    /* --- Planung (1): the structure diagram over the people ---------------- */
+
+    .reveal .structure { display: block; width: 100%; height: auto; }
+
+    /* Three members in a row, each only as wide as it is. Equal thirds gave the
+       two short blocks the same measure as Fröhlich's long title, and the slack
+       each of them did not use piled up in front of the next photograph — a
+       hand's breadth of empty slide between a name and the face after it, twice.
+       Packed from the left with one gap, the excess collects at the end of the
+       row rather than inside it, and the three blocks read as a row.
+
+       45 px is a slide measurement, not an em: it is what the blocks need to
+       stand apart at this size, and it should stay put when the type around it
+       changes. The members may still shrink — a title that no longer fits on one
+       line wraps as it did before instead of running past the margin. */
+    .reveal .team {
+      display: flex;
+      gap: 45px;
+      margin-top: 30px;
+    }
+    .reveal .team .member {
+      flex: 0 1 auto; min-width: 0;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .reveal .team img {
+      flex: 0 0 auto;
+      width: 110px; height: 110px;
+      object-fit: cover;
+      border-radius: 3px;
+      background: none;
+      margin: 0;
+    }
+    .reveal .team .who  { font-size: 16.5px; color: var(--tud-fg-strong); margin: 0 0 3px; line-height: 1.25; }
+    .reveal .team .role { font-size: 15px; color: var(--tud-fg-muted); margin: 0; line-height: 1.35; }
+
+    /* --- Planung (2): where the project stands on the schedule ------------- */
+
+    /* The chart is a file and stays one, so the mark that says where we are is
+       laid over it rather than drawn into it. The overlay carries gantt.svg's
+       own viewBox and shares the image's box exactly — `contain` on the image
+       and `xMidYMid meet` on the svg letterbox alike, so a coordinate read off
+       gantt.svg lands where it says, whatever height the row gets. Give the two
+       different boxes — a margin on the image is enough — and the arrow drifts
+       by half that amount, silently. */
+    .reveal .gantt { position: relative; flex: 1 1 auto; min-height: 0; }
+    .reveal .gantt > img {
+      display: block;
+      width: 100%; height: 100%;
+      margin: 0;                     /* the box is shared: nothing may shift it */
+      object-fit: contain;
+    }
+    .reveal .gantt > svg.now-mark {
+      position: absolute; left: 0; top: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+
+    /* --- Planung (3): the two work packages, stacked ----------------------- */
+
+    .reveal .ap {
+      display: flex;
+      gap: 0.5em;
+      align-items: baseline;
+      color: var(--tud-accent);
+      font-weight: 600;
+      font-size: 0.8em;
+      margin: 0 0 0.35em;
+    }
+    .reveal .ap .tag {
+      flex: 0 0 auto;
+      color: var(--tud-bg);
+      background: var(--tud-accent);
+      border-radius: 2px;
+      padding: 0.05em 0.4em;
+    }
+    .reveal .ap .dur { color: var(--tud-fg-muted); font-weight: 400; }
+    .reveal ol.steps { font-size: 0.8em; padding-left: 1.5em; margin: 0; }
+    .reveal ol.steps li { margin-bottom: 0.22em; }
+    /* The step the project is on — the same statement the arrow on the slide
+       before makes about the same month, so it is written in the same colour:
+       Rot 1, the colour of .now-mark. Yellow said it too, but Gelb 2 is the
+       chair colour of fluid mechanics two slides earlier, and a reader who has
+       learned that code once reads this label as belonging to it. Rot 1 belongs
+       to nothing else in the deck.
+
+       Weight 600 comes with the colour rather than as decoration: Rot 1 is a
+       CD "-1" tone, mixed for white paper, and against #191919 it is the
+       darkest thing on this slide. The arrow's own label is set at 600 for the
+       same reason. */
+    .reveal .now { color: var(--tud-rot-1); font-weight: 600; }
+    .reveal .ap-next { margin-top: 0.9em; }
+    /* Eine nummerierte Gleichung: die Formel traegt die Zeile, die Nummer
+       steht rechts am Rand wie im Satz eines Berichts -- nicht darunter, wo
+       sie eine zweite Zeile kostete. */
+    .reveal .eq {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      column-gap: 0.8em;
+    }
+    .reveal .eq p { margin: 0; }
+    /* Das Thema vor dem Folientitel: kleiner und zurueckgenommen, damit die
+       Titel selbst ueberall gleich gross sind und die Folge FLUIDICS ... als
+       Zugehoerigkeit gelesen wird und nicht als Teil der Ueberschrift.
+       Dieselbe Bauart wie das "1 / 3" im Rueckstand (h2 .page-of). */
+    /* Ein Video fuellt die Folie wie eine Abbildung. Die Runtime kennt nur
+       <img> im fill-Layout; ohne diese Zeile behielte das Video seine
+       natuerliche Groesse und liefe unten hinaus. */
+    .reveal .fill-grid > figure > video {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      object-fit: contain;
+    }
+
+    .reveal h2 .topic {
+      font-size: 0.62em;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--tud-fg-muted);
+      margin-right: 0.6em;
+    }
+
+
+    /* --- FLUIDICS: the two panel slides ----------------------------------- */
+    /* Both sketches are files now, drawn by Figures/make_sketches.py, and the
+       symbols on them are <text> rather than MathJax. So a sketch is an <img>
+       like any other figure, and the .vg/.lbl machinery these slides used —
+       an svg with HTML labels laid over it — is gone with it. What is left is
+       a row of figures placed in slide coordinates on a .stage.
+
+       The consequence to remember: a symbol inside an image is invisible to
+       the runtime that builds the nomenclature. TUD.init names them in
+       includeSymbols at the foot of this file. Add a symbol to a sketch and it
+       has to be added there too. */
+
+    /* Sketch and photograph carry the same caption, so they read as panels of
+       one figure rather than as a drawing with a picture next to it. */
+    .reveal .stage figure { margin: 0; text-align: center; }
+    .reveal .stage figure img { margin: 0 auto; }
+    .reveal .stage figcaption { padding-top: 0.5em; font-size: 0.55em; }
+
+    /* The photograph stands upright: the rig is a horizontal turntable seen
+       from above, so the picture has no up of its own, and a quarter turn puts
+       the tank above the axis — the way the sketch two panels over draws it.
+       It also gives the plot between them the width it was short of.
+
+       The box carries the picture's dimensions exchanged, and the image is
+       rotated about the centre of that box, so nothing is squeezed and the
+       white plate turns with it. The one thing to keep: the image's width is
+       the box's height. Change one and change the other. */
+    .reveal .stage .upright { position: relative; }
+    .reveal .stage .upright > img {
+      position: absolute;
+      left: 50%; top: 50%;
+      max-width: none; max-height: none;   /* the box is narrower than the image */
+      transform: translate(-50%, -50%) rotate(-90deg);
+    }
+
+    /* The structure diagram on the Übersicht slide still needs this one. */
+    .reveal .sketch-dim { stroke: var(--tud-grau-40); fill: none; stroke-width: 1.2; }
+
+    /* --- FLUIDICS (3): the case table ------------------------------------- */
+
+    /* The manoeuvre number is the row's name, so it is set like one; the four
+       parameters are numbers and get tabular figures so the columns line up
+       on the digit rather than on the glyph.
+
+       Six short columns pulled apart over the full text block leave every
+       number a hand's breadth from the heading it belongs to. Held to the
+       measure the entries need, the four rows read as one block. Centred: the
+       table is its columns, and there is no first column wide enough for the
+       paragraph below to align under. */
+    .reveal table.cases {
+      width: 85%; margin-left: auto; margin-right: auto;
+      font-size: 0.62em;
+    }
+    .reveal table.cases td, .reveal table.cases th { padding: 0.32em 0.5em; }
+    .reveal table.cases .no { color: var(--tud-fg-strong); font-weight: 600; }
+
+    /* Der Pfeil auf Manoever 1 haengt in der Zelle der Zeilennummer und steht
+       ueber `right: 100%` links davor: an der Zeile festgemacht und nicht an
+       der Tabelle, so trifft er seine Zeile bei jeder Schriftgroesse. Die
+       Tabelle nimmt 85 % der Breite, links von ihr ist der Platz dafuer da.
+       Absolut gesetzt, damit das Fragment beim Erscheinen nichts verschiebt.
+
+       Akzentfarbe und nicht Rot 1: Rot 1 sagt in diesem Deck, wo das Projekt
+       im Zeitplan steht (.now, .now-mark), und diese Zeile ist etwas anderes
+       -- der Fall, den wir rechnen. */
+    .reveal table.cases .no { position: relative; }
+    .reveal table.cases .point {
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      margin-right: 0.45em;
+      font-size: 1.7em;
+      line-height: 1;
+      color: var(--tud-accent);
+    }
+
+    /* Die Bond-Definitionen unter der Tabelle. Kleiner als der Fliesstext,
+       weil sie eine Erlaeuterung zu zwei Spalten sind und nicht die Aussage
+       der Folie; die Anmerkung darunter noch einmal kleiner und mittig, damit
+       Formel und Quelle als ein Block unter der Tabelle stehen. */
+    .reveal .bond { font-size: 0.72em; margin: 0.9em 0 0; }
+    .reveal .bond-note { text-align: center; margin: 0.2em 0 0; }
+
+    /* --- A slide whose content is not written yet -------------------------- */
+
+    /* Visible as a scaffold in the overview, and it says what belongs there
+       rather than sitting empty. Delete the class, not the slide. */
+    .reveal .todo { border-left: 3px solid var(--tud-gelb-2); padding-left: 0.9em; }
+    .reveal .todo > .tag {
+      display: inline-block;
+      font-size: 0.55em;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--tud-bg);
+      background: var(--tud-gelb-2);
+      border-radius: 2px;
+      padding: 0.1em 0.5em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .todo ul { font-size: 0.72em; margin: 0; }
+    .reveal .todo ul li { margin-bottom: 0.3em; }
+    .reveal .todo .src { color: var(--tud-fg-muted); font-size: 0.62em; margin-top: 0.9em; }
+
+    /* The setup conditions run down one narrow column beside the photograph,
+       not across the slide: a measure of ~40 characters is what makes three
+       lines of it readable at this size. */
+    .reveal .conditions p { margin: 0 0 0.6em; }
+    .reveal .conditions p:last-child { margin-bottom: 0; }
+
+    /* Die Uebersicht: drei Punkte, keine Unterpunkte. Die Nummern stehen in
+       der Akzentfarbe, damit der Blick die Gliederung zaehlt und nicht liest.
+
+       Zentriert wird der Block und nicht die Zeile: `width: max-content` gibt
+       der Liste die Breite ihres laengsten Punktes, die beiden `auto` stellen
+       sie in die Mitte der Folie. Die Punkte bleiben dabei linksbuendig, so
+       dass die drei Nummern untereinander stehen -- bei `text-align: center`
+       zentrierte sich jeder Punkt fuer sich und die Nummernspalte zerfiele. */
+    .reveal .agenda {
+      list-style: none;
+      counter-reset: agenda;
+      margin: 1.4em auto 0;
+      width: max-content;
+      max-width: 100%;
+      padding: 0;
+      font-size: 1.0em;
+    }
+    .reveal .agenda li { counter-increment: agenda; margin: 0 0 0.85em; }
+    .reveal .agenda li::before {
+      content: counter(agenda) ".";
+      color: var(--tud-accent);
+      font-weight: 600;
+      margin-right: 0.65em;
+    }
+
+    /* Die drei Scheinbeschleunigungen stehen untereinander, weil sie so
+       nebeneinander gelesen werden koennen: gleiche Form, ein Faktor anders.
+       Als Fliesstext waeren es drei Kreuzprodukte in einem Satz. */
+    .reveal .forces p { margin: 0 0 0.2em; }
+    .reveal .forces p:last-child { margin-bottom: 0; }
+    .reveal .forces .lead { margin-bottom: 0.45em; }
+
+    /* Zwei Plots am selben Ort: der zweite loest den ersten auf Klick ab.
+       Beide liegen absolut uebereinander, damit der Wechsel nichts verschiebt
+       und das Auge die Achsen vergleichen kann statt zu springen. */
+    .reveal .fill-grid > figure.swap { position: relative; }
+    .reveal .fill-grid > figure.swap > img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ======================================================== 1 — title ===== -->
+<section class="title-slide">
+  <h1>COSMIC: Erste Ergebnisse</h1>
+  <div class="authors">
+    <div class="author-block">
+      <p class="author">Paul Dräger</p>
+      <p class="email">paul.draeger@tu-dresden.de</p>
+    </div>
+    <div class="author-block">
+      <p class="author">Jochen Fröhlich</p>
+      <p class="email">jochen.froehlich@tu-dresden.de</p>
+    </div>
+  </div>
+  <!-- Der Anlass steht zwischen den Autoren und der Logozeile und nicht im
+       Impressum daneben: nicht .occasion, denn tud-slides.js holt sich diese
+       Klasse in die untere Zeile. -->
+  <p class="event">Kick-Off Meeting. Bonn, den 17.09.2026</p>
+  <p class="affiliation">
+    Institut für Strömungsmechanik · Professur für Strömungsmechanik<br>
+    Technische Universität Dresden
+  </p>
+</section>
+
+<!-- =========================================== 2.1 — Übersicht =========== -->
+<section>
+  <h2>Übersicht</h2>
+  <ol class="agenda">
+    <li>Planung</li>
+    <li>FLUIDICS-Validierung</li>
+    <li>Ausblick</li>
+  </ol>
+</section>
+
+<!-- ============================================ 2.2 — Zeitplan ============ -->
+<section data-layout="fill">
+  <h2><span class="topic">Planung</span>Zeitplan</h2>
+  <figure>
+    <div class="gantt">
+      <img class="transparent" src="../Figures/gantt.svg"
+           alt="Arbeits- und Zeitplan über drei Jahre: HAP 1 Modellierung, HAP 2 Reglerauslegung,
+                HAP 3 Validierung, mit den Meilensteinen MS 1 bis MS 4">
+      <!-- Where the project stands, written in the chart's own coordinates: the
+           tip sits just under the AP 1.3 bar (x 417…534, y 99…113 in gantt.svg)
+           in the middle of month 3 — the middle of the six months of AP 1.3,
+           which is where step 4 of its seven stands, the one the next slide
+           marks as the current one. Move the mark and both numbers follow. -->
+      <svg class="now-mark" viewBox="0 0 1136 436" preserveAspectRatio="xMidYMid meet"
+           role="img" aria-label="Roter Pfeil auf AP 1.3 in der Mitte des dritten Monats:
+                                  der aktuelle Stand des Projekts">
+        <g fill="var(--tud-rot-1)" stroke="var(--tud-rot-1)">
+          <path d="M 465.5 116 l 5.5 12 l -11 0 z" stroke="none"/>
+          <line x1="465.5" y1="127" x2="465.5" y2="153" stroke-width="3"/>
+          <text x="474" y="148" font-size="13.5" font-weight="600" stroke="none">aktuell</text>
+        </g>
+      </svg>
+    </div>
+  </figure>
+</section>
+
+<!-- ============================================ 2.3 — Aktuelle Aufgaben === -->
+<section>
+  <h2><span class="topic">Planung</span>Aktuelle Aufgaben</h2>
+
+  <!-- Untereinander, in der Reihenfolge der Arbeitspakete: das laufende mit
+       seinen Schritten, darunter das naechste. Ueber die volle Breite haben
+       Name und Dauer in beiden Koepfen ihre Zeile, und AP 1.4 steht dort, wo
+       es der Leser nach den Schritten von AP 1.3 sucht. -->
+  <p class="ap"><span class="tag">AP 1.3</span>CFD µ-Gravitation
+    <span class="dur">(6 Monate)</span></p>
+  <ol class="steps">
+    <li>Einarbeitung Literatur</li>
+    <li>Einarbeitung Basilisk</li>
+    <li>Basilisk Setup für Sloshing Simulation</li>
+    <li>Validierung mit FLUIDICS Experiment
+        <span class="fragment now">(aktuell)</span></li>
+    <li>Basilisk Setup zu realistischer Geometrie</li>
+    <li>Sensitivitätsstudie zu (5)</li>
+    <li>Implementierung von Schnittstellen</li>
+  </ol>
+  <p class="ap ap-next"><span class="tag">AP 1.4</span>Sloshing ML-Ersatzmodell
+    <span class="dur">(6 Monate)</span></p>
+</section>
+
+<!-- ============================================ 3.1 — FLUIDICS Experiment = -->
+<!-- Three panels across the width: what the rig is, what is done to it, what
+     it looks like. The two drawn panels stand together because they are the
+     ones that fix the case, and their captions say so — both are drawn after
+     the source, where the photograph is out of it. They are placed in slide
+     coordinates rather than by a grid because their aspects are nothing like
+     each other — 0.57, 1.59 and, the photograph turned upright, 0.66 — and a
+     grid would either crop them or leave two of the three floating. The three
+     blocks end on the same line, caption included: with aspects this far apart
+     it is the foot of the row and not its middle that makes three shapes read
+     as one row. Move a panel and its `top` follows from that — 434 less the
+     image height (width over aspect) less the 34 px the caption takes.
+
+     Two of the three now reach the full height the row has, which is what sets
+     the widths: the sketch is as wide as 400 px of height allows it to be, the
+     upright photograph likewise, and the plot has what is left between them —
+     it is the only one of the three with height to spare, and the trapezoid it
+     draws is the one thing here that gains by being read along. -->
+
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS</span>Experiment</h2>
+  <div class="stage">
+
+    <figure style="left:18px; top:0px; width:228px;">
+      <img class="transparent" src="../Figures/fluidics_rig.sketch.svg"
+           style="width:100%"
+           alt="Skizze des FLUIDICS-Aufbaus in der Drehebene: Kugeltank am Arm der Länge L
+                über der Drehachse O, Kraftsensor S dazwischen, Drehrate Omega um die
+                z-Achse">
+      <figcaption>Skizze zu [@dalmon2019fluidics]</figcaption>
+    </figure>
+
+    <figure class="fragment" data-fragment-index="1"
+            style="left:298px; top:77px; width:513px;">
+      <img class="transparent" src="../Figures/fluidics_forcing.svg"
+           style="width:100%"
+           alt="Vorgegebene Drehrate über der Zeit: Rampe auf ein Plateau, Rampe zurück,
+                anschließend Relaxation in Ruhe; die Zeitpunkte (a), (b) und (c) sind
+                markiert">
+      <figcaption>Drehrate zu [@dalmon2019fluidics]</figcaption>
+    </figure>
+
+    <figure class="fragment" data-fragment-index="2"
+            style="left:863px; top:0px; width:263px;">
+      <div class="upright" style="height:400px;">
+        <img src="../Figures/fluidics_rig.png" style="width:400px"
+             alt="Foto des FLUIDICS-Experimentaufbaus auf der Drehscheibe">
+      </div>
+      <figcaption>Experiment [@dalmon2019fluidics]</figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ============================================ 3.2 — FLUIDICS Modell ===== -->
+<!-- Die Skizze traegt ihre Beschriftung selbst -- Phasen, Wandbedingung,
+     Oberflaechenspannung, die Richtung von f und die Achsen. Rechts daneben
+     steht untereinander, was das Modell aus dem Experiment uebernimmt: der
+     Behaelter, wie er im Versuch aussieht, und darunter die Volumenkraft, die
+     das Manoever im Tanksystem erzeugt.
+
+     Der Pfeil im Leader-SVG zeigt auf den Meniskus **in Folienkoordinaten**:
+     das Foto steht bei left 660 / top 6 mit 252 von 277 Bildpunkten Breite,
+     der Punkt (252, 100) im Bild liegt damit bei (889, 97). Wird das Foto
+     verschoben oder skaliert, muss der Pfeil mitgerechnet werden. -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS</span>Modell</h2>
+  <div class="stage">
+
+    <figure style="left:14px; top:18px; width:400px;">
+      <img class="transparent" src="../Figures/model_sketch_dark.png"
+           style="width:100%"
+           alt="Skizze des simulierten Tanks: Kugel mit Haftbedingung an der Wand,
+                flüssige Phase als Ringfläche, zentrierte Gasblase, dazwischen die
+                Grenzfläche mit der Oberflächenspannung sigma; links der Pfeil der
+                Volumenkraft f, unten die Achsen e_x und e_y">
+    </figure>
+
+    <figure style="left:660px; top:6px; width:252px;">
+      <img class="transparent" src="../Figures/fluidics_wetting_cut.png" style="width:100%"
+           alt="Foto des Kugeltanks: die Flüssigkeit benetzt die Wand vollständig">
+      <figcaption>Behälter in Experiment [@dalmon2019fluidics]</figcaption>
+    </figure>
+
+    <svg class="leaders fragment" data-fragment-index="1" viewBox="0 0 1136 453"
+         preserveAspectRatio="none" role="img"
+         aria-label="Pfeil auf den Meniskus im Foto: die vollständige Benetzbarkeit
+                     der Wand ist eine Annahme">
+      <g fill="var(--tud-rot-1)" stroke="var(--tud-rot-1)">
+        <path d="M 889 97 L 894.6 108.6 L 900.8 102.0 Z" stroke="none"/>
+        <line x1="928" y1="134" x2="897.7" y2="105.3" stroke-width="2.5"/>
+        <text x="925" y="152" font-size="14.5" font-weight="600" stroke="none">Annahme: vollständige</text>
+        <text x="925" y="170" font-size="14.5" font-weight="600" stroke="none">Benetzbarkeit</text>
+      </g>
+    </svg>
+
+    <div class="forces xs" style="left:577px; top:290px; width:418px;">
+      <div class="eq">
+        <p>\[ \bm{f} = \density
+             \begin{pmatrix} 2 v \rotrate + (\armlen + y)\, \rotacc + x\, \rotrate^2 \\
+                              -2 u \rotrate - x\, \rotacc + (\armlen + y)\, \rotrate^2 \\
+                              0 \end{pmatrix} \]</p>
+        <p class="muted">[@dalmon2019fluidics]</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================ 3.3 — FLUIDICS Fälle ====== -->
+<!-- Table 1 of Dalmon et al. (2019), transcribed — the four manoeuvres the paper
+     evaluates. The angular velocity and the acceleration time of every manoeuvre
+     are given relative to manoeuvre 1, which is how the paper states them; the
+     two Bond numbers are the paper's own values and are reproduced by the
+     definitions under the table. The paper's rows 5 and 6 are not shown: they
+     carry no force evaluation there and none here, so a dimmed row only invited
+     the question of what it was doing in the table.
+
+     Saying that on the slide had the same effect as the dimmed row: it put two
+     manoeuvres in front of the audience for the sole purpose of taking them
+     away again. The table now stands for the four cases it shows, and what is
+     missing from it is in the speaker notes, where the question is answered if
+     it is asked. -->
+<section>
+  <h2><span class="topic">FLUIDICS</span>Fälle</h2>
+
+  <table class="cases">
+    <thead>
+      <tr>
+        <th>Nr.</th>
+        <th>\(\fillratio\)</th>
+        <th class="num">\(\rotrate / \rotrate_1\)</th>
+        <th class="num">\(t_{\mathrm{acc}} / t_{\mathrm{acc},1}\)</th>
+        <th class="num">\(\bondcen\)</th>
+        <th class="num">\(\bondeul\)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="no">1<span class="fragment point" role="img"
+              aria-label="Dieses Manöver wird gerechnet">&#8594;</span></td>
+          <td>50 %</td><td class="num">\(1\)</td>
+          <td class="num">\(1\)</td><td class="num">76</td><td class="num">24</td></tr>
+      <tr><td class="no">2</td><td>75 %</td><td class="num">\(1\)</td>
+          <td class="num">\(1\)</td><td class="num">48</td><td class="num">15</td></tr>
+      <tr><td class="no">3</td><td>50 %</td><td class="num">\(1/\sqrt{3}\)</td>
+          <td class="num">\(1\)</td><td class="num">26</td><td class="num">14</td></tr>
+      <tr><td class="no">4</td><td>75 %</td><td class="num">\(1/\sqrt{3}\)</td>
+          <td class="num">\(1\)</td><td class="num">16</td><td class="num">9</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Die beiden Bond-Zahlen erklaeren die letzten zwei Spalten, also stehen
+       sie abgesetzt unter der Tabelle und mittig wie diese -- als Formel und
+       nicht als Fussnote im Fliesstext, weil der Bruch dort auf Schraegstriche
+       zusammengefaltet werden musste. Woraus die Laenge genommen ist, bleibt
+       klein darunter: es ist eine Anmerkung zur Formel, nicht Teil von ihr. -->
+  <p class="bond">
+    \[ \bondcen = \frac{\density\,\rotrate^2\,\armlen\,\bubdia^2}{\surf}
+       \qquad
+       \bondeul = \frac{\density\,\rotacc\,\armlen\,\bubdia^2}{\surf} \]
+  </p>
+  <p class="xs bond-note">
+    auf den Anfangsdurchmesser der Blase bezogen [@dalmon2019fluidics]
+  </p>
+  <aside class="notes">
+    Tabelle 1 der Quelle hat sechs Zeilen. Die beiden hier nicht gezeigten sind
+    Manöver 5 (50 %, \(\rotrate/\rotrate_1 = 1/\sqrt{6}\),
+    \(\bondcen = 13\), \(\bondeul = 10\)) und Manöver 6 (50 %,
+    \(1/\sqrt{12}\), halbe Beschleunigungszeit, \(\bondcen = 6\),
+    \(\bondeul = 14\)). Beide sind zu langsam für verlässliche Sensordaten und
+    werden in der Kraftauswertung der Quelle nicht betrachtet — deshalb enden
+    auch unsere Rechnungen bei Manöver 4.
+  </aside>
+</section>
+
+<!-- ================================ 3.4 — FLUIDICS Simulation =========== -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS</span>Simulation</h2>
+  <figure>
+    <video src="../Figures/frames_lab_polar_dark.mp4" data-autoplay loop muted playsinline
+           aria-label="Simulation im Laborsystem, Polardarstellung"></video>
+  </figure>
+</section>
+
+<!-- =========================== 3.5a — FLUIDICS Verfeinerung 1 =========== -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS</span>adaptive Verfeinerung (1)</h2>
+  <figure>
+    <video src="../Figures/frames_ux_l68_dark.mp4" data-autoplay loop muted playsinline
+           aria-label="Geschwindigkeitsfeld u_x bei Level 6 und 8 nebeneinander"></video>
+  </figure>
+</section>
+
+<!-- =========================== 3.5b — FLUIDICS Verfeinerung 2 =========== -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS</span>adaptive Verfeinerung (2)</h2>
+  <figure>
+    <img class="transparent" src="../Figures/interface_refinement_dark.png"
+         alt="Auflösung der Grenzfläche über dem Verfeinerungslevel">
+  </figure>
+</section>
+
+<!-- =================================== 3.6a — FLUIDICS Film 1 =========== -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS</span>Flüssigkeitsfilm (1)</h2>
+  <figure>
+    <img class="transparent" src="../Figures/pressure_t3_level7_meniscus_dark.png"
+         alt="Druckfeld am Meniskus zum Zeitpunkt t3, Level 7">
+  </figure>
+</section>
+
+<!-- =================================== 3.6b — FLUIDICS Film 2 =========== -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS</span>Flüssigkeitsfilm (2)</h2>
+  <figure>
+    <img class="transparent" src="../Figures/meniscus_refinement_t3_dark.png"
+         alt="Meniskus über den Verfeinerungsleveln zum Zeitpunkt t3">
+  </figure>
+</section>
+
+<!-- =========================== 3.8a — FLUIDICS Kraftberechnung =========== -->
+<!-- Der bisherige Weg, und das Bild, das sagt warum: bei vollstaendiger
+     Benetzbarkeit liegt der Meniskus auf einem Film, den kein bezahlbares
+     Gitter aufloest -- das Druckfeld am Meniskus zeigt, worueber integriert
+     wird. .sm, weil zwei abgesetzte Formeln neben einem Bild stehen. -->
+<section>
+  <h2><span class="topic">FLUIDICS</span>Kraftberechnung</h2>
+
+  <div class="sm">
+
+  <div class="cols w-1-2 center">
+    <figure>
+      <img class="transparent"
+           src="../Figures/meniscus_refinement_t3_level7_dark.png"
+           alt="Druckfeld am Meniskus bei Level 7: der Sprung über die Grenzfläche
+                ist über wenige Zellen aufgelöst.">
+    </figure>
+
+    <div>
+      <div class="eq">
+        <p>\[ \bm{F} = -\int_{\odomain} \nabla \pre\, \mathrm{d}V
+             \;+\; \int_{\odomain} \nabla \cdot \shear\, \mathrm{d}V
+             \;+\; \underbrace{\int_{\odomain} \surf\, \curv\, \diracs\, \no\, \mathrm{d}V}
+                             _{=\,0 \text{ (ideal)}} \]</p>
+        <p class="muted">(13.1)</p>
+      </div>
+
+      <p>diskret implementiert [@dalmon2018bubble]:</p>
+
+      <div class="eq">
+        <p>\[ \bm{F} = \int_{\odomain} \left( -\nabla \pre
+                       \;+\; \surf\, \curv\, \diracs\, \no \right) \mathrm{d}V \]</p>
+        <p class="muted">(13.2)</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ================================ 3.8b — FLUIDICS Kraftberechnung neu === -->
+<!-- Der neue Weg: nicht ueber den Rand, sondern ueber den Impuls im Inneren.
+     Die Volumenkraft steht mit dem Vorzeichen da, das aus der Bilanz der
+     Folie davor folgt -- dort steht sie auf der rechten Seite. -->
+<section>
+  <h2><span class="topic">FLUIDICS</span>Kraftberechnung (neu)</h2>
+
+  <div class="sm">
+
+  <!-- Die Bilanz steht hier noch einmal, weil die neue Auswertung aus ihr
+       folgt: F ist der Teil, den die Waende tragen, und der laesst sich nach
+       links aufloesen. -->
+  <div class="eq">
+    <p>\[
+    \underbrace{\int_{\odomain} \density\, \frac{\partial \bmu}{\partial t}\, \mathrm{d}V}
+              _{\text{Trägheit}}
+    \;=\;
+    \underbrace{-\oint_{\partial\odomain} \pre\, \no\, \mathrm{d}S
+                \;+\; \oint_{\partial\odomain} \shear \cdot \no\, \mathrm{d}S}
+              _{\text{Wandkräfte } \bm{F}}
+    \;+\; \int_{\odomain} \bm{f}\, \mathrm{d}V
+    \;+\; \underbrace{\int_{\odomain} \surf\, \curv\, \diracs\, \no\, \mathrm{d}V}
+              _{=\,0 \text{ (vollständige Benetzbarkeit)}}
+    \]</p>
+    <p class="muted">(14.1)</p>
+  </div>
+
+  <p>diskret implementiert (neu):</p>
+
+  <!-- Die Zeitableitung vor das Integral gezogen. -->
+  <div class="eq">
+    <p>\[ \bm{F} = \int_{\odomain} \density\, \frac{\partial \bmu}{\partial t}\, \mathrm{d}V
+                 \;-\; \int_{\odomain} \bm{f}\, \mathrm{d}V
+                 \;=\; \frac{\mathrm{d}}{\mathrm{d}t} \int_{\odomain} \density\, \bmu\, \mathrm{d}V
+                 \;-\; \int_{\odomain} \bm{f}\, \mathrm{d}V \]</p>
+    <p class="muted">(14.2)</p>
+  </div>
+</div>
+</section>
+
+<!-- ====================== 3.8c — FLUIDICS Vergleich Kräfte ============= -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS</span>Vergleich Kräfte</h2>
+  <figure class="swap">
+    <img class="transparent fragment fade-out" data-fragment-index="0"
+         src="../Figures/momentum_force_history_no_experiment_no_zoom_dark.png"
+         alt="Kraftverlauf beider Berechnungen über der Zeit, volle Zeitachse">
+    <img class="transparent fragment fade-in" data-fragment-index="0"
+         src="../Figures/momentum_force_history_no_experiment_dark.png"
+         alt="Derselbe Kraftverlauf mit vergrößertem Ausschnitt">
+  </figure>
+</section>
+
+<!-- ========================== 3.8d — FLUIDICS Spektrum ================== -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS</span>Spektrum</h2>
+  <figure>
+    <img class="transparent" src="../Figures/momentum_spectrum_dark.png"
+         alt="Spektrum des Kraftverlaufs über der Frequenz">
+  </figure>
+</section>
+
+<!-- ==================== 3.8e — FLUIDICS Vergleich Experiment ============ -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS</span>Vergleich Experiment</h2>
+  <figure>
+    <img class="transparent" src="../Figures/momentum_force_history_zoom_dark.png"
+         alt="Kraftverlauf aus Simulation und Experiment im Vergleich">
+  </figure>
+</section>
+
+<!-- ======================== 3.9 — FLUIDICS Ergebnisse Manöver =========== -->
+<!-- Manoever 2 und 3 nebeneinander, beide gegen Experiment und Rechnung der
+     Quelle. Das Bild bringt seine eigene Beschriftung mit -- Bond-Zahlen und
+     Fuellgrad stehen ueber jedem Feld -- und braucht deshalb keine Legende
+     daneben; Manoever 3 traegt im Feld, wie weit die Rechnung ist. -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS</span>Ergebnisse Manöver</h2>
+  <figure>
+    <img class="transparent" src="../Figures/maneuver_force_history_all_dark.png"
+         alt="Kraftverlauf über der Zeit für Manöver 2 und Manöver 3, je im Vergleich
+              von Experiment und Simulation der Quelle mit der eigenen Rechnung auf
+              Level 6">
+  </figure>
+</section>
+
+<!-- =================================== 4.1 — Nächste Schritte =========== -->
+<section>
+  <h2><span class="topic">Ausblick</span>Nächste Schritte</h2>
+  <ol>
+    <li>Vollständige Studie zu Manövern</li>
+    <li>Simulation mit weiterer Verfeinerung</li>
+    <li>Untersuchung parasitärer Strömungen</li>
+    <li><code>integral.h</code> anstelle von <code>tension.h</code> in Basilisk</li>
+    <li>Realistische Geometrie</li>
+  </ol>
+</section>
+
+<!-- ================================== 4.2 — Diskussionspunkte =========== -->
+<section>
+  <h2><span class="topic">Ausblick</span>Diskussionspunkte</h2>
+  <ol>
+    <li>Initiale Lage der Gasblase</li>
+    <!-- Punkt 2 stand in den Anmerkungen nur als Nummer da und fehlt noch. -->
+  </ol>
+</section>
+
+<!-- ==================================================== back matter ===== -->
+<section data-generate="nomenclature"></section>
+<section data-generate="bibliography"></section>
+
+</div>
+</div>
+
+<script src="../reveal/dist/reveal.js"></script>
+<script src="../reveal/plugin/notes/notes.js"></script>
+<script src="../reveal/plugin/markdown/markdown.js"></script>
+<script src="../reveal/plugin/highlight/highlight.js"></script>
+<script src="../reveal/plugin/search/search.js"></script>
+<script src="../reveal/plugin/zoom/zoom.js"></script>
+<script src="../reveal/plugin/math/math.js"></script>
+<script src="../lib/shared_data.js"></script>
+<script src="../lib/tud-slides.js"></script>
+
+<script>
+  TUD.init({
+    // Ein deutscher Vortrag: das schaltet die Wortmarke der Titelfolie und
+    // die Woerter, die der Rueckstand selbst setzt (Nomenklatur, Literatur,
+    // die Gruppen darin).
+    language: 'de',
+    // Die Oberflaechenspannung heisst in diesem Vortrag sigma, nicht gamma:
+    // so steht sie in den Plots (Farbskala "(p - p_gas) D_t/sigma") und in
+    // Dalmons Arbeiten. Geaendert wird nur die Schreibweise fuer diese Seite;
+    // shared/variables.tex bleibt, wie es ist.
+    symbols: { surf: { formula: '\\sigma', sort: 'sigma' } },
+    // The FLUIDICS sketches are files now, and a symbol drawn inside an <img>
+    // is invisible to the collector that builds the nomenclature. These are
+    // the ones the two sketches write; the slides' own text still registers
+    // itself. Add a symbol to a sketch, add it here.
+    includeSymbols: [
+      'armlen', 'armse', 'tankdia', 'tankrad', 'bubrad',
+      'rotrate', 'time',
+      'surf', 'deng', 'dvisg'
+    ],
+    // [5] of the source deck: cited by no slide, but it is the sandbox case the
+    // contact-angle modelling follows, so it stays in the reference list.
+    includeReferences: ['basilisk_sessile_inclined']
+  });
+</script>
+</body>
+</html>
