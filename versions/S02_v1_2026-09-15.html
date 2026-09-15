@@ -267,6 +267,48 @@
     .reveal .conditions p { margin: 0 0 0.6em; }
     .reveal .conditions p:last-child { margin-bottom: 0; }
 
+    /* Kein Strich unter dem Folientitel. Der Abstand, den er getragen hat,
+       bleibt -- sonst rutscht der Inhalt aller Folien um drei Punkte hoch und
+       jede gepruefte Hoehe stimmt nicht mehr. Nur hier, S01 behaelt seinen. */
+    .reveal section > h2:first-child,
+    .reveal section > h3:first-child,
+    .reveal .fill-grid > h2:first-child,
+    .reveal .fill-grid > h3:first-child {
+      border-bottom-color: transparent;
+    }
+
+    /* Der Strich unter der Kopfzeile einer Tabelle wie die Striche zwischen
+       den Zeilen: dasselbe Grau, dieselbe Staerke. Die Kopfzeile hebt sich
+       ueber Farbe und Fettung genug ab, ein zweiter, kraeftigerer Strich in
+       der Akzentfarbe macht daraus ein zweites Signal fuer dieselbe Sache. */
+    .reveal table th { border-bottom: 1px solid var(--tud-rule); }
+
+    /* Zwei Videos nebeneinander, die zusammengehoeren: links der Lauf, rechts
+       die Marke, die zeigt, wo im Manoever er gerade steht. Das quadratische
+       nimmt die Hoehe; die Marke ist eine Nebenangabe und steht kleiner
+       daneben, auf halber Hoehe. Beide unverzerrt, das Paar als Ganzes
+       zentriert. */
+    .reveal .fill-grid > figure.paar {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4em;
+    }
+    .reveal .fill-grid > figure.paar > video:first-child {
+      flex: 0 0 auto;
+      height: 100%;
+      width: auto;
+      min-height: 0;
+    }
+    .reveal .fill-grid > figure.paar > video:last-child {
+      flex: 0 1 auto;
+      min-width: 0;
+      width: 440px;
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
     /* Die Uebersicht: drei Punkte, keine Unterpunkte. Die Nummern stehen in
        der Akzentfarbe, damit der Blick die Gliederung zaehlt und nicht liest.
 
@@ -409,10 +451,12 @@
      coordinates rather than by a grid because their aspects are nothing like
      each other — 0.57, 1.59 and, the photograph turned upright, 0.66 — and a
      grid would either crop them or leave two of the three floating. The three
-     blocks end on the same line, caption included: with aspects this far apart
-     it is the foot of the row and not its middle that makes three shapes read
-     as one row. Move a panel and its `top` follows from that — 434 less the
-     image height (width over aspect) less the 34 px the caption takes.
+     blocks end on the same line: with aspects this far apart it is the foot of
+     the row and not its middle that makes three shapes read as one row. Two of
+     the three lost their caption, so the line the row ends on is now the foot
+     of the images themselves, at 400; the one remaining caption hangs below
+     it. Move a panel and its `top` follows from that — 400 less the image
+     height, which is its width over its aspect.
 
      Two of the three now reach the full height the row has, which is what sets
      the widths: the sketch is as wide as 400 px of height allows it to be, the
@@ -421,26 +465,23 @@
      draws is the one thing here that gains by being read along. -->
 
 <section data-layout="fill">
-  <h2><span class="topic">FLUIDICS</span>Experiment</h2>
+  <h2><span class="topic">FLUIDICS</span>Konfiguration</h2>
   <div class="stage">
 
-    <figure style="left:18px; top:0px; width:228px;">
+    <figure style="left:18px; top:0px; width:267px;">
       <img class="transparent" src="../Figures/fluidics_rig.sketch.svg"
            style="width:100%"
            alt="Skizze des FLUIDICS-Aufbaus in der Drehebene: Kugeltank am Arm der Länge L
                 über der Drehachse O, Kraftsensor S dazwischen, Drehrate Omega um die
                 z-Achse">
-      <figcaption>Skizze zu [@dalmon2019fluidics]</figcaption>
     </figure>
 
     <figure class="fragment" data-fragment-index="1"
-            style="left:298px; top:77px; width:513px;">
+            style="left:371px; top:120px; width:406px;">
       <img class="transparent" src="../Figures/fluidics_forcing.svg"
            style="width:100%"
            alt="Vorgegebene Drehrate über der Zeit: Rampe auf ein Plateau, Rampe zurück,
-                anschließend Relaxation in Ruhe; die Zeitpunkte (a), (b) und (c) sind
-                markiert">
-      <figcaption>Drehrate zu [@dalmon2019fluidics]</figcaption>
+                anschließend Ruhe">
     </figure>
 
     <figure class="fragment" data-fragment-index="2"
@@ -579,9 +620,12 @@
 <!-- ================================ 3.4 — FLUIDICS Simulation =========== -->
 <section data-layout="fill">
   <h2><span class="topic">FLUIDICS</span>Simulation</h2>
-  <figure>
+  <figure class="paar">
     <video src="../Figures/frames_lab_polar_dark.mp4" data-autoplay loop muted playsinline
            aria-label="Simulation im Laborsystem, Polardarstellung"></video>
+    <video src="../Figures/frames_maneuver_cursor_dark.mp4" data-autoplay loop muted playsinline
+           aria-label="Marke auf dem Verlauf der Drehrate: wo im Manöver der Lauf
+                       daneben gerade steht"></video>
   </figure>
 </section>
 
@@ -642,9 +686,9 @@
     <div>
       <div class="eq">
         <p>\[ \bm{F} = -\int_{\odomain} \nabla \pre\, \mathrm{d}V
-             \;+\; \int_{\odomain} \nabla \cdot \shear\, \mathrm{d}V
              \;+\; \underbrace{\int_{\odomain} \surf\, \curv\, \diracs\, \no\, \mathrm{d}V}
-                             _{=\,0 \text{ (ideal)}} \]</p>
+                             _{=\,0 \text{ (ideal)}}
+             \;+\; \int_{\odomain} \nabla \cdot \shear\, \mathrm{d}V \]</p>
         <p class="muted">(13.1)</p>
       </div>
 
@@ -668,48 +712,60 @@
   <h2><span class="topic">FLUIDICS</span>Kraftberechnung (neu)</h2>
 
   <div class="sm">
+  <!-- Dieselbe Schriftgroesse wie auf der Folie davor: dort steht alles in
+       .cols, und .cols verkleinert um 0,86. Hier ist es eine einzige Spalte
+       ohne Abstand -- das Mass kommt damit aus derselben Regel und nicht aus
+       einer abgeschriebenen Zahl, die spaeter auseinanderlaufen kann. -->
+  <div class="cols" style="--n:1; gap:0">
 
   <!-- Die Bilanz steht hier noch einmal, weil die neue Auswertung aus ihr
        folgt: F ist der Teil, den die Waende tragen, und der laesst sich nach
        links aufloesen. -->
   <div class="eq">
+    <!-- Die Bilanz steht sofort da; die drei Klammern kommen einzeln dazu.
+         Jede ist ein \llap ueber einem \phantom des Terms: so liegt sie genau
+         unter ihm, ohne dass der Term selbst im Fragment steckt -- der soll ja
+         von Anfang an zu sehen sein. Die Terme sind dafuer einmal als \def
+         benannt, damit Term und Phantom nicht auseinanderlaufen koennen. -->
     <p>\[
-    \underbrace{\int_{\odomain} \density\, \frac{\partial \bmu}{\partial t}\, \mathrm{d}V}
-              _{\text{Trägheit}}
+    \def\Traeg{\int_{\odomain} \density\, \frac{\partial \bmu}{\partial t}\, \mathrm{d}V}
+    \def\Wand{-\oint_{\partial\odomain} \pre\, \no\, \mathrm{d}S
+               \;+\; \oint_{\partial\odomain} \shear \cdot \no\, \mathrm{d}S}
+    \def\Ober{\int_{\odomain} \surf\, \curv\, \diracs\, \no\, \mathrm{d}V}
+    \Traeg\llap{\class{fragment schritt-1}{\underbrace{\phantom{\Traeg}}_{\text{Trägheit}}}}
     \;=\;
-    \underbrace{-\oint_{\partial\odomain} \pre\, \no\, \mathrm{d}S
-                \;+\; \oint_{\partial\odomain} \shear \cdot \no\, \mathrm{d}S}
-              _{\text{Wandkräfte } \bm{F}}
+    \Wand\llap{\class{fragment schritt-2}{\underbrace{\phantom{\Wand}}_{\text{Wandkräfte } \bm{F}}}}
+    \;+\; \Ober\llap{\class{fragment schritt-3}{\underbrace{\phantom{\Ober}}
+              _{=\,0 \text{ (vollständige Benetzbarkeit)}}}}
     \;+\; \int_{\odomain} \bm{f}\, \mathrm{d}V
-    \;+\; \underbrace{\int_{\odomain} \surf\, \curv\, \diracs\, \no\, \mathrm{d}V}
-              _{=\,0 \text{ (vollständige Benetzbarkeit)}}
     \]</p>
     <p class="muted">(14.1)</p>
   </div>
 
-  <p>diskret implementiert (neu):</p>
+  <p class="fragment schritt-4">diskret implementiert (neu):</p>
 
-  <!-- Die Zeitableitung vor das Integral gezogen. -->
+  <!-- Erst die Auswertung, dann die Umformung: die Zeitableitung vor das
+       Integral gezogen. Beides steht in derselben Formel, damit nichts
+       springt, wenn der zweite Teil dazukommt. -->
   <div class="eq">
-    <p>\[ \bm{F} = \int_{\odomain} \density\, \frac{\partial \bmu}{\partial t}\, \mathrm{d}V
-                 \;-\; \int_{\odomain} \bm{f}\, \mathrm{d}V
-                 \;=\; \frac{\mathrm{d}}{\mathrm{d}t} \int_{\odomain} \density\, \bmu\, \mathrm{d}V
-                 \;-\; \int_{\odomain} \bm{f}\, \mathrm{d}V \]</p>
-    <p class="muted">(14.2)</p>
+    <p>\[ \class{fragment schritt-4}{\bm{F} = \int_{\odomain} \density\, \frac{\partial \bmu}{\partial t}\, \mathrm{d}V
+                 \;-\; \int_{\odomain} \bm{f}\, \mathrm{d}V}
+           \class{fragment schritt-5}{\;=\; \frac{\mathrm{d}}{\mathrm{d}t} \int_{\odomain} \density\, \bmu\, \mathrm{d}V
+                 \;-\; \int_{\odomain} \bm{f}\, \mathrm{d}V} \]</p>
+    <p class="muted fragment schritt-4">(14.2)</p>
   </div>
+</div>
 </div>
 </section>
 
 <!-- ====================== 3.8c — FLUIDICS Vergleich Kräfte ============= -->
 <section data-layout="fill">
   <h2><span class="topic">FLUIDICS</span>Vergleich Kräfte</h2>
-  <figure class="swap">
-    <img class="transparent fragment fade-out" data-fragment-index="0"
-         src="../Figures/momentum_force_history_no_experiment_no_zoom_dark.png"
-         alt="Kraftverlauf beider Berechnungen über der Zeit, volle Zeitachse">
-    <img class="transparent fragment fade-in" data-fragment-index="0"
+  <figure>
+    <img class="transparent"
          src="../Figures/momentum_force_history_no_experiment_dark.png"
-         alt="Derselbe Kraftverlauf mit vergrößertem Ausschnitt">
+         alt="Kraftverlauf beider Berechnungen über der Zeit, mit vergrößertem
+              Ausschnitt der ersten Schwingungen">
   </figure>
 </section>
 
@@ -739,7 +795,7 @@
 <section data-layout="fill">
   <h2><span class="topic">FLUIDICS</span>Ergebnisse Manöver</h2>
   <figure>
-    <img class="transparent" src="../Figures/maneuver_force_history_all_dark.png"
+    <img class="transparent" src="../Figures/maneuver_force_history_m23_zoom_dark.png"
          alt="Kraftverlauf über der Zeit für Manöver 2 und Manöver 3, je im Vergleich
               von Experiment und Simulation der Quelle mit der eigenen Rechnung auf
               Level 6">
@@ -808,6 +864,45 @@
     // contact-angle modelling follows, so it stays in the reference list.
     includeReferences: ['basilisk_sessile_inclined']
   });
+</script>
+
+<script>
+  // Fragmente in einer Formel.
+  //
+  // MathJax kann eine CSS-Klasse an einen Teil einer Formel haengen
+  // (\class{...}{...}), und reveal findet ein .fragment auch im SVG, das
+  // dabei herauskommt. Zwei Dinge muessen danach noch geradegerueckt werden:
+  //
+  //   1. MathJax schreibt jede Klasse auch in den Barrierefreiheitszweig
+  //      (mjx-assistive-mml). Der ist unsichtbar, zaehlte aber als zweites
+  //      Fragment und kostete einen Klick ins Leere.
+  //   2. Ein data-fragment-index laesst sich in TeX nicht schreiben. Statt
+  //      dessen traegt die Formel eine Klasse `schritt-N`, die hier in das
+  //      Attribut uebersetzt wird -- so koennen Text und Formel im selben
+  //      Schritt erscheinen.
+  //
+  // Danach ein Reveal.sync(), damit die neue Ordnung auch gilt.
+  (function () {
+    function aufraeumen() {
+      document.querySelectorAll('mjx-assistive-mml .fragment').forEach(function (e) {
+        e.classList.remove('fragment');
+      });
+      document.querySelectorAll('.fragment[class*="schritt-"]').forEach(function (e) {
+        var treffer = /schritt-(\d+)/.exec(e.getAttribute('class'));
+        if (treffer) e.setAttribute('data-fragment-index', treffer[1]);
+      });
+      if (window.Reveal && Reveal.sync) Reveal.sync();
+    }
+    (function warten(versuche) {
+      if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+        MathJax.startup.promise.then(aufraeumen);
+      } else if (versuche > 0) {
+        setTimeout(function () { warten(versuche - 1); }, 100);
+      } else {
+        console.warn('[S02] MathJax nicht gefunden; Formelfragmente bleiben ungeordnet.');
+      }
+    })(100);
+  })();
 </script>
 </body>
 </html>
