@@ -13,10 +13,18 @@
 #   3. Es prueft danach jede geladene Datei. Fehlt eine, bricht es ab, statt
 #      eine Seite mit leeren Kaesten zu veroeffentlichen.
 #
-# Die .html der Version wird dabei nicht angefasst: sie liegt hier unter
-# demselben Pfad wie dort, damit ein Abgleich ein reines Kopieren bleibt und
-# die relativen Pfade darin weiter stimmen. Die index.html im Wurzelverzeichnis
-# verweist auf die jeweils neueste Version und wird hier erzeugt.
+# Die .html der Version wird an genau einer Stelle angefasst: an jede geladene
+# Datei aus lib/, theme/ und reveal/ kommt ?h=<Kuerzel des Inhalts>. Sonst
+# liegt sie hier unter demselben Pfad wie dort, die relativen Pfade darin
+# stimmen also weiter. Die index.html im Wurzelverzeichnis verweist auf die
+# jeweils neueste Version und wird hier erzeugt.
+#
+# Warum das Kuerzel: GitHub Pages liefert jede Datei mit cache-control
+# max-age=600. Wer die Seite offen hat, waehrend ein neuer Stand hochgeht,
+# faehrt danach zehn Minuten lang mit der alten Laufzeit weiter -- der
+# Foliensatz ist neu, tud-slides.js und das Theme sind es nicht. Aendert sich
+# eine dieser Dateien, aendert sich mit dem Kuerzel ihre Adresse, und ein
+# alter Stand kann gar nicht erst getroffen werden.
 #
 # Aufruf:  ./publish.sh [pfad/zum/reports-repo]     (Vorgabe: ../reports)
 
@@ -45,6 +53,32 @@ cp "$quelle"/versions/S02_v*.html "$hier/versions/"
 cp -rL "$quelle/theme"  "$hier/theme"
 cp -rL "$quelle/lib"    "$hier/lib"
 cp -rL "$quelle/reveal" "$hier/reveal"
+
+# --- Kuerzel des Inhalts an die Laufzeit-Adressen ----------------------------
+python3 - "$hier" <<'STEMPEL'
+import hashlib, pathlib, re, sys
+
+wurzel = pathlib.Path(sys.argv[1])
+muster = re.compile(r'(src|href)="((?:\.\./)+(?:lib|theme|reveal)/[^"?]+)"')
+gezaehlt = [0]
+
+for seite in sorted((wurzel / 'versions').glob('*.html')):
+    text = seite.read_text(encoding='utf-8')
+
+    def ersetze(treffer):
+        ziel = (seite.parent / treffer.group(2)).resolve()
+        if not ziel.is_file():
+            return treffer.group(0)          # die Gegenprobe unten meldet es
+        kuerzel = hashlib.sha1(ziel.read_bytes()).hexdigest()[:8]
+        gezaehlt[0] += 1
+        return '%s="%s?h=%s"' % (treffer.group(1), treffer.group(2), kuerzel)
+
+    neu = muster.sub(ersetze, text)
+    if neu != text:
+        seite.write_text(neu, encoding='utf-8')
+
+print('Kuerzel:  %d Adressen' % gezaehlt[0])
+STEMPEL
 
 # Das Theme laedt die Logos ueber CSS, nicht ueber die .html -- die muessen mit.
 # (cp -rL oben nimmt sie schon mit; die Zeile steht hier als Merkposten, falls
@@ -83,6 +117,7 @@ fehler=0
 for ziel in $(grep -ohE '(src|href)="[^"]+"' "$hier"/versions/*.html \
               | sed 's/.*="//; s/"//' | sort -u); do
   case $ziel in http*|data:*|\#*) continue;; esac
+  ziel=${ziel%%\?*}                       # ?h=<Kuerzel> gehoert nicht zum Pfad
   [ -e "$hier/versions/$ziel" ] || { echo "geladen, aber nicht vorhanden: $ziel" >&2; fehler=1; }
 done
 [ "$fehler" -eq 0 ] || exit 1

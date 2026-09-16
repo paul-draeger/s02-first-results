@@ -20,6 +20,14 @@ Foliensatz wirklich lädt, und erzeugt die `index.html`, die auf die neueste
 Version weiterleitet. Zum Schluss prüft es jede geladene Datei und bricht ab,
 wenn eine fehlt — eine Seite mit leeren Kästen soll gar nicht erst entstehen.
 
+An die Adressen aus `lib/`, `theme/` und `reveal/` hängt es dabei ein Kürzel
+des Inhalts (`tud-slides.js?h=f0e68237`). GitHub Pages liefert jede Datei mit
+`cache-control: max-age=600`; ohne das Kürzel fährt ein Browser, der die Seite
+während des Abgleichs offen hatte, danach zehn Minuten mit der alten Laufzeit
+weiter — neuer Foliensatz, alte `tud-slides.js`. Ändert sich eine der Dateien,
+ändert sich ihre Adresse, und der alte Stand kann gar nicht erst getroffen
+werden.
+
 Danach wie üblich `git add -A`, committen, pushen.
 
 ## Pages einschalten
@@ -49,7 +57,7 @@ dieser Foliensatz lädt.
 | | |
 |---|---|
 | `index.html` | Weiterleitung auf die neueste Version (erzeugt) |
-| `versions/` | die Foliensätze, unverändert aus dem reports-Repo |
-| `Figures/` | nur die geladenen Bilder und Videos (17 Dateien) |
+| `versions/` | die Foliensätze aus dem reports-Repo, nur die Laufzeit-Adressen mit Kürzel |
+| `Figures/` | nur die geladenen Bilder und Videos (27 Dateien) |
 | `theme/`, `lib/`, `reveal/` | aufgelöste Kopien aus `S00_main` |
 | `publish.sh` | der Abgleich |
