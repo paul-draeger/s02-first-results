@@ -155,13 +155,22 @@
            implementiert (neu)" stand; die Klammer dort ist weg.
          * In (17.2) steht der zweite Teil unter dem ersten statt hinter ihm.
            Die beiden Gleichheitszeichen stehen damit in einer Flucht -- das
-           ist die Aussage, dasselbe F, zweimal geschrieben.
+           ist die Aussage, dasselbe F, zweimal geschrieben. Die Nummer kommt
+           mit der zweiten Zeile: neben der ersten allein haengt sie unter ihr
+           im Leeren, weil sie auf halber Hoehe beider Zeilen steht.
          * Der Dank bekommt sein Ausrufezeichen.
-         * Die Achsenbeschriftung der zwoelf Basilisk-Bilder wird nicht mehr
-           auf eine Kastenhoehe gebracht, sondern auf eine Schriftgroesse:
-           "z/R" baut niedriger als "w/sqrt(gd)" und stand deshalb zu gross
-           daneben. Alle zwoelf tragen jetzt dieselbe Schrift, und die Bilder
+         * Die Achsenbeschriftung der zwoelf Basilisk-Bilder hat zwei Masse
+           statt einem: das "w/sqrt(gd)" der Aufstiegsplots steht auf 24
+           Folienpixeln, das "z/R" der Gitterbilder auf 18. Vorher waren beide
+           auf dieselbe Kastenhoehe gebracht, und weil "z/R" ohne
+           Wurzelzeichen niedriger baut, stand es daneben zu gross. Die Bilder
            stehen 386 px hoch.
+         * Auf "Vergleich Kraefte" und "Vergleich Experiment" fuehrt die
+           Legende die Marken der Winkelbeschleunigung nicht mehr auf. Die
+           gestrichelten Senkrechten bleiben; was sie sagen, steht zwei Folien
+           davor im Drehratenband. Eine Legende auf einer Folie sagt, welche
+           Kurve welche ist, und ein vierter Eintrag, der keine Kurve meint,
+           wird als eine gelesen.
          * Die Gitterstudie: alles im Drehratenband steht auf einer
            Schriftgroesse (20 px statt 24 fuer die Achsenbeschriftungen), das
            Band kommt damit mit 94 statt 100 px aus. Die gewonnene Hoehe geht
@@ -260,6 +269,23 @@
        ihrer Groesse. Die Zeile ist deshalb weg; was bleibt, ist der Abstand
        zwischen beiden und der weggenommene Absatzabstand. */
     .reveal .eq p { margin: 0; }
+    /* Seit (17.2) zwei Zeilen hat, ist diese eine Folie eine Zeile
+       Formelsatz zu hoch fuer den Satzspiegel -- vierundfuenfzig Punkte,
+       gemessen mit S00_main/build/check.html.
+
+       Geholt werden sie aus dem Weissraum zwischen den vier Bloecken und
+       nicht aus der Schrift: die Formeln sind hier die Aussage, und eine
+       Folie, auf der sie kleiner stehen als auf der Folie davor, sagt das
+       Gegenteil. Zwischen den vier Bloecken standen rund neunzig Punkte Luft
+       -- die Abstaende addieren sich, weil .cols ein Flex ist und Raender
+       dort nicht zusammenfallen. Ein knappes Viertel davon bleibt; die
+       Gliederung liest sich noch, und die Folie endet zwoelf Punkte ueber der
+       Fusszeile. Wer hier etwas hinzufuegt, misst mit check.html nach.
+
+       Nur hier: auf jeder anderen Folie traegt derselbe Abstand die Luft, die
+       eine abgesetzte Formel braucht. */
+    .reveal .eng .eq { margin: 0.15em 0; }
+    .reveal .eng > .cols > p { margin-bottom: 0.25em; }
     /* Das Thema vor dem Folientitel: kleiner und zurueckgenommen, damit die
        Titel selbst ueberall gleich gross sind und die Folge FLUIDICS ... als
        Zugehoerigkeit gelesen wird und nicht als Teil der Ueberschrift.
@@ -1007,7 +1033,7 @@
   <h2><span class="topic">2 Basilisk</span>Testfall A</h2>
   <div class="stage">
 
-    <figure style="left:0px; top:28px; width:360px;">
+    <figure style="left:0px; top:28px; width:359px;">
       <img class="transparent" style="height:386px"
            src="../Figures/basilisk_grid_A_l10_deck_dark.png"
            alt="Adaptives Gitter um die Blase bei Verfeinerungsstufe 10:
@@ -1016,7 +1042,7 @@
       <figcaption><span class="panel">a)</span>adaptives Gitter, \(\ell = 10\)</figcaption>
     </figure>
 
-    <figure style="left:388px; top:28px; width:360px;">
+    <figure style="left:391px; top:28px; width:359px;">
       <img class="transparent" style="height:386px"
            src="../Figures/basilisk_grid_A_l12_deck_dark.png"
            alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
@@ -1025,7 +1051,7 @@
       <figcaption><span class="panel">b)</span>adaptives Gitter, \(\ell = 12\)</figcaption>
     </figure>
 
-    <figure style="left:776px; top:28px; width:360px;">
+    <figure style="left:782px; top:28px; width:354px;">
       <img class="transparent" style="height:386px"
            src="../Figures/basilisk_ascent_A_deck_dark.png"
            alt="Aufstiegsgeschwindigkeit über der Zeit für drei
@@ -1064,7 +1090,7 @@
       <figcaption><span class="panel">a)</span>adaptives Gitter, \(\ell = 10\)</figcaption>
     </figure>
 
-    <figure style="left:388px; top:28px; width:348px;">
+    <figure style="left:391px; top:28px; width:348px;">
       <img class="transparent" style="height:386px"
            src="../Figures/basilisk_grid_B_l12_deck_dark.png"
            alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
@@ -1073,7 +1099,7 @@
       <figcaption><span class="panel">b)</span>adaptives Gitter, \(\ell = 12\)</figcaption>
     </figure>
 
-    <figure style="left:776px; top:28px; width:360px;">
+    <figure style="left:782px; top:28px; width:354px;">
       <img class="transparent" style="height:386px"
            src="../Figures/basilisk_ascent_B_deck_dark.png"
            alt="Aufstiegsgeschwindigkeit über der Zeit für drei
@@ -1103,7 +1129,7 @@
   <h2><span class="topic">2 Basilisk</span>Testfall C</h2>
   <div class="stage">
 
-    <figure style="left:0px; top:28px; width:347px;">
+    <figure style="left:0px; top:28px; width:348px;">
       <img class="transparent" style="height:386px"
            src="../Figures/basilisk_grid_C_l9_deck_dark.png"
            alt="Adaptives Gitter um die Blase bei Verfeinerungsstufe 9:
@@ -1112,7 +1138,7 @@
       <figcaption><span class="panel">a)</span>adaptives Gitter, \(\ell = 9\)</figcaption>
     </figure>
 
-    <figure style="left:389px; top:28px; width:348px;">
+    <figure style="left:392px; top:28px; width:348px;">
       <img class="transparent" style="height:386px"
            src="../Figures/basilisk_grid_C_l12_deck_dark.png"
            alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
@@ -1121,7 +1147,7 @@
       <figcaption><span class="panel">b)</span>adaptives Gitter, \(\ell = 12\)</figcaption>
     </figure>
 
-    <figure style="left:779px; top:28px; width:356px;">
+    <figure style="left:784px; top:28px; width:351px;">
       <img class="transparent" style="height:386px"
            src="../Figures/basilisk_ascent_C_deck_dark.png"
            alt="Aufstiegsgeschwindigkeit über der Zeit für drei
@@ -1151,7 +1177,7 @@
   <h2><span class="topic">2 Basilisk</span>Testfall D</h2>
   <div class="stage">
 
-    <figure style="left:0px; top:28px; width:348px;">
+    <figure style="left:0px; top:28px; width:349px;">
       <img class="transparent" style="height:386px"
            src="../Figures/basilisk_grid_D_l10_deck_dark.png"
            alt="Adaptives Gitter um die Blase bei Verfeinerungsstufe 10:
@@ -1160,7 +1186,7 @@
       <figcaption><span class="panel">a)</span>adaptives Gitter, \(\ell = 10\)</figcaption>
     </figure>
 
-    <figure style="left:390px; top:28px; width:348px;">
+    <figure style="left:392px; top:28px; width:349px;">
       <img class="transparent" style="height:386px"
            src="../Figures/basilisk_grid_D_l12_deck_dark.png"
            alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
@@ -1169,7 +1195,7 @@
       <figcaption><span class="panel">b)</span>adaptives Gitter, \(\ell = 12\)</figcaption>
     </figure>
 
-    <figure style="left:780px; top:28px; width:356px;">
+    <figure style="left:784px; top:28px; width:351px;">
       <img class="transparent" style="height:386px"
            src="../Figures/basilisk_ascent_D_deck_dark.png"
            alt="Aufstiegsgeschwindigkeit über der Zeit für drei
@@ -1729,7 +1755,7 @@
 <section>
   <h2><span class="topic">3 FLUIDICS</span>Kraftberechnung neu</h2>
 
-  <div class="sm">
+  <div class="sm eng">
   <!-- Dieselbe Schriftgroesse wie auf der Folie davor: dort steht alles in
        .cols, und .cols verkleinert um 0,86. Hier ist es eine einzige Spalte
        ohne Abstand -- das Mass kommt damit aus derselben Regel und nicht aus
@@ -1794,7 +1820,12 @@
         &\class{fragment schritt-5}{{}= \frac{\mathrm{d}}{\mathrm{d}t} \int_{\tdomain} \density\, \bmu\, \mathrm{d}V
                  \;-\; \int_{\tdomain} \bm{f}\, \mathrm{d}V}
       \end{aligned} \]</p>
-    <p class="muted fragment schritt-4">(17.2)</p>
+    <!-- Die Nummer kommt mit der zweiten Zeile und nicht mit der ersten. Sie
+         steht in der Flexzeile neben der ganzen Formel, also auf halber Hoehe
+         der beiden Zeilen -- und solange nur die obere da ist, haengt sie
+         unter ihr im Leeren. Mit dem zweiten Schritt steht sie neben dem, was
+         sie nummeriert. -->
+    <p class="muted fragment schritt-5">(17.2)</p>
   </div>
 </div>
 </div>
