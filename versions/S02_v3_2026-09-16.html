@@ -264,6 +264,10 @@
        Groessen zu setzen, nur weil die eine unter einer Tabelle steht, war
        der teurere Weg zu derselben Rangfolge. */
     .reveal .bond { font-size: var(--tud-fs-fliess); margin: 0.7em 0 0; }
+    /* .bond ist jetzt auch .eq, also ein Flex: die vier Kinder -- zwei Formeln
+       mit je ihrer Nummer -- brauchen die Achse der Tabelle darueber, sonst
+       stehen sie linksbuendig unter einer mittigen Tabelle. */
+    .reveal .bond.eq { justify-content: center; }
     .reveal .bond-note { text-align: center; margin: 0.2em 0 0; }
     /* Die Quellenangabe haengt an der Tabelle und nicht an den Formeln: eng
        darunter und rechtsbuendig an deren Kante. Dieselben 70 % Breite und
@@ -280,6 +284,25 @@
       width: 70%;
       margin: 0.35em auto 0;
       text-align: right;
+    }
+
+    /* Der Dank am Fuss der letzten Folie. Absolut gestellt und nicht mit
+       `margin-top: auto` unten gehalten: eine Folie ist ein Block, kein Flex,
+       und der Inhalt in eine Spalte ueber die volle Hoehe zu wickeln -- was
+       `.fill-grid` taete -- zoege den Titel an die Liste heran. Das ist fuer
+       eine Abbildungsfolie gedacht und auf einer Textfolie die falsche Luft.
+
+       Die Abstaende sind die der Folie selbst: der Kasten, in dem ein absolut
+       gestelltes Kind sitzt, ist der Polsterrahmen des <section>, und dessen
+       Polster unten ist genau `--tud-footer-h + --tud-margin-y`. Die Zeile
+       steht damit auf der Unterkante des Satzspiegels, dort wo auf jeder
+       anderen Folie die letzte Zeile endet, und nicht auf der Fusszeile. */
+    .reveal .dank {
+      position: absolute;
+      left: var(--tud-margin-x);
+      bottom: calc(var(--tud-footer-h) + var(--tud-margin-y));
+      margin: 0;
+      color: var(--tud-hinweis);
     }
 
     /* Zwei Videos nebeneinander, die zusammengehoeren: links der Lauf, rechts
@@ -565,42 +588,34 @@
      Folie wird von links nach rechts gesprochen, und die Frage lautet, ob das
      Gerechnete die Aufnahme trifft.
 
-     WELCHER Fall, und warum dieser. Das Repositorium rechnet drei Paare und
-     nennt sie in Eo und Ga, die Arbeit tabelliert ihre Aufnahmen in Eo (dort
-     E), Morton M und Reynolds R. Die Bruecke ist M = Eo^3 / Ga^4, was aus der
-     Entdimensionierung des Loesers folgt (rho = g = d = 1, mu = 1/Ga,
-     sigma = 1/Eo). Damit:
+     Beide Bilder schneidet `Figures/make_bhaga_panels.py` aus seinen Quellen
+     unter `misc/phd_basilisk/` -- dem Repositorium zum Loeser und dem PDF des
+     Aufsatzes. Dort steht auch, WELCHER Fall gezeigt ist und warum: die drei
+     gerechneten Paare sind ueber M = Eo^3/Ga^4 auf die Aufnahmen abgebildet,
+     zwei davon sind fotografiert, und von den beiden Aufnahmen zu 115/135 ist
+     Abb. 11(b) genommen -- der Nachlauf, nicht die Silhouette, weil neben der
+     Stromlinienhaelfte der Rechnung dann dasselbe steht, was sie zeigt.
 
-         Repositorium      M = Eo^3/Ga^4      Abbildung 2 der Arbeit
-         339 / 30,8        43,3               (g)  E 339, M 43,1, R 18,3
-         115 / 135         4,58e-3            (e)  E 115, M 4,63e-3, R 94,0
-         243 / 80          0,350              -- kein Eintrag; (d) hat zwar
-                                              E 243, aber M 266
+     Die Rechnung ist auf Weiss exportiert und traegt hier den Folienton am
+     Rand: Beschriftung, Teilstriche und Zahlen sind auf #191919 gelegt, der
+     Rahmen auf Grau 40, der Kasten selbst ist unberuehrt. Das Weiss DARIN ist
+     Grund der Stromlinien und kein Papier -- es dunkel zu legen macht die
+     Haelfte unleserlich, das steht im Skript. Beide Bilder laufen deshalb mit
+     `class="transparent"`, damit das Theme keine weisse Platte darunterlegt.
 
-     Zwei der drei Faelle sind also fotografiert, der dritte nicht. Gezeigt ist
-     deshalb 339 / 30,8, die Blase mit glatter Schuerze -- der markanteste der
-     beiden und der haertere Test.
+     Auf der Folie stehen drei Zahlenpaare, und sie gehoeren nicht alle
+     derselben Seite: Eo und Ga sind die Vorgabe der Rechnung, M folgt aus
+     ihnen, und Re ist gemessen -- die Reynolds-Zahl der Endgeschwindigkeit,
+     keine Vorgabe. Die fotografierte Blase traegt ausserdem E 114 gegen die
+     gerechneten 115, ein Prozent; das steht im Vortragstext und nicht auf der
+     Folie, weil es die Zeile kostet, die "Volume-of-Fluid" schon gekostet hat.
 
-     Die Abbildung links ist der dritte der drei Kaesten aus
-     bhaga_velocity_fields.png des Repositoriums (misc/phd_basilisk, Stand
-     0dff5b4). Die drei Kaesten teilen sich eine Achsenreihe: die Rahmen liegen
-     bei 94..382, 396..684 und 698..986, alle auf den Zeilen 10..521. Die
-     y-Beschriftung ist einmal links vom ERSTEN Rahmen gezeichnet, die
-     x-Beschriftung einmal unter dem MITTLEREN. Beide sind an den dritten
-     zurueckgesetzt -- dieselben Glyphen auf denselben Zeilen, es wandert also
-     kein Teilstrich. Links im Kasten der Betrag der Geschwindigkeit, rechts
-     die Stromlinien, beides im mitbewegten System.
-
-     Die Aufnahme rechts ist Abbildung 2(g) der Arbeit, aus dem PDF in
-     misc/phd_basilisk geschnitten: Seite 4 traegt die Tafel als eingebettetes
-     JPEG (753 x 1150 bei 150 ppi), der Kasten (g) liegt darin bei x 447..735
-     und y 566..795. Das Raster im Hintergrund misst 2 x 2 cm.
-
-     Die Groessen passen von selbst zusammen: im Rahmen der Rechnung sind 1,8
-     Einheiten x-quer auf 198 Punkte abgebildet, die Blase misst rund 1,7
-     davon, also etwa 190 Punkte -- und in der Aufnahme bei 320 Punkten Breite
-     misst sie ungefaehr ebenso viel. Die beiden Blasen stehen also in
-     aehnlichem Massstab nebeneinander, ohne dass eine skaliert waere.
+     Die beiden Seitenverhaeltnisse liegen mit 0,671 und 0,707 dicht
+     beieinander, die Kaesten stehen deshalb auf einer Hoehe und auf einer
+     Grundlinie -- 400 Punkte hoch, also 268 und 283 breit. Sie stehen absolut
+     in der Buehne (1136 x 453), mittig im Feld rechts der Textspalte: 447 und
+     775. Unterschrift und Bildabstand messen zusammen rund 42 Punkte; 400 + 42
+     bleibt unter der Buehne, auch wenn eine Unterschrift zweizeilig wird.
 
      Zitiert sind die drei Quellen, aus denen die Folie besteht: die Arbeit,
      zu der der Loeser gehoert [@weiner], das Repositorium mit dem Quellcode
@@ -611,47 +626,41 @@
      Klammer: der Renderer setzt Autor und Jahr, beide tragen 2020, und
      nebeneinander las sich das als "[Weiner, 2020; Weiner, 2020]". Die Arbeit
      steht jetzt bei der Beschreibung des Falls, das Repositorium unter der
-     Abbildung, die daraus stammt. Im Verzeichnis trennen sie die Titel.
-
-     Die Kaesten stehen absolut in der Buehne (1136 x 453). Die Rechnung ist
-     hochkant (389 x 580), die Aufnahme quer (293 x 234); sie stehen deshalb
-     nicht auf einer Grundlinie, sondern auf einer Mitte: die Rechnung bei 268
-     Punkten Breite ist 400 hoch, ihre Mitte liegt bei 200, und die Aufnahme
-     bei 320 Punkten Breite ist 256 hoch, faengt also bei 200 - 128 = 72 an.
-     Unterschrift und Bildabstand messen zusammen rund 42 Punkte; 400 + 42
-     bleibt unter der Buehne, auch wenn eine Unterschrift zweizeilig wird. -->
+     Abbildung, die daraus stammt. Im Verzeichnis trennen sie die Titel. -->
 <section data-layout="fill">
   <h2><span class="topic">2. Basilisk</span>Tests</h2>
   <div class="stage">
 
-    <div style="left:14px; top:30px; width:350px;">
+    <div style="left:14px; top:40px; width:360px;">
       <h3>Aufsteigende Blase</h3>
       <ul>
-        <li>achsensymmetrisch, Volume-of-Fluid</li>
-        <li>\(\mathrm{Eo} = 339\), \(\mathrm{Ga} = 30{,}8\)</li>
-        <li>\(\mathrm{M} = 43{,}1\), \(\mathrm{Re} = 18{,}3\)</li>
-        <li>Schürze, glatt („skirted, smooth“)</li>
+        <li>achsensymmetrisch, VoF</li>
+        <li>\(\mathrm{Eo} = 115\), \(\mathrm{Ga} = 135\)</li>
+        <li>\(\mathrm{M} = 4{,}58\cdot 10^{-3}\), \(\mathrm{Re} = 91{,}6\)</li>
       </ul>
       <p><small>Löser und Fall aus [@weiner]</small></p>
     </div>
 
-    <figure style="left:420px; top:0px; width:268px;">
-      <img src="../Figures/bhaga_weber_eo339_simulation.png"
+    <figure style="left:447px; top:0px; width:268px;">
+      <img class="transparent"
+           src="../Figures/bhaga_weber_eo115_simulation_dark.png"
            style="width:100%"
            alt="Berechnetes Feld um die aufgestiegene Blase im mitbewegten System:
                 links der Betrag der Geschwindigkeit als Isolinien, rechts die
-                Stromlinien, dazwischen die Kontur der Blase als Kappe mit einer
-                dünnen, nach unten gezogenen Schürze">
+                Stromlinien mit einem geschlossenen Wirbel unter der flachen
+                Kappe der Blase">
       <figcaption>Simulation, Quellcode [@weiner_phd_basilisk]</figcaption>
     </figure>
 
-    <figure style="left:740px; top:72px; width:320px;">
-      <img src="../Figures/bhaga_weber_eo339_experiment.png"
+    <figure style="left:775px; top:0px; width:283px;">
+      <img class="transparent"
+           src="../Figures/bhaga_weber_eo115_experiment.png"
            style="width:100%"
-           alt="Aufnahme derselben Blase im Experiment: dunkle Kappe mit einer
-                dünnen Schürze an beiden Rändern, vor einem Raster aus
-                Quadraten von zwei Zentimetern Kantenlänge">
-      <figcaption>Experiment, Abb.&nbsp;2(g) [@bhaga1981bubbles]</figcaption>
+           alt="Aufnahme des Nachlaufs im Experiment: unter der dunklen Kappe der
+                Blase zeichnen mitgeführte Wasserstoffbläschen einen
+                geschlossenen Ringwirbel als helle, in sich geschlossene Bahnen
+                nach">
+      <figcaption>Experiment, Abb.&nbsp;11(b) [@bhaga1981bubbles]</figcaption>
     </figure>
 
   </div>
@@ -660,32 +669,32 @@
     <p>Der Fall ist der Standardtest für einen Zweiphasenlöser mit freier
     Grenzfläche: eine einzelne Blase steigt in einer ruhenden, zähen
     Flüssigkeit auf, bis sie ihre Endgeschwindigkeit erreicht hat. Bhaga und
-    Weber haben 1981 das Feld der Kennzahlen experimentell vermessen und zu
-    jedem Paar die Form fotografiert; daraus stammt die Karte der
-    Blasenformen, die bis heute als Referenz dient. Das Raster im Hintergrund
-    der Aufnahme misst zwei mal zwei Zentimeter.</p>
+    Weber haben 1981 das Feld der Kennzahlen experimentell vermessen, zu jedem
+    Paar die Form fotografiert und zusätzlich den Nachlauf sichtbar gemacht —
+    mit Wasserstoffbläschen, die an einem Draht elektrolytisch erzeugt und von
+    einem Lichtschnitt beleuchtet werden. Daraus stammt die Karte der
+    Blasenformen, die bis heute als Referenz dient.</p>
 
     <p>Zwei Kennzahlen legen alles fest. Der Löser nimmt sie als Eötvös-Zahl
     \(\mathrm{Eo}\) — Auftrieb gegen Oberflächenspannung — und Galilei-Zahl
     \(\mathrm{Ga}\) — Auftrieb gegen Zähigkeit. Die Arbeit tabelliert
     stattdessen Morton- und Reynolds-Zahl. Aus der Entdimensionierung folgt
     \(\mathrm{M} = \mathrm{Eo}^3/\mathrm{Ga}^4\), und damit ist
-    339/30,8 genau der Fall (g) der Abbildung 2: \(\mathrm{M} = 43{,}1\),
-    \(\mathrm{Re} = 18{,}3\). Die Reynolds-Zahl ist ein Ergebnis, keine
-    Vorgabe — sie folgt aus der Endgeschwindigkeit.</p>
+    115/135 der Fall (b) der Abbildung 11. Die Reynolds-Zahl ist ein Ergebnis,
+    keine Vorgabe — sie folgt aus der Endgeschwindigkeit.</p>
+
+    <p>Was zu vergleichen ist: die rechte Hälfte der Rechnung zeigt die
+    Stromlinien im mitbewegten System, und dort steht unter der Blase ein
+    geschlossener Wirbel. Die Aufnahme zeigt denselben Wirbel, von den
+    Bläschen nachgezeichnet. Das ist der schärfere Test als der Umriss —
+    die Form bekommt jeder Löser ungefähr hin, der Nachlauf nicht.</p>
 
     <p>Gerechnet ist der Fall mit dem Löser aus André Weiners Dissertation,
     der auf den Basilisk-Beispielen <code>bubble.c</code> und
     <code>rising.c</code> aufsetzt und als Quellcode öffentlich ist. Der
     Aufruf nimmt drei Argumente: Verfeinerungsstufe, \(\mathrm{Eo}\) und
-    \(\mathrm{Ga}\).</p>
-
-    <p>Was die Abbildung zeigt: im mitbewegten System links den Betrag der
-    Geschwindigkeit als Isolinien, rechts die Stromlinien. Beide Längen sind
-    mit dem Radius der volumengleichen Kugel entdimensioniert. Die Schürze ist
-    die Probe aufs Exempel — sie ist nach Bhaga und Weber nur etwa 100
-    Mikrometer dick, also weit unter der Zellweite, und ein Löser, der sie
-    überhaupt hält, löst die Grenzfläche an der richtigen Stelle auf.</p>
+    \(\mathrm{Ga}\). Beide Längen der Abbildung sind mit dem Radius der
+    volumengleichen Kugel entdimensioniert.</p>
   </aside>
 </section>
 
@@ -811,7 +820,11 @@
          dieselben 62 mitgewandert; seine Zahlen stehen unten. -->
     <figure class="fragment" data-fragment-index="2"
             style="left:600px; top:6px; width:252px;">
-      <figcaption>Behälter in Experiment [@dalmon2019fluidics]</figcaption>
+      <!-- "Behälter in Experiment" stand hier, solange die Unterschrift den
+           Gegenstand benennen musste. Das tut jetzt die Skizze daneben: links
+           der gerechnete Tank, rechts dasselbe im Versuch, und was die
+           Unterschrift zu sagen hat, ist der Unterschied zwischen beiden. -->
+      <figcaption>Experiment [@dalmon2019fluidics]</figcaption>
       <img class="transparent" src="../Figures/fluidics_wetting_cut.png" style="width:100%"
            alt="Foto des Kugeltanks: die Flüssigkeit benetzt die Wand vollständig">
     </figure>
@@ -985,11 +998,22 @@
        Achse -- siehe .quelle im Kopf der Datei. -->
   <p class="xs quelle">[@dalmon2019fluidics]</p>
 
-  <p class="bond">
-    \[ \bondcen = \frac{\density\,\rotrate^2\,\armlen\,\bubdia^2}{\surf}
-       \qquad
-       \bondeul = \frac{\density\,\rotacc\,\armlen\,\bubdia^2}{\surf} \]
-  </p>
+  <!-- Nummeriert wie jede abgesetzte Formel im Deck, und jede fuer sich: es
+       sind zwei Definitionen nebeneinander und keine zweiteilige Gleichung, so
+       dass (9.1) fuer beide zu stehen die eine wie die andere nicht benennt.
+
+       Dafuer traegt der Kasten jetzt `.eq` -- der Flex mit Umbruch, den das
+       Theme fuer "Formel, Angabe rechts daneben" fuehrt -- mit vier Kindern:
+       Formel, Nummer, Formel, Nummer. Das `\qquad` zwischen den beiden ist
+       damit weg; den Abstand stellt das column-gap von .eq. Passen die vier
+       nicht in die Zeile, bricht der Flex sie paarweise um, statt eine Formel
+       zu stauchen. -->
+  <div class="eq bond">
+    <p>\[ \bondcen = \frac{\density\,\rotrate^2\,\armlen\,\bubdia^2}{\surf} \]</p>
+    <p class="muted">(9.1)</p>
+    <p>\[ \bondeul = \frac{\density\,\rotacc\,\armlen\,\bubdia^2}{\surf} \]</p>
+    <p class="muted">(9.2)</p>
+  </div>
   <p class="xs bond-note">
     \(\fillratio\) … Füllstand &nbsp;·&nbsp;
     \(\mathrm{Bo}\) … Bond-Zahl &nbsp;·&nbsp;
@@ -1078,7 +1102,12 @@
 
 <!-- =========================== 4.5c — FLUIDICS Verfeinerung 3 =========== -->
 <section data-layout="fill">
-  <h2><span class="topic">3. FLUIDICS</span>adaptive Verfeinerung <span class="page-of">3</span></h2>
+  <!-- Eigener Titel statt "adaptive Verfeinerung 3": die beiden Folien davor
+       zeigen dasselbe Feld bei zwei Leveln, diese traegt die Messung ueber
+       alle Level und beantwortet damit eine andere Frage. Die Folge davor
+       zaehlt weiter 1 und 2, ohne eine Gesamtzahl zu nennen -- die Marken
+       sind von Hand gesetzt, nur der Rueckstand zaehlt "n / m". -->
+  <h2><span class="topic">3. FLUIDICS</span>Gitterstudie</h2>
   <figure>
     <img class="transparent" src="../Figures/interface_refinement_deck_dark.png"
          alt="Auflösung der Grenzfläche über dem Verfeinerungslevel">
@@ -1273,8 +1302,15 @@
     <ol>
       <li>Studie zu verschiedenen Manövern</li>
       <li>Simulation mit höherer Verfeinerung auf HPC Cluster (Level 9)</li>
-      <li>Untersuchung parasitärer Strömungen</li>
-      <li><code>integral.h</code> anstelle von <code>tension.h</code> in Basilisk</li>
+      <!-- Beide Punkte nennen jetzt, woran gearbeitet wird, und nicht nur das
+           Thema: der dritte die Stelle, an der die Stroemungen entstehen, der
+           vierte den Hebel, an dem gedreht wird. Der Doppelpunkt trennt in
+           beiden Zeilen die Absicht von dem, was dafuer angefasst wird. -->
+      <li>Untersuchung parasitärer Strömungen: Zusammenspiel von
+          <code>vof.h</code> und <code>embed.h</code></li>
+      <li>Implementierung der Oberflächenspannung variieren:
+          <code>integral.h</code> (Spannungstensor) anstelle von
+          <code>tension.h</code> (Dirac-Delta)</li>
       <li>Realistische Tankgeometrie</li>
     </ol>
 
@@ -1297,10 +1333,21 @@
   <h2><span class="topic">4. Ausblick</span>Diskussionspunkte</h2>
   <ol>
     <li>Initiale Lage der Gasblase</li>
-    <li>Größe der Gasblasen</li>
-    <li>Berücksichtigung von Oszillationen</li>
-    <li>Erforderliche Genauigkeit der CFD für Regelungsentwicklung</li>
+    <!-- Beide Punkte nennen jetzt die Groesse, um die es geht: die Blase ist
+         eine, nicht mehrere, und ihre Groesse ist der Fuellstand des Tanks --
+         dieselbe Zahl, von der anderen Seite gelesen. Die Oszillationen sind
+         die des Satelliten und nicht die der Fluessigkeit in ihm. -->
+    <li>Größe der Gasblase (Tankfüllstand)</li>
+    <li>Berücksichtigung von Oszillationen des Satelliten</li>
   </ol>
+
+  <!-- Die letzte Folie des Vortrags, also steht der Dank hier und nicht auf
+       einer eigenen: die Diskussionspunkte sind das, was auf dem Schirm
+       stehen bleiben soll, waehrend gefragt wird. Gelb 2 ueber die Rolle
+       --tud-hinweis -- die Farbe, die das Deck fuer eine Angabe fuehrt, die
+       nicht zur Sache gehoert, sondern zum Anlass; auf der Titelfolie traegt
+       sie das Datum. -->
+  <p class="dank">Danke für die Aufmerksamkeit</p>
 </section>
 
 <!-- ==================================================== back matter ===== -->
