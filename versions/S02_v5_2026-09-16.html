@@ -1,0 +1,1926 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <!-- S02 v5, aus v4 vom 2026-09-16 am 2026-09-16.
+       v1 stammte aus S01_v17_2026-09-15; von da an eine eigene Reihe.
+
+       v2 raeumte das Deck an S00_main aus: alles, was das Theme inzwischen
+       selbst traegt, ist raus, ebenso die Regeln ohne Markup und die zwei
+       Stellen, an denen das Deck eine Entscheidung des Stils ueberschrieben
+       hat. Was blieb, ist deckeigen -- Farbcode, Buehnenkoordinaten, Tabelle,
+       Videos.
+
+       v3 arbeitet an der Orientierung im Vortrag, an fuenf Stellen:
+
+         * Die Folie "Basilisk Tests" war zwischenzeitlich raus und steht
+           jetzt wieder hinter der Methodenfolie -- mit dem Fall, an dem der
+           Loeser geprueft ist: aufsteigende Blase nach Bhaga & Weber,
+           Simulation neben Aufnahme.
+         * Das Institut auf der Titelfolie steht in Weiss statt in Grau 40.
+         * Die Themenzeile ueber jedem Folientitel traegt die Nummer, unter
+           der das Thema auf der Uebersicht steht -- "3. FLUIDICS" und nicht
+           mehr nur "FLUIDICS".
+         * Der Zeitplan hat ueber "Jahr 1 2 3" die Kalenderdaten, an denen
+           die drei Projektjahre beginnen. Dafuer ist die Tafel neu gerechnet
+           (make_gantt.py, Punkt 5) -- H_ROW 22 -> 21, die Tafel 498 -> 499 --
+           und der Pfeil "aktuell" darueber mit ihr.
+         * Auf "Aktuelle Aufgaben" faerbt ein Klick die Schritte 1 bis 4 ein,
+           statt "(aktuell)" hinter Schritt 4 einzublenden.
+         * Die vier Videos laden ueber data-src nach, statt beim Aufschlagen
+           der Seite. Das nimmt dem Start 18,7 der rund 24 MB -- siehe den
+           Absatz vor der Simulationsfolie.
+
+       v4 baut den Abschnitt Basilisk aus. Er bestand aus zwei Folien --
+       Methode und ein einzelner Testfall -- und traegt jetzt, was der Loeser
+       fuer dieses Projekt schon geleistet hat:
+
+         * Die Folie "Tests" heisst "Ausgangspunkt 1": sie zeigt keinen Test,
+           den wir gemacht haben, sondern den Stand, auf dem wir aufsetzen.
+           Statt "Loeser und Fall aus [Weiner, 2020]" steht dort jetzt die
+           Adresse des Repositoriums -- im Saal ist das die Angabe, die
+           jemand mitschreibt.
+         * "Ausgangspunkt 2" ist die Tabelle der vier Faelle A bis D mit
+           ihren Kennzahlen und der Endgeschwindigkeit, die Basilisk dafuer
+           erreicht, neben dem Wert aus der Literatur.
+         * Vier Folien, je ein Fall: das adaptive Gitter auf der groebsten
+           und auf der feinsten Stufe, daneben die Aufstiegsgeschwindigkeit
+           ueber alle gerechneten Stufen.
+
+       Die zwoelf Bilder dieser vier Folien kommen aus dem internen Bericht
+       IR15 und sind fuer den dunklen Satz umgefaerbt -- Figures/
+       make_basilisk_refinement.py sagt, wie und warum aus dem PDF und nicht
+       aus den Daten.
+
+       Die uebrigen Abbildungen sind unberuehrt.
+
+       v5 arbeitet an den Beschriftungen, vom Titel bis in die Abbildung:
+
+         * Die Themenzeile ueber dem Folientitel stellt Name und Nummer um:
+           "Planung 1" statt "1. Planung". Gelesen wird das Thema; die Nummer
+           sagt nur, an welcher Stelle es auf der Uebersicht steht, und steht
+           deshalb dahinter.
+         * "Ausgangspunkt 1" heisst "Ausgangspunkt" und "Ausgangspunkt 2"
+           heisst "Testfaelle". Die beiden Folien zeigen nicht zweimal
+           dasselbe: die eine den Fall, auf dem wir aufsetzen, die andere die
+           vier Faelle, mit denen gerechnet wurde. Damit ist auch das "1 / 2"
+           dahinter weg -- es zaehlte Folien, die nichts verbindet.
+         * Aus "Fall A" bis "Fall D" wird "Testfall A" bis "Testfall D", der
+           Name, unter dem die Folie davor sie einfuehrt.
+         * Auf "Aktuelle Aufgaben" faerben sich jetzt auch die Ziffern 1 bis 4
+           rot. Sie taten es nicht, weil das Theme jeden Listenzaehler
+           ausdruecklich blau setzt; die Regel dazu steht unten bei
+           ol.steps.
+         * Der Pfeil "aktuell" im Zeitplan steht drei Punkte tiefer und
+           stoesst damit nicht mehr an den Balken von AP 1.4.
+         * Die Verfeinerungsstufe heisst ueberall \(\ell\) statt
+           \(l_\mathrm{ref}\), und die Unterschriften der Gitter sagen
+           "adaptives Gitter" -- das ist die Aussage der beiden Bilder.
+         * Die Aufstiegsplots tragen keine Unterschrift mehr. Statt dessen
+           bekommt jede der drei Abbildungen unten links ihren Buchstaben,
+           a) bis c), so wie der Vortrag sie nennt.
+         * In allen zwoelf Bildern steht die Ordinatenbeschriftung jetzt
+           waagerecht ueber dem Bild und rechtsbuendig statt gedreht am linken
+           Rand (make_basilisk_refinement.py, `ylabel_waagerecht`). Die Bilder
+           sind dadurch schmaler und hoeher geworden; die Masse auf den vier
+           Folien sind aus den erzeugten Dateien neu gerechnet, bei 380 px
+           Bildhoehe und gleicher Luecke zwischen den drei Spalten. -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>COSMIC: Erste Ergebnisse – PSM</title>
+
+  <link rel="stylesheet" href="../reveal/dist/reset.css?h=617d77c2">
+  <link rel="stylesheet" href="../reveal/dist/reveal.css?h=f8e9b506">
+  <link rel="stylesheet" href="../reveal/plugin/highlight/monokai.css?h=99ab7678">
+  <!-- after reveal.css, so the TUD theme wins -->
+  <link rel="stylesheet" href="../theme/tud-dark.css?h=e4ffdba5">
+
+  <style>
+    /* Deck-local only. Anything here that proves generally useful belongs in
+       theme/tud-dark.css instead — see S00_main/STYLE_LOG.md. */
+
+    /* One colour code across the whole deck, the same one the plan is drawn
+       with: the flight-mechanics chair is Blau 2, fluid mechanics is Gelb 2. */
+    .reveal { --fmr: var(--tud-blau-2); --psm: var(--tud-gelb-2); }
+
+    /* Rot ist in diesem Deck der Stand des Projekts, an zwei Stellen: der
+       Pfeil .now-mark im Zeitplan und die vier gefaerbten Schritte auf der
+       Folie daneben. Beide sagen dasselbe ueber denselben Monat, und dass sie
+       es in derselben Farbe sagen, ist der Grund, warum die zweite Folie ohne
+       weitere Erklaerung gelesen wird. Der Ton selbst steht nicht mehr hier --
+       das Theme fuehrt ihn als Rolle --tud-markierung, mit derselben
+       Begruendung, die frueher an dieser Stelle stand. Was bleibt, ist der
+       Name, unter dem dieses Deck ihn benutzt; wer ihn umstellt, stellt beide
+       Stellen um. */
+    .reveal { --rot: var(--tud-markierung); }
+
+    /* Das Institut in Weiss statt in Grau 40, in dem das Theme .affiliation
+       und .occasion gemeinsam fuehrt. Die Zeile nennt, wer hier spricht, und
+       steht damit auf einer Stufe mit den Namen darueber und nicht auf der
+       des Impressums; grau gelesen ging sie auf der dunklen Folie unter.
+       Betroffen ist allein .affiliation -- der Anlass darunter bleibt, was er
+       ist, eine Angabe am Rand. */
+    .reveal section.title-slide .affiliation { color: var(--tud-fg-strong); }
+
+    /* --- Planung (2): where the project stands on the schedule ------------- */
+
+    /* The chart is a file and stays one, so the mark that says where we are is
+       laid over it rather than drawn into it. The overlay carries gantt.svg's
+       own viewBox and shares the image's box exactly — `contain` on the image
+       and `xMidYMid meet` on the svg letterbox alike, so a coordinate read off
+       gantt.svg lands where it says, whatever height the row gets. Give the two
+       different boxes — a margin on the image is enough — and the arrow drifts
+       by half that amount, silently. */
+    .reveal .gantt { position: relative; flex: 1 1 auto; min-height: 0; }
+    .reveal .gantt > img {
+      display: block;
+      width: 100%; height: 100%;
+      margin: 0;                     /* the box is shared: nothing may shift it */
+      object-fit: contain;
+    }
+    .reveal .gantt > svg.now-mark {
+      position: absolute; left: 0; top: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+
+    /* --- Planung (3): the two work packages, stacked ----------------------- */
+
+    .reveal .ap {
+      display: flex;
+      gap: 0.5em;
+      align-items: baseline;
+      color: var(--tud-accent);
+      font-weight: 600;
+      font-size: var(--tud-fs-text);
+      margin: 0 0 0.35em;
+    }
+    .reveal .ap .tag {
+      flex: 0 0 auto;
+      color: var(--tud-bg);
+      background: var(--tud-accent);
+      border-radius: 2px;
+      padding: 0.05em 0.4em;
+    }
+    .reveal .ap .dur { color: var(--tud-fg-muted); font-weight: 400; }
+    .reveal ol.steps { font-size: var(--tud-fs-text); padding-left: 1.5em; margin: 0; }
+    .reveal ol.steps li { margin-bottom: 0.22em; }
+    .reveal .ap-next { margin-top: 0.9em; }
+    /* Eine nummerierte Gleichung: die Angabe steht rechts am Rand wie im Satz
+       eines Berichts -- solange sie danebenpasst. Das Theme regelt das als
+       Flex mit Umbruch; hier stand lange ein Raster aus `1fr auto`, das
+       dasselbe tat, solange die Angabe [1] war. Seit dort [Dalmon et al.,
+       2019] steht, nahm die rechte Spalte zweihundert Punkte und die Formel
+       wurde in den Rest gequetscht -- auf der Modellfolie auf drei Fuenftel
+       ihrer Groesse. Die Zeile ist deshalb weg; was bleibt, ist der Abstand
+       zwischen beiden und der weggenommene Absatzabstand. */
+    .reveal .eq p { margin: 0; }
+    /* Das Thema vor dem Folientitel: kleiner und zurueckgenommen, damit die
+       Titel selbst ueberall gleich gross sind und die Folge FLUIDICS ... als
+       Zugehoerigkeit gelesen wird und nicht als Teil der Ueberschrift.
+       Dieselbe Bauart wie das "1 / 3" im Rueckstand (h2 .page-of). */
+    /* Ein Video fuellt die Folie wie eine Abbildung. Die Runtime kennt nur
+       <img> im fill-Layout; ohne diese Zeile behielte das Video seine
+       natuerliche Groesse und liefe unten hinaus. */
+    .reveal .fill-grid > figure > video {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      object-fit: contain;
+    }
+
+
+    /* --- FLUIDICS: the two panel slides ----------------------------------- */
+    /* Both sketches are files now, drawn by Figures/make_sketches.py, and the
+       symbols on them are <text> rather than MathJax. So a sketch is an <img>
+       like any other figure, and the .vg/.lbl machinery these slides used —
+       an svg with HTML labels laid over it — is gone with it. What is left is
+       a row of figures placed in slide coordinates on a .stage.
+
+       The consequence to remember: a symbol inside an image is invisible to
+       the runtime that builds the nomenclature. TUD.init names them in
+       includeSymbols at the foot of this file. Add a symbol to a sketch and it
+       has to be added there too. */
+
+    /* Sketch and photograph carry the same caption, so they read as panels of
+       one figure rather than as a drawing with a picture next to it. */
+    .reveal .stage figure { margin: 0; text-align: center; }
+    .reveal .stage figure img { margin: 0 auto; }
+    .reveal .stage figcaption { padding-top: 0.5em; font-size: var(--tud-fs-klein); }
+    /* Steht die Unterschrift vor dem Bild, gehoert ihr Abstand nach unten.
+       Der Selektor traegt die Bedingung selbst: er greift genau bei den
+       Abbildungen, bei denen sie vorne steht, und laesst die Reihe auf der
+       Konfigurationsfolie unberuehrt -- die ist an der Unterkante ausgerichtet
+       und haengt daran, dass ihre Unterschriften unten stehen. */
+    .reveal .stage figure > figcaption:first-child {
+      padding-top: 0;
+      padding-bottom: 0.5em;
+    }
+
+    /* Der Buchstabe einer Teilabbildung, auf den vier Testfallfolien. Er
+       steht unten links an der Kante des Bildes -- dort, wo der Vortrag ihn
+       nennt ("in a) sieht man ...") -- und die Unterschrift bleibt mittig
+       unter dem Bild stehen. Beides in derselben Zeile und damit auf
+       derselben Grundlinie ueber alle drei Abbildungen, auch ueber der, die
+       keine Unterschrift traegt: der Aufstiegsplot sagt sich selbst, was er
+       zeigt, und bekommt nur den Buchstaben.
+
+       Absolut gestellt, damit er die Mitte der Unterschrift nicht
+       verschiebt. Der Kasten dafuer ist die Unterschrift selbst; `left: 0`
+       trifft die linke Bildkante, weil die Abbildung auf diesen Folien genau
+       so breit ist wie ihr Bild. Aufrecht und nicht kursiv wie die
+       Unterschrift: eine Marke wird gelesen, kein Satz. */
+    .reveal .stage figcaption { position: relative; }
+    .reveal .stage figcaption .panel {
+      position: absolute;
+      left: 0;
+      font-style: normal;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* The photograph stands upright: the rig is a horizontal turntable seen
+       from above, so the picture has no up of its own, and a quarter turn puts
+       the tank above the axis — the way the sketch two panels over draws it.
+       It also gives the plot between them the width it was short of.
+
+       The box carries the picture's dimensions exchanged, and the image is
+       rotated about the centre of that box, so nothing is squeezed and the
+       white plate turns with it. The one thing to keep: the image's width is
+       the box's height. Change one and change the other. */
+    .reveal .stage .upright { position: relative; }
+    .reveal .stage .upright > img {
+      position: absolute;
+      left: 50%; top: 50%;
+      max-width: none; max-height: none;   /* the box is narrower than the image */
+      transform: translate(-50%, -50%) rotate(-90deg);
+    }
+
+    /* --- FLUIDICS (3): the case table ------------------------------------- */
+
+    /* The manoeuvre number is the row's name, so it is set like one; the four
+       parameters are numbers and get tabular figures so the columns line up
+       on the digit rather than on the glyph.
+
+       Short columns pulled apart over the full text block leave every number a
+       hand's breadth from the heading it belongs to. Held to the measure the
+       entries need, the four rows read as one block. Centred: the table is its
+       columns, and there is no first column wide enough for the paragraph below
+       to align under.
+
+       70 % und nicht mehr 85: die 85 waren fuer sechs Spalten gemessen. Seit
+       t_acc fehlt, sind es fuenf, und dieselbe Breite zog genau den Abstand
+       wieder auf, gegen den die Regel geschrieben ist -- zwischen dem
+       Fuellstand und Omega/Omega_0 stand eine Handbreit Leere. Nebenbei steht
+       die Tabelle damit ueber der Zeichenerklaerung darunter auf gleicher
+       Breite. */
+    /* Nur Breite und Stand. Die Groesse kommt aus dem Theme, das Tabellen
+       auf die Fliesstextstufe stellt -- dieselbe, auf der die Bond-Formeln
+       darunter stehen. */
+    .reveal table.cases {
+      width: 70%; margin-left: auto; margin-right: auto;
+    }
+    .reveal table.cases td, .reveal table.cases th { padding: 0.32em 0.5em; }
+
+    /* Mittig und nicht oben wie im Theme: \(1/\sqrt{3}\) ist als Bruch
+       hoeher als eine Ziffer, und an der Oberkante ausgerichtet haengen die
+       26 und die 14 daneben in der Luft, waehrend der Bruch nach unten
+       durchsackt. Bei 20 px war das eine Kleinigkeit, bei 24 nicht mehr. */
+    .reveal table.cases td { vertical-align: middle; }
+    .reveal table.cases .no { color: var(--tud-fg-strong); font-weight: 600; }
+
+    /* Manoever 1 ist der Fall, den wir rechnen. Auf Klick faerbt sich die
+       ganze Zeile gelb -- vorher stand ein Pfeil links daneben. Der Pfeil
+       zeigte auf die Zeile, die Markierung ist sie: aus dem Saal heraus muss
+       niemand mehr von der Pfeilspitze nach rechts suchen, welche der vier
+       gemeint ist.
+
+       Gebaut wie reveal seine eigenen `grow`, `strike` und `highlight-red`:
+       die erste Regel nimmt dem Fragment das Verstecken, so dass die Zeile
+       von Anfang an dasteht und beim Schalten allein die Farbe wechselt. Ein
+       Fragment, das eine Tabellenzeile erst einblendet, liesse die Tabelle
+       springen.
+
+       Gefaerbt wird die Schrift und nicht der Grund: ein gelbes Band unter
+       der Zeile war zu laut fuer eine Folie, auf der sonst nichts eine Flaeche
+       hat. Die Farbe traegt durch die Formeln mit, weil MathJax SVG ausgibt
+       und es mit `currentColor` fuellt -- das \(1\) in der Zeile zieht also
+       nach. Nur die Farbe und nicht auch das Gewicht: die Ziffern stehen auf
+       Tabellenziffern, aber die Woerter nicht, und eine Zeile, die beim
+       Schalten breiter wird, verschiebt die Spalten. */
+    .reveal .fragment.markiert { opacity: 1; visibility: inherit; }
+    .reveal table.cases tr.fragment.markiert > td { transition: color .2s ease; }
+    .reveal table.cases tr.fragment.markiert.visible > td {
+      color: var(--tud-gelb-2);
+    }
+
+    /* Dieselbe Bauart auf der Schrittliste, nur in Rot: dort ist es ein Fall
+       unter sechs, hier der Stand des Projekts -- und der traegt in diesem
+       Deck --rot, dieselbe Farbe wie der Pfeil auf der Folie davor.
+
+       Die Ziffer braucht ihre eigene Zeile. Sie erbt die Farbe des li nicht,
+       denn das Theme faerbt jeden Zaehler ausdruecklich (`.reveal ol
+       li::marker { color: var(--tud-accent) }`), und eine gesetzte Farbe
+       schlaegt die geerbte. Ohne die zweite Regel standen vier rote Schritte
+       hinter vier blauen Ziffern -- die Nummer gehoert zur Aussage und faerbt
+       sich deshalb mit. `::marker` nimmt ausserdem keine Uebergaenge an; sie
+       springt um, waehrend der Text dahinter laeuft, und das faellt bei zwei
+       Zehntelsekunden nicht auf. */
+    .reveal ol.steps li.fragment.markiert { transition: color .2s ease; }
+    .reveal ol.steps li.fragment.markiert.visible { color: var(--rot); }
+    .reveal ol.steps li.fragment.markiert.visible::marker { color: var(--rot); }
+
+    /* Was der Pfeil nebenbei sagte, sagt jetzt niemand mehr sichtbar: die
+       Markierung ist Farbe, und Farbe allein ist keine Angabe. Der Satz steht
+       deshalb in der Zeile und wird nur nicht gezeigt. */
+    .reveal .nur-vorlesen {
+      position: absolute; width: 1px; height: 1px;
+      overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+    }
+
+    /* Die Bond-Definitionen unter der Tabelle stehen auf der Fliesstextstufe,
+       wie jede abgesetzte Formel im Deck. Sie standen hier lange eine Stufe
+       tiefer, weil sie eine Erlaeuterung zu zwei Spalten sind und nicht die
+       Aussage der Folie -- das sagt jetzt die Anmerkung darunter, die auf der
+       kleinen Stufe geblieben ist. Zwei Formeln, die dasselbe sind, in zwei
+       Groessen zu setzen, nur weil die eine unter einer Tabelle steht, war
+       der teurere Weg zu derselben Rangfolge. */
+    .reveal .bond { font-size: var(--tud-fs-fliess); margin: 0.7em 0 0; }
+    /* .bond ist jetzt auch .eq, also ein Flex: die vier Kinder -- zwei Formeln
+       mit je ihrer Nummer -- brauchen die Achse der Tabelle darueber, sonst
+       stehen sie linksbuendig unter einer mittigen Tabelle. */
+    .reveal .bond.eq { justify-content: center; }
+    .reveal .bond-note { text-align: center; margin: 0.2em 0 0; }
+    /* Die Quellenangabe haengt an der Tabelle und nicht an den Formeln: eng
+       darunter und rechtsbuendig an deren Kante. Dieselben 70 % Breite und
+       dieselben zwei `auto`, die die Tabelle stellen -- so sitzt sie auf der
+       Kante und nicht ungefaehr dort. Wer die Tabellenbreite aendert, aendert
+       diese mit.
+
+       Mittig stand sie vorher, in der Achse der Tabelle. Das las sich wie eine
+       Unterschrift zur Tabelle, also wie etwas, das zu allen fuenf Spalten
+       gleich viel zu sagen hat. Eine Herkunftsangabe ist aber eine Randnotiz;
+       an der Kante steht sie da, wo man sie sucht, wenn man sie sucht, und
+       nimmt der Achse nichts weg. */
+    .reveal .quelle {
+      width: 70%;
+      margin: 0.35em auto 0;
+      text-align: right;
+    }
+
+    /* Die Gitterstudie traegt zwei Abbildungen uebereinander. Beide sind fuer
+       ihren Kasten gezeichnet -- 500 x 138 und 871 x 330 Folienpixel -- also
+       stehen sie unskaliert, und die Breiten hier sind dieselben Zahlen. Das
+       fill-Layout streckt sonst die Abbildung in den Platz; hier tut es das
+       nicht, denn gestreckt waere keine der beiden mehr in ihrem Massstab.
+       Die Spalte haelt die zwei zusammen und schiebt das Band nach rechts. */
+    .reveal .gitter {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    /* Beide Kaesten sind 871 breit, auch der des Bandes: so faellt seine
+       rechte Kante auf die der Panels und die zwei lesen sich als eine
+       Abbildung. Buendig zur Folie waere das Band 130 px weiter rechts als
+       alles unter ihm. */
+    .reveal .gitter > figure { flex: 0 0 auto; width: 871px; align-self: center; }
+    .reveal .gitter > figure > img { display: block; margin: 0; width: 871px; }
+    .reveal .gitter > figure.profil > img { width: 500px; margin-left: auto; }
+
+    /* Der Dank am Fuss der letzten Folie. Absolut gestellt und nicht mit
+       `margin-top: auto` unten gehalten: eine Folie ist ein Block, kein Flex,
+       und der Inhalt in eine Spalte ueber die volle Hoehe zu wickeln -- was
+       `.fill-grid` taete -- zoege den Titel an die Liste heran. Das ist fuer
+       eine Abbildungsfolie gedacht und auf einer Textfolie die falsche Luft.
+
+       Die Abstaende sind die der Folie selbst: der Kasten, in dem ein absolut
+       gestelltes Kind sitzt, ist der Polsterrahmen des <section>, und dessen
+       Polster unten ist genau `--tud-footer-h + --tud-margin-y`. Die Zeile
+       steht damit auf der Unterkante des Satzspiegels, dort wo auf jeder
+       anderen Folie die letzte Zeile endet, und nicht auf der Fusszeile. */
+    .reveal .dank {
+      position: absolute;
+      left: var(--tud-margin-x);
+      bottom: calc(var(--tud-footer-h) + var(--tud-margin-y));
+      margin: 0;
+      color: var(--tud-hinweis);
+    }
+
+    /* Zwei Videos nebeneinander, die zusammengehoeren: links der Lauf, rechts
+       die Marke, die zeigt, wo im Manoever er gerade steht. Das quadratische
+       nimmt die Hoehe; die Marke ist eine Nebenangabe und steht kleiner
+       daneben, auf halber Hoehe. Beide unverzerrt, das Paar als Ganzes
+       zentriert. */
+    .reveal .fill-grid > figure.paar {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4em;
+    }
+    .reveal .fill-grid > figure.paar > video:first-child {
+      flex: 0 0 auto;
+      height: 100%;
+      width: auto;
+      min-height: 0;
+    }
+    .reveal .fill-grid > figure.paar > video:last-child {
+      flex: 0 1 auto;
+      min-width: 0;
+      width: 440px;
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* Dieselbe Groesse fuer die beiden Listen des Ausblicks. Sie tragen keine
+       Klasse, sind aber die einzigen blanken <ol> direkt in einer <section> --
+       ol.steps auf der Planungsfolie setzt seine Groesse selbst und bleibt
+       davon unberuehrt. */
+    .reveal section > ol { font-size: var(--tud-fs-text); }
+
+    /* Die drei Scheinbeschleunigungen stehen untereinander, weil sie so
+       nebeneinander gelesen werden koennen: gleiche Form, ein Faktor anders.
+       Als Fliesstext waeren es drei Kreuzprodukte in einem Satz. */
+    /* Die Formel ist das letzte Element der Folie; ihr unterer Abstand ragte
+       drei Punkte unter den Satzspiegel. Derselbe Griff wie bei .box: das
+       letzte Kind gibt seinen Abstand nach unten ab. */
+    .reveal .forces > :last-child { margin-bottom: 0; }
+    /* Und derselbe Griff eine Ebene tiefer: eine abgesetzte Formel bringt
+       ihren eigenen Abstand mit (mjx-container, 0,7 em), und bei 24 px sind
+       das siebzehn Punkte Weissraum unter der letzten Formel der Folie --
+       unsichtbar, aber sie schieben die Folie ueber den Satzspiegel. */
+    .reveal .forces > :last-child mjx-container[display='true'] { margin-bottom: 0; }
+    .reveal .forces p { margin: 0 0 0.2em; }
+    .reveal .forces p:last-child { margin-bottom: 0; }
+
+
+
+  </style>
+</head>
+
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ======================================================== 1 — title ===== -->
+<section class="title-slide">
+  <h1>COSMIC: Erste Ergebnisse – PSM</h1>
+  <div class="authors">
+    <div class="author-block">
+      <p class="author">Paul Dräger</p>
+      <p class="email">paul.draeger@tu-dresden.de</p>
+    </div>
+    <div class="author-block">
+      <p class="author">Jochen Fröhlich</p>
+      <p class="email">jochen.froehlich@tu-dresden.de</p>
+    </div>
+  </div>
+  <!-- Der Anlass steht zwischen den Autoren und der Logozeile und nicht im
+       Impressum daneben: nicht .occasion, denn tud-slides.js holt sich diese
+       Klasse in die untere Zeile. -->
+  <p class="event">Kick-Off Meeting – Bonn, den 17.09.2026</p>
+  <p class="affiliation">
+    Institut für Strömungsmechanik · Professur für Strömungsmechanik<br>
+    Technische Universität Dresden
+  </p>
+</section>
+
+<!-- Die Nummern in der Themenzeile ueber den Folientiteln kommen von hier:
+     was auf dieser Liste an dritter Stelle steht, traegt auf seinen Folien
+     "FLUIDICS 3". Der Name steht vorn und die Nummer dahinter -- gelesen wird
+     das Thema, die Nummer sagt nur, wo es auf dieser Liste steht. Wer die
+     Reihenfolge aendert, zieht die Themenzeilen nach; es sind vier
+     Zeichenketten, "Planung 1" bis "Ausblick 4". -->
+<!-- =========================================== 2.1 — Übersicht =========== -->
+<section>
+  <h2>Übersicht</h2>
+  <ol class="agenda">
+    <li>Planung</li>
+    <li>Basilisk Löser</li>
+    <li>FLUIDICS-Validierung</li>
+    <li>Ausblick</li>
+  </ol>
+</section>
+
+<!-- ============================================ 2.2 — Zeitplan ============ -->
+<section class="zeitplan" data-layout="fill">
+  <h2><span class="topic">Planung 1</span>Zeitplan</h2>
+  <figure>
+    <div class="gantt">
+      <img class="transparent" src="../Figures/gantt.svg"
+           alt="Arbeits- und Zeitplan über drei Jahre: HAP 1 Modellierung, HAP 2 Reglerauslegung,
+                HAP 3 Validierung, mit den Meilensteinen MS 1 bis MS 4">
+      <!-- Where the project stands, written in the chart's own coordinates: the
+           tip sits just under the AP 1.3 bar (x 417…534, y 123…138 in gantt.svg)
+           in the middle of month 3 — the middle of the six months of AP 1.3,
+           which is where step 4 of its seven stands, the one the next slide
+           marks as the current one. Move the mark and both numbers follow.
+
+           Die y-Werte haengen an H_DATE und H_ROW in make_gantt.py: der Koerper
+           der Tafel beginnt bei H_DATE + 36, die Zeile von AP 1.3 also bei
+           57 + 3 * H_ROW = 120, ihr Balken 3 Punkte darunter. Wird eine der
+           beiden Hoehen geaendert, wandern die vier y-Werte hier und die Hoehe
+           in der viewBox mit — sonst zeigt der Pfeil auf die falsche Zeile.
+           Seit der Datumszeile ist H_ROW 21 und die Tafel 499 statt 498 hoch;
+           alle Zahlen unten sind damit neu gerechnet.
+
+           Nach unten ist der Platz zu Ende, wo die Trennlinie von HAP 2 liegt
+           (57 + 6 * H_ROW = 183): Schaft und Grundlinie der Beschriftung enden
+           deshalb beide bei 182, einen Punkt darueber. Nach oben begrenzt sie
+           der Balken von AP 1.4 (y 144…159, x 535…654), denn mit 28 px laeuft
+           sie bis x 583 und damit unter ihm hindurch — ihre Versalhoehe von 20
+           setzt die Oberkante auf 162 und laesst dem Balken drei Punkte Luft.
+           Auf 179 stand die Zeile einmal und stiess dort oben an; die drei
+           Punkte tiefer sind alles, was der Streifen hergibt. Wer die Schrift
+           weiter vergroessert, hat keinen Platz mehr und muss den Pfeil anders
+           stellen.
+
+           In diesen 42 Punkten Hoehe waechst der Pfeil nur in die Breite: die
+           Spitze ist 32 breit und 20 hoch, der Schaft 12 statt der 6,1, mit
+           denen er hier einmal stand, und von den 42 Punkten bleiben ihm noch
+           23. Ein schlanker Pfeil koennte hier laenger sein, aber nicht
+           groesser — die Zeile darueber und die Trennlinie darunter stehen
+           fest. Die Spitze reicht damit bis x 449,5 und 481,5, und die
+           Beschriftung beginnt bei 488, vier Punkte rechts davon. -->
+      <svg class="now-mark fragment" viewBox="0 0 1136 499" preserveAspectRatio="xMidYMid meet"
+           role="img" aria-label="Roter Pfeil auf AP 1.3 in der Mitte des dritten Monats:
+                                  der aktuelle Stand des Projekts">
+        <g fill="var(--rot)" stroke="var(--rot)">
+          <path d="M 465.5 140 l 16 20 l -32 0 z" stroke="none"/>
+          <line x1="465.5" y1="159" x2="465.5" y2="182" stroke-width="12"/>
+          <text x="488" y="182" font-size="28" font-weight="600" stroke="none">aktuell</text>
+        </g>
+      </svg>
+    </div>
+  </figure>
+</section>
+
+<!-- ============================================ 2.3 — Aktuelle Aufgaben === -->
+<section>
+  <h2><span class="topic">Planung 1</span>Aktuelle Aufgaben</h2>
+
+  <!-- Untereinander, in der Reihenfolge der Arbeitspakete: das laufende mit
+       seinen Schritten, darunter das naechste. Ueber die volle Breite haben
+       Name und Dauer in beiden Koepfen ihre Zeile, und AP 1.4 steht dort, wo
+       es der Leser nach den Schritten von AP 1.3 sucht. -->
+  <p class="ap"><span class="tag">AP 1.3</span>CFD µ-Gravitation
+    <span class="dur">(6 Monate)</span></p>
+  <!-- Die vier ersten Schritte tragen denselben data-fragment-index und
+       faerben sich deshalb auf einen Klick gemeinsam ein: die Aussage ist
+       "bis hierher", und die faellt auseinander, wenn sie in vier Schritten
+       kommt. Gefaerbt und nicht eingeblendet -- die Liste steht von Anfang
+       an, sonst springt sie unter dem Titel weg.
+
+       Dass es genau vier sind, sagt die Folie davor: der Pfeil im Zeitplan
+       steht in der Mitte des dritten Monats von AP 1.3, und das ist Schritt 4
+       von sieben. Wandert der Pfeil, wandert die Grenze hier mit. -->
+  <ol class="steps">
+    <li class="fragment markiert" data-fragment-index="1">Einarbeitung Literatur<span
+        class="nur-vorlesen">, abgeschlossen</span></li>
+    <li class="fragment markiert" data-fragment-index="1">Einarbeitung Basilisk<span
+        class="nur-vorlesen">, abgeschlossen</span></li>
+    <li class="fragment markiert" data-fragment-index="1">Basilisk Setup für Sloshing Simulation<span
+        class="nur-vorlesen">, abgeschlossen</span></li>
+    <li class="fragment markiert" data-fragment-index="1">Validierung mit FLUIDICS Experiment<span
+        class="nur-vorlesen">, aktuell</span></li>
+    <li>Basilisk Setup zu realistischer Geometrie</li>
+    <li>Sensitivitätsstudie zu 5.</li>
+    <li>Implementierung von Schnittstellen</li>
+  </ol>
+  <p class="ap ap-next"><span class="tag">AP 1.4</span>Sloshing ML-Ersatzmodell
+    <span class="dur">(6 Monate)</span></p>
+</section>
+
+<!-- ============================================ 3.1 — Basilisk Methode ==== -->
+<!-- Der Loeser steht vor den Ergebnissen, weil jede Folie danach mit ihm
+     gerechnet ist. Zwei Spalten, mehr soll die Folie nicht sagen: was
+     geloest wird, und wie die Grenzflaeche gefuehrt wird.
+
+     Zwei Dateinamen stehen auf der Folie, und beide stehen dort nicht der
+     Vollstaendigkeit halber: der Ausblick hat den Punkt "integral.h anstelle
+     von tension.h", und der ist nur lesbar, wenn die Wahl zwischen den beiden
+     einmal gefallen ist. Sie stehen deshalb eingerueckt unter der
+     Oberflaechenspannung -- als die zwei Wege zu derselben Sache und nicht als
+     zwei Punkte der Liste. Die uebrigen Module -- navier-stokes/centered.h,
+     two-phase.h, contact.h, poisson.h -- sind eine Angabe fuer den, der es
+     nachbaut, und keine, die im Saal gelesen wird; sie stehen im Vortragstext.
+     Dasselbe gilt fuer adapt_wavelet und qcc.
+
+     Quelle fuer alles hier: basilisk.fr, abgerufen am 2026-09-16 --
+     src/README, navier-stokes/centered.h, two-phase.h, tension.h, contact.h
+     und grid/tree-common.h. Zitiert sind die beiden Arbeiten, die der Loeser
+     selbst nennt (src/references.bib): Popinet 2003 zu Gerris und Popinet 2015
+     zu Basilisk. Beide sind neu in shared/literatur.bib; danach lief
+     S00_main/build/sync_shared.py. -->
+<section>
+  <h2><span class="topic">Basilisk 2</span>Methode</h2>
+
+  <p>Open-Source CFD Löser, speziell für Mehrphasenströmungen geeignet
+     [@popinet2015quadtree]<br>
+     abgeleitet von Gerris [@popinet2003gerris]</p>
+
+  <!-- Die beiden Spalten kommen nacheinander: erst was geloest wird, dann
+       wie die Grenzflaeche gefuehrt wird -- die Reihenfolge, in der die Folie
+       gesprochen wird. Das Raster steht dabei von Anfang an, weil ein
+       Fragment nur Deckkraft und Sichtbarkeit schaltet; die Grenzflaechen-
+       spalte haelt also ihren Platz, waehrend noch die Stroemung steht. -->
+  <div class="cols">
+    <div class="fragment" data-fragment-index="1">
+      <h3>Strömung</h3>
+      <ul>
+        <li>inkompressible Navier–Stokes</li>
+        <li>Multigrid-solver für variable Dichte und Viskosität</li>
+        <li>Octree-Gitter, adaptiv verfeinert</li>
+        <li>parallel über MPI</li>
+      </ul>
+    </div>
+    <div class="fragment" data-fragment-index="2">
+      <h3>Grenzfläche</h3>
+      <ul>
+        <li>Volume-of-Fluid</li>
+        <li>Oberflächenspannung durch
+          <ul>
+            <li>Dirac Delta <code>tension.h</code> [@popinet2018numerical]</li>
+            <li>Spannungstensor <code>integral.h</code> [@alsaud2018]</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <aside class="notes">
+    <p>Die Module, aus denen der Fall zusammengesetzt ist:
+    <code>navier-stokes/centered.h</code> löst die inkompressiblen
+    Navier–Stokes-Gleichungen mit veränderlicher Dichte als
+    Projektionsverfahren, zeitlich versetzt, mit dem Schema von
+    Bell–Colella–Glaz für die Advektion und einem Mehrgitterlöser
+    (<code>poisson.h</code>) für Druck und implizite Viskosität. Die Phasen
+    kommen aus <code>two-phase.h</code>, der Kontaktwinkel aus
+    <code>contact.h</code>.</p>
+
+    <p>Die beiden Wege zur Oberflächenspannung: <code>tension.h</code> setzt
+    sie als continuum surface force an, die Krümmung kommt aus Höhenfunktionen,
+    und die Kraft steht mit dem Druckgradienten im Gleichgewicht
+    (balanced-force). <code>integral.h</code> integriert stattdessen den
+    Spannungstensor über die Grenzfläche, nach Abu-Al-Saud u.&nbsp;a. (2018),
+    ebenfalls well-balanced; die Krümmung kommt dort aus einer
+    Level-Set-Funktion. Der Gewinn ist ein kleinerer parasitärer Strom und eine
+    veränderliche Oberflächenspannung (Marangoni), deshalb steht der
+    Wechsel im Ausblick. Gerechnet ist bisher alles mit
+    <code>tension.h</code>.</p>
+
+    <p>Beide Wege sind zeitexplizit und begrenzen den Zeitschritt über die
+    Kapillarwelle: \(\Delta t &lt; \sqrt{\rho\,\Delta_{\min}^3 /
+    (\pi\surf)}\), bei jeder weiteren Verfeinerungsstufe also um
+    \(2^{3/2}\) kleiner.</p>
+
+    <p>Die Verfeinerung macht <code>adapt_wavelet</code>: es schätzt den Fehler,
+    indem es die Lösung in einer Zelle mit der Interpolation aus der gröberen
+    Zelle darüber vergleicht; pro Feld wird eine Toleranz vorgegeben, dazu
+    <code>minlevel</code> und <code>maxlevel</code>. Das ist die Stellschraube,
+    die auf den beiden Folien zur adaptiven Verfeinerung und im Ausblick
+    (Level 9) gemeint ist. Übersetzt wird mit <code>qcc</code>, dem
+    Präprozessor, der Basilisk C nach C99 übersetzt.</p>
+  </aside>
+</section>
+
+<!-- ============================================== 3.2 — Basilisk Tests ==== -->
+<!-- Hinter der Methode der Nachweis, dass sie traegt: ein Fall, an dem
+     Basilisk gegen ein Experiment geprueft ist. Bhaga & Weber (1981) ist dafuer
+     der uebliche -- eine einzelne Blase steigt in einer zaehen Fluessigkeit auf,
+     die Form ist allein durch zwei Kennzahlen festgelegt, und die Arbeit gibt
+     zu jedem Paar eine Aufnahme. Links die Rechnung, rechts die Aufnahme; die
+     Folie wird von links nach rechts gesprochen, und die Frage lautet, ob das
+     Gerechnete die Aufnahme trifft.
+
+     Beide Bilder schneidet `Figures/make_bhaga_panels.py` aus seinen Quellen
+     unter `misc/phd_basilisk/` -- dem Repositorium zum Loeser und dem PDF des
+     Aufsatzes. Dort steht auch, WELCHER Fall gezeigt ist und warum: die drei
+     gerechneten Paare sind ueber M = Eo^3/Ga^4 auf die Aufnahmen abgebildet,
+     zwei davon sind fotografiert, und von den beiden Aufnahmen zu 115/135 ist
+     Abb. 11(b) genommen -- der Nachlauf, nicht die Silhouette, weil neben der
+     Stromlinienhaelfte der Rechnung dann dasselbe steht, was sie zeigt.
+
+     Die Rechnung ist auf Weiss exportiert und traegt hier den Folienton am
+     Rand: Beschriftung, Teilstriche und Zahlen sind auf #191919 gelegt, der
+     Rahmen auf Grau 40, der Kasten selbst ist unberuehrt. Das Weiss DARIN ist
+     Grund der Stromlinien und kein Papier -- es dunkel zu legen macht die
+     Haelfte unleserlich, das steht im Skript. Beide Bilder laufen deshalb mit
+     `class="transparent"`, damit das Theme keine weisse Platte darunterlegt.
+
+     Auf der Folie stehen drei Zahlenpaare, und sie gehoeren nicht alle
+     derselben Seite: Eo und Ga sind die Vorgabe der Rechnung, M folgt aus
+     ihnen, und Re ist gemessen -- die Reynolds-Zahl der Endgeschwindigkeit,
+     keine Vorgabe. Die fotografierte Blase traegt ausserdem E 114 gegen die
+     gerechneten 115, ein Prozent; das steht im Vortragstext und nicht auf der
+     Folie, weil es die Zeile kostet, die "Volume-of-Fluid" schon gekostet hat.
+
+     Die beiden Seitenverhaeltnisse liegen mit 0,671 und 0,707 dicht
+     beieinander, die Kaesten stehen deshalb auf einer Hoehe und auf einer
+     Grundlinie -- 400 Punkte hoch, also 268 und 283 breit. Sie stehen absolut
+     in der Buehne (1136 x 453), mittig im Feld rechts der Textspalte: 447 und
+     775. Unterschrift und Bildabstand messen zusammen rund 42 Punkte; 400 + 42
+     bleibt unter der Buehne, auch wenn eine Unterschrift zweizeilig wird.
+
+     Zitiert sind die zwei Quellen, aus denen die Folie besteht: das
+     Repositorium mit dem Quellcode [@weiner_phd_basilisk] und das Experiment
+     [@bhaga1981bubbles].
+
+     Die Dissertation [@weiner], aus der der Fall stammt, stand hier unter der
+     Aufzaehlung und ist der Adresse des Repositoriums gewichen. Sie faellt
+     damit aus dem Literaturverzeichnis: zitiert wird, was auf einer Folie
+     steht. Soll sie wieder hinein, ohne dass eine Folie sie nennt, ist
+     `includeReferences` am Fuss dieser Datei der Ort dafuer. -->
+<section data-layout="fill">
+  <h2><span class="topic">Basilisk 2</span>Ausgangspunkt</h2>
+  <div class="stage">
+
+    <div style="left:14px; top:40px; width:420px;">
+      <h3>Aufsteigende Blase</h3>
+      <ul>
+        <li>achsensymmetrisch, VoF</li>
+        <li>\(\mathrm{Eo} = 115\), \(\mathrm{Ga} = 135\)</li>
+        <li>\(\mathrm{M} = 4{,}58\cdot 10^{-3}\), \(\mathrm{Re} = 91{,}6\)</li>
+      </ul>
+      <!-- Die Adresse steht als Text und nicht als Zitat: sie ist das, was
+           im Saal jemand mitschreibt, und im Verzeichnis findet sie sich
+           ohnehin -- die Bildunterschrift daneben zitiert dasselbe
+           Repositorium. Als <code> gesetzt, damit die Schraegstriche nicht
+           wie Fliesstext gelesen werden, und eine Spur kleiner als der Rest:
+           die Schreibmaschinenschrift baut breiter, und die Adresse soll in
+           einer Zeile stehen -- ein Pfad, der mittendrin umbricht, wird im
+           Saal falsch abgeschrieben. -->
+      <p><code style="font-size:0.75em">github.com/AndreWeiner/phd_basilisk</code></p>
+    </div>
+
+    <figure style="left:447px; top:0px; width:268px;">
+      <img class="transparent"
+           src="../Figures/bhaga_weber_eo115_simulation_dark.png"
+           style="width:100%"
+           alt="Berechnetes Feld um die aufgestiegene Blase im mitbewegten System:
+                links der Betrag der Geschwindigkeit als Isolinien, rechts die
+                Stromlinien mit einem geschlossenen Wirbel unter der flachen
+                Kappe der Blase">
+      <figcaption>Simulation, Quellcode [@weiner_phd_basilisk]</figcaption>
+    </figure>
+
+    <figure style="left:775px; top:0px; width:283px;">
+      <img class="transparent"
+           src="../Figures/bhaga_weber_eo115_experiment.png"
+           style="width:100%"
+           alt="Aufnahme des Nachlaufs im Experiment: unter der dunklen Kappe der
+                Blase zeichnen mitgeführte Wasserstoffbläschen einen
+                geschlossenen Ringwirbel als helle, in sich geschlossene Bahnen
+                nach">
+      <figcaption>Experiment, Abb.&nbsp;11(b) [@bhaga1981bubbles]</figcaption>
+    </figure>
+
+  </div>
+
+  <aside class="notes">
+    <p>Der Fall ist der Standardtest für einen Zweiphasenlöser mit freier
+    Grenzfläche: eine einzelne Blase steigt in einer ruhenden, zähen
+    Flüssigkeit auf, bis sie ihre Endgeschwindigkeit erreicht hat. Bhaga und
+    Weber haben 1981 das Feld der Kennzahlen experimentell vermessen, zu jedem
+    Paar die Form fotografiert und zusätzlich den Nachlauf sichtbar gemacht —
+    mit Wasserstoffbläschen, die an einem Draht elektrolytisch erzeugt und von
+    einem Lichtschnitt beleuchtet werden. Daraus stammt die Karte der
+    Blasenformen, die bis heute als Referenz dient.</p>
+
+    <p>Zwei Kennzahlen legen alles fest. Der Löser nimmt sie als Eötvös-Zahl
+    \(\mathrm{Eo}\) — Auftrieb gegen Oberflächenspannung — und Galilei-Zahl
+    \(\mathrm{Ga}\) — Auftrieb gegen Zähigkeit. Die Arbeit tabelliert
+    stattdessen Morton- und Reynolds-Zahl. Aus der Entdimensionierung folgt
+    \(\mathrm{M} = \mathrm{Eo}^3/\mathrm{Ga}^4\), und damit ist
+    115/135 der Fall (b) der Abbildung 11. Die Reynolds-Zahl ist ein Ergebnis,
+    keine Vorgabe — sie folgt aus der Endgeschwindigkeit.</p>
+
+    <p>Was zu vergleichen ist: die rechte Hälfte der Rechnung zeigt die
+    Stromlinien im mitbewegten System, und dort steht unter der Blase ein
+    geschlossener Wirbel. Die Aufnahme zeigt denselben Wirbel, von den
+    Bläschen nachgezeichnet. Das ist der schärfere Test als der Umriss —
+    die Form bekommt jeder Löser ungefähr hin, der Nachlauf nicht.</p>
+
+    <p>Gerechnet ist der Fall mit dem Löser aus André Weiners Dissertation,
+    der auf den Basilisk-Beispielen <code>bubble.c</code> und
+    <code>rising.c</code> aufsetzt und als Quellcode öffentlich ist. Der
+    Aufruf nimmt drei Argumente: Verfeinerungsstufe, \(\mathrm{Eo}\) und
+    \(\mathrm{Ga}\). Beide Längen der Abbildung sind mit dem Radius der
+    volumengleichen Kugel entdimensioniert.</p>
+  </aside>
+</section>
+
+<!-- ========================= 2.2 — Basilisk Testfaelle =================== -->
+<!-- Die vier Faelle, mit denen der Loeser fuer dieses Projekt gerechnet
+     wurde. Sie stammen aus der Validierung des PEFS-Moduls und spannen das
+     Feld der Kennzahlen auf: A ist kugelnah und schnell, D zaeh und langsam,
+     B und C liegen dazwischen -- B wegen der verzoegerten Abloesung, C wegen
+     des grossen Nachlaufs.
+
+     Die Endgeschwindigkeit steht in zwei Zeilen untereinander und nicht in
+     einer Spalte nebeneinander: so steht der Vergleich zwischen Rechnung und
+     Literatur senkrecht unter der Zahl, um die es geht. Fall A hat keinen
+     Literaturwert -- der Strich sagt das; eine leere Zelle liesse offen, ob
+     die Zahl fehlt oder nur nicht hierher gehoert.
+
+     Dieselbe Tabellenklasse wie bei den FLUIDICS-Faellen: fuenf Spalten, auf
+     70 % der Textbreite, mittig. Die Zahlen stehen als Text und nur die
+     Zehnerpotenzen als Formel -- .num gibt Tabellenziffern, und die wirken
+     nur auf Text; eine ganze Tabelle aus MathJax-SVG stuende daneben. -->
+<section>
+  <h2><span class="topic">Basilisk 2</span>Testfälle</h2>
+
+  <table class="cases">
+    <thead>
+      <tr>
+        <th>Fall</th>
+        <th class="num">A</th>
+        <th class="num">B</th>
+        <th class="num">C</th>
+        <th class="num">D</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="no">\(\eo\)</td>
+          <td class="num">\(0{,}23\)</td><td class="num">\(3{,}21\)</td>
+          <td class="num">\(32{,}1\)</td><td class="num">\(116\)</td></tr>
+      <tr><td class="no">\(\mo\)</td>
+          <td class="num">\(1{,}04\cdot 10^{-10}\)</td>
+          <td class="num">\(6{,}2\cdot 10^{-7}\)</td>
+          <td class="num">\(8{,}2\cdot 10^{-4}\)</td>
+          <td class="num">\(266\)</td></tr>
+      <tr><td class="no">\(\ga\)</td>
+          <td class="num">\(104\)</td><td class="num">\(85{,}5\)</td>
+          <td class="num">\(79{,}7\)</td><td class="num">\(8{,}75\)</td></tr>
+      <tr><td class="no">\(\re\) Basilisk</td>
+          <td class="num">\(257{,}5\)</td><td class="num">\(101{,}2\)</td>
+          <td class="num">\(52{,}6\)</td><td class="num">\(3{,}64\)</td></tr>
+      <tr><td class="no">\(\re\) Referenz</td>
+          <td class="num">—</td><td class="num">\(100\)</td>
+          <td class="num">\(53{,}2\)</td><td class="num">\(3{,}67\)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Der Umbruch steht fest und nicht dort, wo die Zeile zufaellig ausgeht:
+       ohne ihn riss sie nach "C und D" und liess die Quelle allein in der
+       naechsten Zeile stehen. -->
+  <p class="xs quelle">Referenz: B [@cano2013wake]<br>C und D [@bhaga1981bubbles]</p>
+
+  <p class="xs bond-note">
+    \(\re\) … bei Endgeschwindigkeit &nbsp;·&nbsp;
+    \(\ell = 9 \ldots 12\) je Fall &nbsp;·&nbsp;
+    Läufe und Gitter: interner Bericht IR15
+  </p>
+
+  <aside class="notes">
+    <p>Vier Fälle, die das Feld aufspannen, in dem sich die Blasen dieses
+    Projekts bewegen. Die beiden Kennzahlen, die alles festlegen, sind
+    Eötvös- und Galilei-Zahl; die Morton-Zahl steht daneben, weil die
+    Literatur in ihr tabelliert — sie folgt aus den beiden anderen.</p>
+
+    <p>Die Reynolds-Zahl ist keine Vorgabe, sondern das Ergebnis: sie folgt
+    aus der Endgeschwindigkeit. Deshalb stehen zwei Zeilen da — was Basilisk
+    erreicht und was die Quelle nennt. Die Abweichung liegt bei rund einem
+    Prozent, im Fall C bei gut einem. Für Fall A gibt es keinen
+    Literaturwert; dort ist die Basilisk-Rechnung selbst die Referenz.</p>
+
+    <p>Das Rechengebiet ist in allen Fällen ein Zylinder, Radius
+    \(R = 4D\), frei beweglich in \(z\) und haftend an der Wand bei
+    \(r = R\); die Blase startet bei \(z_0 = 2{,}5 D\). Die Höhe ist
+    \(24 D\) in Fall A und \(16 D\) sonst — A ist der schnellste Fall
+    und braucht den längsten Weg. Verfeinert wird adaptiv bis zur Stufe 12,
+    gesteuert über eine Geschwindigkeitstoleranz von \(10^{-5}\), die
+    zwischen den Stufen nicht verändert wurde.</p>
+  </aside>
+</section>
+
+<!-- ========================== 2.3 — Basilisk Testfall A ============== -->
+<section data-layout="fill">
+  <h2><span class="topic">Basilisk 2</span>Testfall A</h2>
+  <div class="stage">
+
+    <figure style="left:0px; top:30px; width:356px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_grid_A_l10_deck_dark.png"
+           alt="Adaptives Gitter um die Blase bei Verfeinerungsstufe 10:
+                die Farbe einer Zelle sagt, wie fein sie ist, die rote Linie
+                ist die Phasengrenze">
+      <figcaption><span class="panel">a)</span>adaptives Gitter, \(\ell = 10\)</figcaption>
+    </figure>
+
+    <figure style="left:389px; top:30px; width:356px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_grid_A_l12_deck_dark.png"
+           alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
+                um die Phasengrenze ist deutlich schmaler und folgt ihr
+                enger">
+      <figcaption><span class="panel">b)</span>adaptives Gitter, \(\ell = 12\)</figcaption>
+    </figure>
+
+    <figure style="left:778px; top:30px; width:358px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_ascent_A_deck_dark.png"
+           alt="Aufstiegsgeschwindigkeit über der Zeit für drei
+                Gitterauflösungen; die drei Kurven liegen nahezu
+                übereinander">
+      <figcaption><span class="panel">c)</span></figcaption>
+    </figure>
+
+  </div>
+
+  <aside class="notes">
+    <p>Fall A: \(\eo = 0{,}23\), \(\ga = 104\) — kugelnah und schnell, ohne Abloesung.</p>
+    <p>Der schnellste der vier Fälle: \(\re \approx 258\), die Blase bleibt kugelnah und löst nicht ab. Einen Literaturwert gibt es dafür nicht — hier ist die Basilisk-Rechnung selbst die Referenz, gegen die das PEFS-Modul geprüft wurde.</p>
+    <p>Links und in der Mitte dasselbe Bild zur selben Zeit
+    \(t\sqrt{g/d} = 6\), einmal auf der gröbsten und einmal auf der
+    feinsten gerechneten Stufe. Die Farbe einer Zelle ist ihre Größe; was
+    zwischen den beiden Bildern passiert, ist, dass der feine Saum um die
+    Grenzfläche schmaler wird und die Blase selbst mehr Zellen bekommt.
+    Rechts steht, was das für das Ergebnis bedeutet: nichts, was man sähe —
+    die Kurven liegen übereinander. Genau das ist die Aussage dieser
+    Folie.</p>
+  </aside>
+</section>
+
+<!-- ========================== 2.4 — Basilisk Testfall B ============== -->
+<section data-layout="fill">
+  <h2><span class="topic">Basilisk 2</span>Testfall B</h2>
+  <div class="stage">
+
+    <figure style="left:0px; top:30px; width:346px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_grid_B_l10_deck_dark.png"
+           alt="Adaptives Gitter um die Blase bei Verfeinerungsstufe 10:
+                die Farbe einer Zelle sagt, wie fein sie ist, die rote Linie
+                ist die Phasengrenze">
+      <figcaption><span class="panel">a)</span>adaptives Gitter, \(\ell = 10\)</figcaption>
+    </figure>
+
+    <figure style="left:389px; top:30px; width:346px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_grid_B_l12_deck_dark.png"
+           alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
+                um die Phasengrenze ist deutlich schmaler und folgt ihr
+                enger">
+      <figcaption><span class="panel">b)</span>adaptives Gitter, \(\ell = 12\)</figcaption>
+    </figure>
+
+    <figure style="left:778px; top:30px; width:358px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_ascent_B_deck_dark.png"
+           alt="Aufstiegsgeschwindigkeit über der Zeit für drei
+                Gitterauflösungen; die drei Kurven liegen nahezu
+                übereinander">
+      <figcaption><span class="panel">c)</span></figcaption>
+    </figure>
+
+  </div>
+
+  <aside class="notes">
+    <p>Fall B: \(\eo = 3{,}21\), \(\ga = 85{,}5\) — elliptisch, mit verzoegerter Abloesung.</p>
+    <p>Der Fall mit der verzögerten Ablösung nach Cano-Lozano. Die Endgeschwindigkeit liegt bei \(\re = 101{,}2\) gegen \(100\) in der Quelle.</p>
+    <p>Links und in der Mitte dasselbe Bild zur selben Zeit
+    \(t\sqrt{g/d} = 6\), einmal auf der gröbsten und einmal auf der
+    feinsten gerechneten Stufe. Die Farbe einer Zelle ist ihre Größe; was
+    zwischen den beiden Bildern passiert, ist, dass der feine Saum um die
+    Grenzfläche schmaler wird und die Blase selbst mehr Zellen bekommt.
+    Rechts steht, was das für das Ergebnis bedeutet: nichts, was man sähe —
+    die Kurven liegen übereinander. Genau das ist die Aussage dieser
+    Folie.</p>
+  </aside>
+</section>
+
+<!-- ========================== 2.5 — Basilisk Testfall C ============== -->
+<section data-layout="fill">
+  <h2><span class="topic">Basilisk 2</span>Testfall C</h2>
+  <div class="stage">
+
+    <figure style="left:0px; top:30px; width:345px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_grid_C_l9_deck_dark.png"
+           alt="Adaptives Gitter um die Blase bei Verfeinerungsstufe 9:
+                die Farbe einer Zelle sagt, wie fein sie ist, die rote Linie
+                ist die Phasengrenze">
+      <figcaption><span class="panel">a)</span>adaptives Gitter, \(\ell = 9\)</figcaption>
+    </figure>
+
+    <figure style="left:390px; top:30px; width:346px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_grid_C_l12_deck_dark.png"
+           alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
+                um die Phasengrenze ist deutlich schmaler und folgt ihr
+                enger">
+      <figcaption><span class="panel">b)</span>adaptives Gitter, \(\ell = 12\)</figcaption>
+    </figure>
+
+    <figure style="left:781px; top:30px; width:354px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_ascent_C_deck_dark.png"
+           alt="Aufstiegsgeschwindigkeit über der Zeit für drei
+                Gitterauflösungen; die drei Kurven liegen nahezu
+                übereinander">
+      <figcaption><span class="panel">c)</span></figcaption>
+    </figure>
+
+  </div>
+
+  <aside class="notes">
+    <p>Fall C: \(\eo = 32{,}1\), \(\ga = 79{,}7\) — Kappe mit grossem Nachlauf.</p>
+    <p>Der Fall mit dem größten Nachlauf und der stärksten Verformung. Die Geschwindigkeit schwingt über, bevor sie einläuft — das sieht man in der Kurve, und es ist der Grund, warum dieser Fall dabei ist. \(\re = 52{,}6\) gegen \(53{,}2\) bei Bhaga und Weber. Er beginnt eine Verfeinerungsstufe tiefer als die anderen.</p>
+    <p>Links und in der Mitte dasselbe Bild zur selben Zeit
+    \(t\sqrt{g/d} = 6\), einmal auf der gröbsten und einmal auf der
+    feinsten gerechneten Stufe. Die Farbe einer Zelle ist ihre Größe; was
+    zwischen den beiden Bildern passiert, ist, dass der feine Saum um die
+    Grenzfläche schmaler wird und die Blase selbst mehr Zellen bekommt.
+    Rechts steht, was das für das Ergebnis bedeutet: nichts, was man sähe —
+    die Kurven liegen übereinander. Genau das ist die Aussage dieser
+    Folie.</p>
+  </aside>
+</section>
+
+<!-- ========================== 2.6 — Basilisk Testfall D ============== -->
+<section data-layout="fill">
+  <h2><span class="topic">Basilisk 2</span>Testfall D</h2>
+  <div class="stage">
+
+    <figure style="left:0px; top:30px; width:346px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_grid_D_l10_deck_dark.png"
+           alt="Adaptives Gitter um die Blase bei Verfeinerungsstufe 10:
+                die Farbe einer Zelle sagt, wie fein sie ist, die rote Linie
+                ist die Phasengrenze">
+      <figcaption><span class="panel">a)</span>adaptives Gitter, \(\ell = 10\)</figcaption>
+    </figure>
+
+    <figure style="left:391px; top:30px; width:346px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_grid_D_l12_deck_dark.png"
+           alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
+                um die Phasengrenze ist deutlich schmaler und folgt ihr
+                enger">
+      <figcaption><span class="panel">b)</span>adaptives Gitter, \(\ell = 12\)</figcaption>
+    </figure>
+
+    <figure style="left:782px; top:30px; width:354px;">
+      <img class="transparent" style="height:380px"
+           src="../Figures/basilisk_ascent_D_deck_dark.png"
+           alt="Aufstiegsgeschwindigkeit über der Zeit für drei
+                Gitterauflösungen; die drei Kurven liegen nahezu
+                übereinander">
+      <figcaption><span class="panel">c)</span></figcaption>
+    </figure>
+
+  </div>
+
+  <aside class="notes">
+    <p>Fall D: \(\eo = 116\), \(\ga = 8{,}75\) — zaeh und langsam, hoechste Eötvös-Zahl.</p>
+    <p>Der zäheste Fall: \(\eo = 116\), \(\re = 3{,}64\) gegen \(3{,}67\) bei Bhaga und Weber. Die Kappe ist breit, der Aufstieg langsam, und das Gitter steht entsprechend weit um die Blase herum.</p>
+    <p>Links und in der Mitte dasselbe Bild zur selben Zeit
+    \(t\sqrt{g/d} = 6\), einmal auf der gröbsten und einmal auf der
+    feinsten gerechneten Stufe. Die Farbe einer Zelle ist ihre Größe; was
+    zwischen den beiden Bildern passiert, ist, dass der feine Saum um die
+    Grenzfläche schmaler wird und die Blase selbst mehr Zellen bekommt.
+    Rechts steht, was das für das Ergebnis bedeutet: nichts, was man sähe —
+    die Kurven liegen übereinander. Genau das ist die Aussage dieser
+    Folie.</p>
+  </aside>
+</section>
+
+<!-- ============================================ 4.1 — FLUIDICS Experiment = -->
+<!-- Three panels across the width: what it looks like, what the rig is, what
+     is done to it. The photograph opens the row and the two drawn panels
+     follow it, in the order the slide is spoken — the thing first, then the
+     two abstractions of it. The drawn pair still stands together because they
+     are the ones that fix the case, and their captions say so — both are
+     drawn after the source, where the photograph is out of it. They are placed in slide
+     coordinates rather than by a grid because their aspects are nothing like
+     each other — 0.57, 1.59 and, the photograph turned upright, 0.66 — and a
+     grid would either crop them or leave two of the three floating. The three
+     blocks end on the same line: with aspects this far apart it is the foot of
+     the row and not its middle that makes three shapes read as one row. Two of
+     the three lost their caption, so the line the row ends on is now the foot
+     of the images themselves, at 400; the one remaining caption hangs below
+     it. Move a panel and its `top` follows from that — 400 less the image
+     height, which is its width over its aspect.
+
+     Two of the three now reach the full height the row has, which is what sets
+     the widths: the sketch is as wide as 400 px of height allows it to be, the
+     upright photograph likewise, and the plot has what is left over — it is
+     the only one of the three with height to spare, and the trapezoid it draws
+     is the one thing here that gains by being read along.
+
+     Die drei Kaesten haben die Reihenfolge getauscht, die Masse nicht: die
+     Breiten und die `top` bleiben, wo sie waren, nur die `left` sind neu
+     gerechnet. Die zwei Luecken von 86 und der linke Rand von 18 sind
+     dieselben geblieben, und damit auch die rechte Kante bei 1126 --
+     18 + 263 + 86 + 267 + 86 + 406. -->
+
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS 3</span>Konfiguration</h2>
+  <div class="stage">
+
+    <figure style="left:18px; top:0px; width:263px;">
+      <!-- 396 und nicht 400: die Bildunterschrift traegt seit dem Wechsel auf
+           [Autor, Jahr] zwei Zeilen statt einer. Die Buehne ist 460 hoch, die
+           Unterschrift nimmt 62 -- 396 ist, was dem Bild bleibt, mit zwei
+           Punkten Luft. Die Breite des Bildes ist die Hoehe des Kastens: das
+           Bild steht hochkant, um 90 Grad gedreht. Wer eines aendert, aendert
+           beide. -->
+      <div class="upright" style="height:396px;">
+        <img src="../Figures/fluidics_rig.png" style="width:396px"
+             alt="Foto des FLUIDICS-Experimentaufbaus auf der Drehscheibe">
+      </div>
+      <figcaption>Experiment [@dalmon2019fluidics]</figcaption>
+    </figure>
+
+    <figure class="fragment" data-fragment-index="1"
+            style="left:367px; top:0px; width:267px;">
+      <img class="transparent" src="../Figures/fluidics_rig.sketch.svg"
+           style="width:100%"
+           alt="Skizze des FLUIDICS-Aufbaus in der Drehebene: Kugeltank am Arm der Länge L
+                über der Drehachse O, Kraftsensor S dazwischen, Drehrate Omega um die
+                z-Achse">
+    </figure>
+
+    <figure class="fragment" data-fragment-index="2"
+            style="left:720px; top:120px; width:406px;">
+      <img class="transparent" src="../Figures/fluidics_forcing.svg"
+           style="width:100%"
+           alt="Vorgegebene Drehrate über der Zeit: Rampe auf ein Plateau, Rampe zurück,
+                anschließend Ruhe">
+    </figure>
+
+  </div>
+</section>
+
+<!-- ============================================ 4.2 — FLUIDICS Modell ===== -->
+<!-- Die Skizze traegt ihre Beschriftung selbst -- Phasen, Wandbedingung,
+     Oberflaechenspannung, die Richtung von f und die Achsen. Rechts daneben
+     steht untereinander, was das Modell aus dem Experiment uebernimmt: der
+     Behaelter, wie er im Versuch aussieht, und darunter die Volumenkraft, die
+     das Manoever im Tanksystem erzeugt.
+
+     Die Folie baut sich in drei Schritten auf: die Skizze steht, dann kommt
+     die Gleichung (1), dann das Foto (2) und zuletzt die Anmerkung am Pfeil
+     (3) -- die Volumenkraft gehoert zur Skizze links, das Foto und seine
+     Anmerkung bilden das Paar rechts oben. Die Kaesten stehen absolut in der
+     Buehne, ein Fragment schaltet nur Deckkraft und Sichtbarkeit; es ruecken
+     also weder Gleichung noch Pfeil, waehrend sie warten.
+
+     Der Pfeil im Leader-SVG zeigt auf den Meniskus **in Folienkoordinaten**:
+     das Foto steht bei left 660 / top 6 mit 252 von 277 Bildpunkten Breite,
+     der Punkt (252, 100) im Bild liegt damit bei (889, 97). Wird das Foto
+     verschoben oder skaliert, muss der Pfeil mitgerechnet werden. -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS 3</span>Modell</h2>
+  <div class="stage">
+
+    <!-- Die Skizze wird ausserhalb dieses Repos gezeichnet und kommt aus
+         005_fluidics_validation/results/kick-off-bonn/. Mit jeder Fassung ist
+         sie hoeher geworden -- 1000 x 1003, dann 1068, jetzt 1092 -- weil die
+         Beschriftung waechst und weiter nach aussen rueckt. Die Breite bleibt
+         bei 400: die Zeichnung gibt dem Kreis absichtlich Platz an die Schrift
+         ab, weil sie im Saal gelesen wird und nicht am Schreibtisch, und den
+         Kasten schmaler zu machen, damit der Kreis seine alte Groesse behaelt,
+         naehme genau diese Entscheidung zurueck.
+
+         Damit folgt `top` aus der Hoehe: 400 * 1092/1000 = 437, die Buehne ist
+         453, also (453 - 437) / 2 = 8 oben wie unten. Wer eine neue Fassung
+         einspielt, rechnet die Zeile neu -- und wenn das Bild einmal hoeher
+         als 453 wird, ist die Breite dran und nicht der Rand.
+
+         Der Grund ist unsichtbar: das PNG traegt #191919 als Flaeche, denselben
+         Ton wie die Folie. Seine Kanten fallen also nicht auf; was zaehlt, ist
+         allein, dass es nicht ueber die Buehne hinauslaeuft. -->
+    <figure style="left:14px; top:8px; width:400px;">
+      <img class="transparent" src="../Figures/model_sketch_dark.png"
+           style="width:100%"
+           alt="Skizze des simulierten Tanks: Kugel mit Haftbedingung an der Wand,
+                flüssige Phase als Ringfläche, zentrierte Gasblase, dazwischen die
+                Grenzfläche mit der Oberflächenspannung sigma; rechts oben der Pfeil
+                der Volumenkraft f, links unten die Achsen e_x und e_y">
+    </figure>
+
+    <!-- Die Unterschrift steht vor dem Bild. Der Kasten behaelt Lage und Hoehe;
+         was sich aendert, ist die Reihenfolge darin -- die zwei Zeilen messen
+         62 Punkte, also faengt das Foto nicht mehr bei 6 an, sondern bei 68,
+         und endet unveraendert bei 293,6. Der Anmerkungspfeil daneben ist um
+         dieselben 62 mitgewandert; seine Zahlen stehen unten. -->
+    <figure class="fragment" data-fragment-index="2"
+            style="left:600px; top:6px; width:252px;">
+      <!-- "Behälter in Experiment" stand hier, solange die Unterschrift den
+           Gegenstand benennen musste. Das tut jetzt die Skizze daneben: links
+           der gerechnete Tank, rechts dasselbe im Versuch, und was die
+           Unterschrift zu sagen hat, ist der Unterschied zwischen beiden. -->
+      <figcaption>Experiment [@dalmon2019fluidics]</figcaption>
+      <img class="transparent" src="../Figures/fluidics_wetting_cut.png" style="width:100%"
+           alt="Foto des Kugeltanks: die Flüssigkeit benetzt die Wand vollständig">
+    </figure>
+
+    <svg class="leaders fragment" data-fragment-index="3" viewBox="0 0 1136 453"
+         preserveAspectRatio="none" role="img"
+         aria-label="Pfeil auf den Meniskus im Foto: die vollständige Benetzbarkeit
+                     der Wand ist eine Annahme">
+      <!-- Der Anmerkungspfeil, wie ihn die Stilfolie in S00_main/beispiel
+           festlegt ("Strichdicke & Pfeile"): ein offener Kopf aus zwei
+           Strichen statt eines gefuellten Dreiecks. Das ist der Unterschied,
+           auf den es ankommt -- ein gefuelltes Dreieck ist eine Form auf dem
+           Bild, ein offener Haken bleibt eine Linie darueber. Genau das soll
+           er hier sein, denn er beschriftet ein Foto und verdeckt es nicht.
+
+           Der Typ in vier Zahlen, alle auf die Strichstaerke w bezogen:
+
+             Staerke    w = 3, die Stufe L3, auf der auch die Zeichnungen
+                        stehen -- vorher trug er 4, eine Staerke ausserhalb
+                        der Staffel
+             Winkel     halber Oeffnungswinkel 20 Grad gegen den Schaft
+             Arme       7,77 w lang, beide gleich; das ergibt den Kopf der
+                        Stilfolie, 7,3 w lang und 5,3 w breit
+             Enden      stumpf und auf Gehrung (butt/miter), wie dort
+
+           Gelb 2 ueber die Rolle --tud-hinweis, die Farbe, die das Theme fuer
+           genau diese Pfeile fuehrt. Sie stand hier in Weiss, weil --rot in
+           diesem Deck den Stand des Projekts traegt und eine Modellannahme
+           etwas anderes ist -- das bleibt richtig, nur ist Gelb 2 die dritte
+           Antwort und die vorgesehene.
+
+           Der Scheitel liegt auf (845 | 188), dort wo der
+           Meniskus seitlich auf die Wand trifft — die Stelle, an der die
+           vollstaendige Benetzbarkeit ueberhaupt zu sehen ist, und nicht die
+           Mitte der Oberflaeche, auf die der Pfeil vorher zeigte.
+
+           Die beiden Zahlen sind nicht geschaetzt, sondern am Bild gemessen:
+           fluidics_wetting_cut.png ist 277 x 248 und steht 252 breit bei
+           x 600, also 225,6 hoch. Die letzte Spalte, in der ueberhaupt noch
+           Fluessigkeit liegt, ist Bildspalte 269 -- Folie x 844,7. Die Zeile
+           liegt 120 unter der Bildoberkante, und die steht seit dem Vorziehen
+           der Unterschrift nicht mehr bei 6, sondern bei 68: 68 + 120 = 188.
+           Wird der Kasten verschoben, anders breit, oder wandert die
+           Unterschrift zurueck nach unten, rechnet sich der Punkt aus diesen
+           Zahlen neu.
+
+           Der Kopf steht damit quer ueber der Glaswand, sein Scheitel innen
+           -- die Kugel endet bei x 847,5. Der Schaft laeuft bis in den
+           Scheitel hinein, wie auf der Stilfolie; sein stumpfes Ende
+           verschwindet unter der Gehrung der beiden Arme.
+
+           Der Schaft faellt mit 28 Grad und nicht mehr mit 43,5: die Anmerkung
+           kommt damit von der Seite und nicht mehr schraeg von unten, und das
+           ist auch die Richtung, in der die Stelle liegt, auf die sie zeigt --
+           der Meniskus trifft die Wand seitlich, nicht unten. Die Beschriftung
+           steht deshalb neben der Kugel statt unter ihr: 11 Punkte rechts vom
+           Fusspunkt (914 | 224) und mittig zu ihm, was die
+           drei Grundlinien auf 205, 233 und 261 setzt.
+
+           Die Beschriftung steht auf 24 px, der Fliesstextstufe. Sie trug
+           26 px -- eine Groesse, die es in der Staffel des Themes nicht gibt.
+           Nicht 20: daneben steht die Bildunterschrift des Fotos, und die
+           traegt die kleine Stufe. Stuende die Annahme dort auch, laese sie
+           sich als zweite Unterschrift statt als Anmerkung.
+
+           Die laengste Zeile "Benetzbarkeit" misst damit rund 165 px und endet
+           bei 1090, knapp 50 vor dem Rand der Buehne; nach unten bleibt
+           bis zum Kasten der Gleichung bei 290 reichlich Luft. Die Kugel endet
+           bei x 847,5, die Beschriftung beginnt bei 925 -- dazwischen liegt
+           allein der Schaft.
+
+           Die drei Grundlinien folgen daraus: 24 px auf 28 Punkten Zeilenab-
+           stand, der mittlere Text optisch auf dem Fusspunkt des Schafts. -->
+      <g fill="none" stroke="var(--tud-hinweis)" stroke-width="3">
+        <line x1="913.52" y1="224.43" x2="845" y2="188"/>
+        <path d="M 868.08 191.24 L 845 188 L 860.59 205.32"
+              stroke-linejoin="miter" stroke-linecap="butt"/>
+      </g>
+      <g fill="var(--tud-hinweis)">
+        <text x="925" y="205" font-size="24" font-weight="600">Annahme:</text>
+        <text x="925" y="233" font-size="24" font-weight="600">vollständige</text>
+        <text x="925" y="261" font-size="24" font-weight="600">Benetzbarkeit</text>
+      </g>
+    </svg>
+
+    <!-- 480 und nicht mehr 418: die Matrix braucht bei 24 px 386 Punkte, die
+         Nummer daneben rund 55, mit dem Abstand also 460. Im alten Kasten
+         blieben der Matrix 260 -- sie lief nicht ueber, sondern wurde von
+         `max-width` am svg still auf drei Fuenftel heruntergerechnet, was
+         keine Hoehenmessung meldet. -->
+    <div class="forces xs fragment" data-fragment-index="1"
+         style="left:577px; top:290px; width:480px;">
+      <div class="eq">
+        <p>\[ \bm{f} = \density
+             \begin{pmatrix} 2 v \rotrate + (\armlen + y)\, \rotacc + x\, \rotrate^2 \\
+                              -2 u \rotrate - x\, \rotacc + (\armlen + y)\, \rotrate^2 \\
+                              0 \end{pmatrix} \]</p>
+        <p class="muted">(8.1)</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================ 4.3 — FLUIDICS Fälle ====== -->
+<!-- Table 1 of Dalmon et al. (2019), transcribed — the four manoeuvres the paper
+     evaluates. The angular velocity is given relative to Ω₀, which is how the
+     paper states it; the two Bond numbers are the paper's own values and are
+     reproduced by the definitions under the table. The paper's column for the
+     acceleration time is not shown: it reads 1 for all four manoeuvres that are
+     left here, and a column of ones is a column that says nothing — what it
+     carried is that the four differ in fill level and rate alone, and that is
+     read off the two columns that do vary. Manoeuvre 6, the one case where the
+     time is halved, is among the rows the paper's force evaluation leaves out
+     and is in the speaker notes.
+
+     The paper's rows 5 and 6 are not shown: they
+     carry no force evaluation there and none here, so a dimmed row only invited
+     the question of what it was doing in the table.
+
+     Saying that on the slide had the same effect as the dimmed row: it put two
+     manoeuvres in front of the audience for the sole purpose of taking them
+     away again. The table now stands for the four cases it shows, and what is
+     missing from it is in the speaker notes, where the question is answered if
+     it is asked. -->
+<section>
+  <h2><span class="topic">FLUIDICS 3</span>Fälle</h2>
+
+  <table class="cases">
+    <thead>
+      <tr>
+        <th>Nr.</th>
+        <th>\(\fillratio\)</th>
+        <th class="num">\(\rotrate / \rotrate_0\)</th>
+        <th class="num">\(\bondcen\)</th>
+        <th class="num">\(\bondeul\)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="fragment markiert">
+          <td class="no">1<span class="nur-vorlesen">, der Fall, den wir rechnen</span></td>
+          <td>50 %</td><td class="num">\(1\)</td>
+          <td class="num">76</td><td class="num">24</td></tr>
+      <tr><td class="no">2</td><td>75 %</td><td class="num">\(1\)</td>
+          <td class="num">48</td><td class="num">15</td></tr>
+      <tr><td class="no">3</td><td>50 %</td><td class="num">\(1/\sqrt{3}\)</td>
+          <td class="num">26</td><td class="num">14</td></tr>
+      <tr><td class="no">4</td><td>75 %</td><td class="num">\(1/\sqrt{3}\)</td>
+          <td class="num">16</td><td class="num">9</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Die beiden Bond-Zahlen erklaeren die letzten zwei Spalten, also stehen
+       sie abgesetzt unter der Tabelle und mittig wie diese -- als Formel und
+       nicht als Fussnote im Fliesstext, weil der Bruch dort auf Schraegstriche
+       zusammengefaltet werden musste.
+
+       Darunter stehen die Zeichen, die Tabelle und Formeln benutzen, ohne sie
+       zu nennen. Ihre Reihenfolge ist die, in der man ihnen auf der Folie
+       begegnet: phi steht in der zweiten Spalte der Tabelle, Bo in den beiden
+       letzten, und D0 taucht ueberhaupt erst in den Formeln darunter auf.
+       Vorher fuehrte D0 die Zeile an und schickte den Leser zum Suchen.
+       Frueher stand hier der Satz "auf den Anfangsdurchmesser der Blase
+       bezogen" -- er erklaerte eines der drei und liess die anderen zwei offen.
+
+       Die Quellenangabe steht nicht mehr an dieser Zeile, sondern direkt unter
+       der Tabelle: sie gehoert zu den Zahlen darueber und nicht zu den Zeichen
+       darunter. Zwischen Tabelle und Formeln ist ausserdem die Stelle, an der
+       eine Angabe zur Herkunft gelesen wird, bevor die Formeln anfangen, etwas
+       anderes zu erklaeren. Rechtsbuendig an der Tabellenkante, nicht in deren
+       Achse -- siehe .quelle im Kopf der Datei. -->
+  <p class="xs quelle">[@dalmon2019fluidics]</p>
+
+  <!-- Nummeriert wie jede abgesetzte Formel im Deck, und jede fuer sich: es
+       sind zwei Definitionen nebeneinander und keine zweiteilige Gleichung, so
+       dass (9.1) fuer beide zu stehen die eine wie die andere nicht benennt.
+
+       Dafuer traegt der Kasten jetzt `.eq` -- der Flex mit Umbruch, den das
+       Theme fuer "Formel, Angabe rechts daneben" fuehrt -- mit vier Kindern:
+       Formel, Nummer, Formel, Nummer. Das `\qquad` zwischen den beiden ist
+       damit weg; den Abstand stellt das column-gap von .eq. Passen die vier
+       nicht in die Zeile, bricht der Flex sie paarweise um, statt eine Formel
+       zu stauchen. -->
+  <div class="eq bond">
+    <p>\[ \bondcen = \frac{\density\,\rotrate^2\,\armlen\,\bubdia^2}{\surf} \]</p>
+    <p class="muted">(9.1)</p>
+    <p>\[ \bondeul = \frac{\density\,\rotacc\,\armlen\,\bubdia^2}{\surf} \]</p>
+    <p class="muted">(9.2)</p>
+  </div>
+  <p class="xs bond-note">
+    \(\fillratio\) … Füllstand &nbsp;·&nbsp;
+    \(\mathrm{Bo}\) … Bond-Zahl &nbsp;·&nbsp;
+    \(\bubdia\) … Anfangsdurchmesser
+  </p>
+  <aside class="notes">
+    Tabelle 1 der Quelle hat sechs Zeilen. Die beiden hier nicht gezeigten sind
+    Manöver 5 (50 %, \(\rotrate/\rotrate_0 = 1/\sqrt{6}\),
+    \(\bondcen = 13\), \(\bondeul = 10\)) und Manöver 6 (50 %,
+    \(1/\sqrt{12}\), halbe Beschleunigungszeit, \(\bondcen = 6\),
+    \(\bondeul = 14\)). Beide sind zu langsam für verlässliche Sensordaten und
+    werden in der Kraftauswertung der Quelle nicht betrachtet — deshalb enden
+    auch unsere Rechnungen bei Manöver 4.
+  </aside>
+</section>
+
+<!-- Die vier Videos haengen an data-src und nicht an src. Mit src laedt der
+     Browser alle vier, sobald die Seite aufgeht -- 18,7 der rund 24 MB, die
+     das Deck insgesamt zieht, und zwar bevor die Titelfolie steht. Ueber eine
+     weitergeleitete Portverbindung (VS Code, SSH) dauert das, auch wenn die
+     Leitung schnell ist, und es dauert selbst dann, wenn man mit #/18 auf
+     einer Folie einsteigt, die gar kein Video hat.
+
+     data-src ist reveals eigenes Lazy-Loading: die Quelle wird gesetzt, sobald
+     die Folie in die viewDistance kommt, voreingestellt drei Folien vor dem
+     Auftritt. Der Start zieht damit noch rund 5 MB, der Rest kommt waehrend
+     des Vortrags nach. preload="auto" steht dabei, damit der Browser die drei
+     Folien Vorlauf auch nutzt und nicht erst beim Abspielen zu laden anfaengt
+     -- ohne das waere der Start schnell und der Bildwechsel zaeh, also genau
+     verkehrt herum.
+
+     Fuer publish.sh aendert sich nichts: sein Muster (src|href)="../Figures/..."
+     findet die Zeile auch als data-src, weil der Name die Zeichenkette
+     enthaelt. Und ?print-pdf laedt ohnehin alle Folien auf einmal. -->
+<!-- ================================ 4.4 — FLUIDICS Simulation =========== -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS 3</span>Simulation</h2>
+  <figure class="paar">
+    <video data-src="../Figures/frames_lab_polar_dark.mp4" data-autoplay loop muted playsinline preload="auto"
+           aria-label="Simulation im Laborsystem, Polardarstellung"></video>
+    <video data-src="../Figures/frames_maneuver_cursor_dark.mp4" data-autoplay loop muted playsinline preload="auto"
+           aria-label="Marke auf dem Verlauf der Drehrate: wo im Manöver der Lauf
+                       daneben gerade steht"></video>
+  </figure>
+</section>
+
+<!-- =============================== 4.5a — FLUIDICS Verfeinerung 1 ========= -->
+<!-- Zuerst das Feld, dann das Gitter darin. Beide Folien zeigen denselben
+     Lauf, dieselbe Stelle und dieselbe Zeit -- die eine ohne, die andere mit
+     eingezeichneten Zellen. So sieht man erst, was gerechnet wird, und dann,
+     womit; stuenden die Zellen von Anfang an drauf, laese man das Gitter und
+     nicht die Stroemung.
+
+     Dass der Wechsel nichts verschiebt, haengt an den Dateien: beide sind
+     2272 x 960 und liegen damit im fill-Layout deckungsgleich uebereinander.
+     Wird eine von beiden neu gerechnet, muessen es beide sein. -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS 3</span>adaptive Verfeinerung <span class="page-of">1</span></h2>
+  <figure>
+    <video data-src="../Figures/frames_ux_l68_deck_nomesh_dark.mp4" data-autoplay loop muted playsinline preload="auto"
+           aria-label="Geschwindigkeitsfeld u_x bei Level 6 und 8 nebeneinander,
+                       ohne eingezeichnetes Gitter"></video>
+  </figure>
+</section>
+
+<!-- =========================== 4.5b — FLUIDICS Verfeinerung 2 =========== -->
+<!-- Die Nummer der Fortsetzung steht grau neben dem Titel und nicht als "(1)"
+     darin: der Titel ist auf beiden Folien derselbe, die Nummer sagt nur,
+     die wievielte man gerade sieht -- eine Nebenangabe wie das Thema davor.
+     In der Klammer las sie sich als Teil der Ueberschrift, und zwei Titel,
+     die sich um ein Zeichen unterscheiden, sehen im Saal gleich aus.
+     h2 .page-of ist das Element, das der Rueckstand dafuer schon hat
+     (tud-dark.css) -- dort mit Gesamtzahl, hier ohne. -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS 3</span>adaptive Verfeinerung <span class="page-of">2</span></h2>
+  <figure>
+    <!-- Die Deck-Fassung des Videos, nicht die aus dem Bericht: sie ist
+         2272 x 960 statt 2200 x 1000, also flacher, und traegt eine
+         Beschriftung, die im Saal gelesen werden kann. Beide liegen
+         nebeneinander in Figures/; publish.sh nimmt nur mit, was eine Folie
+         wirklich laedt, die alte bleibt also hier und geht nicht mit raus. -->
+    <video data-src="../Figures/frames_ux_l68_deck_dark.mp4" data-autoplay loop muted playsinline preload="auto"
+           aria-label="Geschwindigkeitsfeld u_x bei Level 6 und 8 nebeneinander"></video>
+  </figure>
+</section>
+
+<!-- =========================== 4.5c — FLUIDICS Verfeinerung 3 =========== -->
+<section data-layout="fill">
+  <!-- Eigener Titel statt "adaptive Verfeinerung 3": die beiden Folien davor
+       zeigen dasselbe Feld bei zwei Leveln, diese traegt die Messung ueber
+       alle Level und beantwortet damit eine andere Frage. Die Folge davor
+       zaehlt weiter 1 und 2, ohne eine Gesamtzahl zu nennen -- die Marken
+       sind von Hand gesetzt, nur der Rueckstand zaehlt "n / m". -->
+  <h2><span class="topic">FLUIDICS 3</span>Gitterstudie</h2>
+
+  <!-- Das Manoever ueber den Panels, rechtsbuendig: die vier Zeitpunkte stehen
+       in den Panel-Ueberschriften als Zahl, aber erst der Verlauf sagt, wo sie
+       liegen -- zwei auf der Rampe, zwei auf dem Plateau. t_1 bis t_4 heissen
+       hier und dort dasselbe, sie sind auf dieselben Frames gerastet.
+
+       Rechts und nicht mittig, weil t_4 bei t* = 3,194 liegt und die Kurve
+       links anfaengt: buendig mit der rechten Kante laufen die Marken auf die
+       Panels zu, die sie meinen, statt an ihnen vorbei.
+
+       Das Band ist 500 x 138 Folienpixel, die Panels darunter 871 x 330, mit
+       12 dazwischen -- zusammen die 480, die eine Folie mit Ueberschrift
+       hergibt. Beide sind fuer genau diese Kaesten gezeichnet, also doppelt so
+       gross in Bildpixeln; wer einen aendert, zeichnet beide neu. -->
+  <div class="gitter">
+    <figure class="profil">
+      <img class="transparent" src="../Figures/maneuver_profile_deck_dark.png"
+           alt="Drehrate des Manövers über der Zeit: Rampe, Plateau, Rampe
+                zurück, mit den vier Zeitpunkten t_1 bis t_4 markiert">
+    </figure>
+
+    <figure>
+      <img class="transparent" src="../Figures/interface_refinement_deck_dark.png"
+           alt="Auflösung der Grenzfläche über dem Verfeinerungslevel">
+    </figure>
+  </div>
+</section>
+
+<!-- =================================== 4.6a — FLUIDICS Film 1 =========== -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS 3</span>Flüssigkeitsfilm <span class="page-of">1</span></h2>
+  <figure>
+    <img class="transparent" src="../Figures/pressure_t3_level7_meniscus_deck_dark.png"
+         alt="Druckfeld am Meniskus zum Zeitpunkt t3, Level 7">
+  </figure>
+</section>
+
+<!-- =================================== 4.6b — FLUIDICS Film 2 =========== -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS 3</span>Flüssigkeitsfilm <span class="page-of">2</span></h2>
+  <figure>
+    <img class="transparent" src="../Figures/meniscus_refinement_t3_deck_dark.png"
+         alt="Meniskus über den Verfeinerungsleveln zum Zeitpunkt t3">
+  </figure>
+</section>
+
+<!-- =========================== 4.7a — FLUIDICS Kraftberechnung =========== -->
+<!-- Der bisherige Weg, und das Bild, das sagt warum: bei vollstaendiger
+     Benetzbarkeit liegt der Meniskus auf einem Film, den kein bezahlbares
+     Gitter aufloest -- das Druckfeld am Meniskus zeigt, worueber integriert
+     wird. .sm, weil zwei abgesetzte Formeln neben einem Bild stehen. -->
+<section>
+  <h2><span class="topic">FLUIDICS 3</span>Kraftberechnung <span class="page-of">1</span></h2>
+
+  <div class="sm">
+
+  <div class="cols w-1-2 center">
+    <figure>
+      <!-- Ueber die 400 px, die .cols figure img sonst deckelt: die Spalte
+           gibt der Abbildung ein Drittel der Breite, also entscheidet die
+           Hoehe, wie gross das Panel wird. Das Bild ist fuer 369 x 460 px
+           gezeichnet und steht hier unskaliert; die Formeln daneben bleiben
+           darunter. -->
+      <img class="transparent" style="max-height:460px"
+           src="../Figures/meniscus_refinement_t3_level7_deck_dark.png"
+           alt="Druckfeld am Meniskus bei Level 7: der Sprung über die Grenzfläche
+                ist über wenige Zellen aufgelöst.">
+    </figure>
+
+    <div>
+      <div class="eq">
+        <p>\[ \bm{F} = -\int_{\tdomain} \nabla \pre\, \mathrm{d}V
+             \;+\; \underbrace{\int_{\tdomain} \surf\, \curv\, \diracs\, \no\, \mathrm{d}V}
+                             _{=\,0 \text{ (ideal)}}
+             \;+\; \int_{\tdomain} \nabla \cdot \shear\, \mathrm{d}V \]</p>
+        <p class="muted">(16.1)</p>
+      </div>
+
+      <!-- Das Gebiet, ueber das beide Formeln integrieren, steht direkt unter
+           der ersten: dort taucht es zum ersten Mal auf, und dort wird es
+           gebraucht -- nicht erst in der Nomenklatur hinten und nicht am Fuss
+           der Folie, wo es die zweite Formel ueberspringen muesste, um
+           gelesen zu werden. Es ist das eine Zeichen dieser Folie, das nicht
+           selbsterklaerend ist. Dieselbe Bauart wie die Zeichenzeile unter
+           der Falltabelle. -->
+      <p class="xs">\(\tdomain\) … Tankvolumen</p>
+
+      <p>diskret implementiert [@dalmon2018bubble]:</p>
+
+      <div class="eq">
+        <p>\[ \bm{F} = \int_{\tdomain} \left( -\nabla \pre
+                       \;+\; \surf\, \curv\, \diracs\, \no \right) \mathrm{d}V \]</p>
+        <p class="muted">(16.2)</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ================================ 4.7b — FLUIDICS Kraftberechnung neu === -->
+<!-- Der neue Weg: nicht ueber den Rand, sondern ueber den Impuls im Inneren.
+     Die Volumenkraft steht mit dem Vorzeichen da, das aus der Bilanz der
+     Folie davor folgt -- dort steht sie auf der rechten Seite. -->
+<section>
+  <h2><span class="topic">FLUIDICS 3</span>Kraftberechnung <span class="page-of">2</span></h2>
+
+  <div class="sm">
+  <!-- Dieselbe Schriftgroesse wie auf der Folie davor: dort steht alles in
+       .cols, und .cols verkleinert um 0,86. Hier ist es eine einzige Spalte
+       ohne Abstand -- das Mass kommt damit aus derselben Regel und nicht aus
+       einer abgeschriebenen Zahl, die spaeter auseinanderlaufen kann. -->
+  <div class="cols" style="--n:1; gap:0">
+
+  <!-- Die Bilanz steht hier noch einmal, weil die neue Auswertung aus ihr
+       folgt: F ist der Teil, den die Waende tragen, und der laesst sich nach
+       links aufloesen. Der Satz darueber sagt, was sie ist -- er steht in
+       derselben Rolle wie "diskret implementiert (neu):" unter ihr, so dass
+       beide Formeln der Folie ihre Zeile haben. -->
+  <p>Integrale Impulsbilanz</p>
+
+  <div class="eq">
+    <!-- Die Bilanz steht sofort da; die drei Klammern kommen einzeln dazu.
+         Jede ist ein \llap ueber einem \phantom des Terms: so liegt sie genau
+         unter ihm, ohne dass der Term selbst im Fragment steckt -- der soll ja
+         von Anfang an zu sehen sein. Die Terme sind dafuer einmal als \def
+         benannt, damit Term und Phantom nicht auseinanderlaufen koennen.
+
+         Die dritte Beschriftung steht zweizeilig in einem \substack. Einzeilig
+         war sie 268 Punkte breit -- deutlich breiter als die Klammer darunter,
+         und sie lief nach rechts bis 806, dicht an den letzten Term heran.
+         Umbrochen traegt die laengere der zwei Zeilen die Breite, und die
+         Beschriftung bleibt unter ihrer eigenen Klammer stehen, statt sich
+         unter die Nachbarn zu schieben. -->
+    <p>\[
+    \def\Traeg{\int_{\tdomain} \density\, \frac{\partial \bmu}{\partial t}\, \mathrm{d}V}
+    \def\Wand{-\oint_{\partial\tdomain} \pre\, \no\, \mathrm{d}S
+               \;+\; \oint_{\partial\tdomain} \shear \cdot \no\, \mathrm{d}S}
+    \def\Ober{\int_{\tdomain} \surf\, \curv\, \diracs\, \no\, \mathrm{d}V}
+    \Traeg\llap{\class{fragment schritt-1}{\underbrace{\phantom{\Traeg}}_{\text{Trägheit}}}}
+    \;=\;
+    \Wand\llap{\class{fragment schritt-2}{\underbrace{\phantom{\Wand}}_{\text{Wandkräfte } \bm{F}}}}
+    \;+\; \Ober\llap{\class{fragment schritt-3}{\underbrace{\phantom{\Ober}}
+              _{\substack{=\,0 \\ \text{(vollständige Benetzbarkeit)}}}}}
+    \;+\; \int_{\tdomain} \bm{f}\, \mathrm{d}V
+    \]</p>
+    <p class="muted">(17.1)</p>
+  </div>
+
+  <p class="fragment schritt-4">diskret implementiert (neu):</p>
+
+  <!-- Erst die Auswertung, dann die Umformung: die Zeitableitung vor das
+       Integral gezogen. Beides steht in derselben Formel, damit nichts
+       springt, wenn der zweite Teil dazukommt. -->
+  <div class="eq">
+    <p>\[ \class{fragment schritt-4}{\bm{F} = \int_{\tdomain} \density\, \frac{\partial \bmu}{\partial t}\, \mathrm{d}V
+                 \;-\; \int_{\tdomain} \bm{f}\, \mathrm{d}V}
+           \class{fragment schritt-5}{\;=\; \frac{\mathrm{d}}{\mathrm{d}t} \int_{\tdomain} \density\, \bmu\, \mathrm{d}V
+                 \;-\; \int_{\tdomain} \bm{f}\, \mathrm{d}V} \]</p>
+    <p class="muted fragment schritt-4">(17.2)</p>
+  </div>
+</div>
+</div>
+</section>
+
+<!-- ====================== 4.7c — FLUIDICS Vergleich Kräfte ============= -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS 3</span>Vergleich Kräfte</h2>
+  <figure>
+    <img class="transparent"
+         src="../Figures/momentum_force_history_no_experiment_phases_deck_dark.png"
+         alt="Kraftverlauf beider Berechnungen über der Zeit, mit vergrößertem
+              Ausschnitt der ersten Schwingungen und senkrechten Linien an den
+              drei Zeitpunkten, an denen sich die Winkelbeschleunigung ändert">
+  </figure>
+</section>
+
+<!-- ========================== 4.7d — FLUIDICS Spektrum ================== -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS 3</span>Spektrum</h2>
+  <figure>
+    <img class="transparent" src="../Figures/momentum_spectrum_deck_dark.png"
+         alt="Spektrum des Kraftverlaufs über der Frequenz">
+  </figure>
+</section>
+
+<!-- ==================== 4.7e — FLUIDICS Vergleich Experiment ============ -->
+<section data-layout="fill">
+  <h2><span class="topic">FLUIDICS 3</span>Vergleich Experiment</h2>
+  <figure>
+    <img class="transparent"
+         src="../Figures/momentum_force_history_zoom_phases_deck_dark.png"
+         alt="Kraftverlauf aus Simulation und Experiment im Vergleich, mit
+              senkrechten Linien an den drei Zeitpunkten, an denen sich die
+              Winkelbeschleunigung ändert">
+  </figure>
+</section>
+
+<!-- =================================== 5.1 — Nächste Schritte =========== -->
+<section>
+  <h2><span class="topic">Ausblick 4</span>Nächste Schritte</h2>
+
+  <!-- Das Bild gehoert zu Punkt 3 und steht deshalb auf dieser Folie: die
+       parasitaeren Stroemungen sind auf den Feldern davor nur ein heller Fleck
+       am Meniskus, hier sind es die Zellen selbst -- im Gas +7, in der
+       Fluessigkeit daneben 0,3, und das lange nachdem der Tank aufgedreht hat.
+       Der Punkt "Untersuchung" hat damit einen Gegenstand statt nur einen
+       Namen.
+
+       Rechts und nicht darunter: die Liste ist fuenf kurze Zeilen und laesst
+       die halbe Breite frei, und der Ausschnitt ist hochkant. Uebereinander
+       gestellt braeuchten beide mehr Hoehe, als die Folie hat. -->
+  <div class="cols w-2-1 center">
+    <ol>
+      <li>Studie zu verschiedenen Manövern</li>
+      <li>Simulation mit höherer Verfeinerung auf HPC Cluster (Level 9)</li>
+      <!-- Beide Punkte nennen jetzt, woran gearbeitet wird, und nicht nur das
+           Thema: der dritte die Stelle, an der die Stroemungen entstehen, der
+           vierte den Hebel, an dem gedreht wird. Der Doppelpunkt trennt in
+           beiden Zeilen die Absicht von dem, was dafuer angefasst wird. -->
+      <li>Untersuchung parasitärer Strömungen: Zusammenspiel von
+          <code>vof.h</code> und <code>embed.h</code></li>
+      <li>Implementierung der Oberflächenspannung variieren:
+          <code>integral.h</code> (Spannungstensor) anstelle von
+          <code>tension.h</code> (Dirac-Delta)</li>
+      <li>Realistische Tankgeometrie</li>
+    </ol>
+
+    <figure>
+      <!-- 704 x 800 px, gezeichnet fuer genau die 352 x 400 px, die diese
+           Spalte unter dem 400-px-Deckel von `.cols figure img` hergibt: eine
+           Folienpixel sind zwei Bildpixel, es wird nichts skaliert. -->
+      <img class="transparent"
+           src="../Figures/spurious_currents_ux_l8_deck_dark.png"
+           alt="Ausschnitt des Geschwindigkeitsfeldes u_x am Fuß des Meniskus
+                bei Level 8: über wenige Zellen wechselnde rote und blaue
+                Zellen direkt an der Grenzfläche, während die Flüssigkeit
+                darunter einfarbig bleibt">
+    </figure>
+  </div>
+</section>
+
+<!-- ================================== 5.2 — Diskussionspunkte =========== -->
+<section>
+  <h2><span class="topic">Ausblick 4</span>Diskussionspunkte</h2>
+  <ol>
+    <li>Initiale Lage der Gasblase</li>
+    <!-- Beide Punkte nennen jetzt die Groesse, um die es geht: die Blase ist
+         eine, nicht mehrere, und ihre Groesse ist der Fuellstand des Tanks --
+         dieselbe Zahl, von der anderen Seite gelesen. Die Oszillationen sind
+         die des Satelliten und nicht die der Fluessigkeit in ihm. -->
+    <li>Größe der Gasblase (Tankfüllstand)</li>
+    <li>Berücksichtigung von Oszillationen des Satelliten</li>
+  </ol>
+
+  <!-- Die letzte Folie des Vortrags, also steht der Dank hier und nicht auf
+       einer eigenen: die Diskussionspunkte sind das, was auf dem Schirm
+       stehen bleiben soll, waehrend gefragt wird. Gelb 2 ueber die Rolle
+       --tud-hinweis -- die Farbe, die das Deck fuer eine Angabe fuehrt, die
+       nicht zur Sache gehoert, sondern zum Anlass; auf der Titelfolie traegt
+       sie das Datum. -->
+  <p class="dank">Danke für die Aufmerksamkeit</p>
+</section>
+
+<!-- ==================================================== back matter ===== -->
+<section data-generate="nomenclature"></section>
+<section data-generate="bibliography"></section>
+
+
+</div>
+</div>
+
+<script src="../reveal/dist/reveal.js?h=1726477b"></script>
+<script src="../reveal/plugin/notes/notes.js?h=de1000bf"></script>
+<script src="../reveal/plugin/markdown/markdown.js?h=1b1a67ce"></script>
+<script src="../reveal/plugin/highlight/highlight.js?h=8cc6962e"></script>
+<script src="../reveal/plugin/search/search.js?h=f1007d46"></script>
+<script src="../reveal/plugin/zoom/zoom.js?h=abc58f29"></script>
+<script src="../reveal/plugin/math/math.js?h=0beb491c"></script>
+<script src="../lib/shared_data.js?h=88f40d36"></script>
+<script src="../lib/tud-slides.js?h=f0e68237"></script>
+
+<script>
+  TUD.init({
+    // Ein deutscher Vortrag: das schaltet die Wortmarke der Titelfolie und
+    // die Woerter, die der Rueckstand selbst setzt (Nomenklatur, Literatur,
+    // die Gruppen darin).
+    language: 'de',
+    // Die Oberflaechenspannung heisst in diesem Vortrag sigma, nicht gamma:
+    // so steht sie in den Plots (Farbskala "(p - p_gas) D_t/sigma") und in
+    // Dalmons Arbeiten. Geaendert wird nur die Schreibweise fuer diese Seite;
+    // shared/variables.tex bleibt, wie es ist.
+    symbols: { surf: { formula: '\\sigma', sort: 'sigma' } },
+    // The FLUIDICS sketches are files now, and a symbol drawn inside an <img>
+    // is invisible to the collector that builds the nomenclature. These are
+    // the ones the two sketches write; the slides' own text still registers
+    // itself. Add a symbol to a sketch, add it here.
+    includeSymbols: [
+      'armlen', 'armse', 'tankdia', 'tankrad', 'bubrad',
+      'rotrate', 'time',
+      'surf', 'deng', 'dvisg'
+    ],
+    // [5] of the source deck: cited by no slide, but it is the sandbox case the
+    // contact-angle modelling follows, so it stays in the reference list.
+    includeReferences: ['basilisk_sessile_inclined'],
+    /* [Dalmon et al., 2018] statt [1]. Der Vortrag wird vor Leuten gehalten,
+       die die Arbeiten kennen: der Name sagt ihnen sofort, worauf sich die
+       Folie stuetzt, eine Nummer erst nach dem Blaettern. Das Verzeichnis
+       hinten wird damit alphabetisch und unnummeriert. */
+    citationStyle: 'autor',
+    /* Die Formeln in der Matheschrift des PEFS-Manuskripts.
+    
+       Das Manuskript setzt seine Formeln in STIX Two Math -- sein PDF bettet
+       STIXMath-Regular und -Italic samt Script-, Extensions- und
+       Blackboard-Schnitten ein. MathJax 3, das Standardbuendel der Decks,
+       kennt nur seine eigene TeX-Schrift, eine Computer-Modern-Variante, und
+       kann keine andere: die Ausgabe ist SVG, jede Glyphe ein fertiger Pfad.
+       Deshalb hier ein anderes Buendel, MathJax 4 mit STIX Two Math fest
+       eingebaut -- Eingabe, Ausgabe und Schrift in einer Datei, damit nichts
+       zur Laufzeit nachgeladen werden muss und das Deck auch als file://
+       laeuft.
+    
+       Nur fuer dieses Deck. S00_main/lib/mathjax/VERSION nennt beide Buendel.  */
+    reveal: {
+      mathjax3: {
+        mathjax: '../lib/mathjax/tex-mml-svg-mathjax-stix2.js',
+        /* ams steckt im Buendel, boldsymbol und html nicht: das Buendel
+           bringt die Grundpakete und die Schrift, die uebrigen Erweiterungen
+           liegen als einzelne Dateien daneben, unter lib/mathjax/input/tex/
+           extensions/. Beide werden hier gebraucht -- boldsymbol fuer \bm,
+           mit dem das Deck seine Vektoren setzt, html fuer \class, mit dem
+           eine Formel in Fragmente zerfaellt.
+
+           Sie muessen von Hand geladen werden. Autoload wuerde sie zwar
+           kennen, greift aber erst, nachdem die Formel einmal gesetzt ist,
+           und bis dahin hat noundefined aus \boldsymbol schon roten Text
+           gemacht, der stehen bleibt -- einundzwanzig rote Stellen auf den
+           Formelfolien, im DOM als ganz normale Glyphen und nicht als
+           Fehlerknoten. '[tex]/ams' gehoert *nicht* in diese Liste: was schon
+           im Buendel steckt, wird daneben gesucht, nicht gefunden, und das
+           Startversprechen bleibt offen -- dann wird keine einzige Formel
+           gesetzt. */
+        loader: { load: ['[tex]/boldsymbol', '[tex]/html'] },
+
+        /* Und dieselbe Falle noch einmal, an einer Stelle, die niemand
+           konfiguriert hat: MathJax 4 erzeugt zu jeder Formel Sprachausgabe
+           und holt sich dafuer einen Worker, sre/speech-worker.js neben dem
+           Buendel. Der liegt dort nicht -- das vendorierte Verzeichnis hat
+           input/, aber kein sre/. Die Anfrage laeuft auf 404, und
+           MathJax.startup.promise wird nie eingeloest.
+
+           Sichtbar ist davon nichts: die Formeln stehen gesetzt auf der
+           Folie. Was daran haengt, faellt trotzdem aus, und zwar still:
+
+             1. Das Aufraeumen am Fuss dieser Datei wartet auf genau dieses
+                Versprechen. Es lief nie, also wurden die Klassen `schritt-N`
+                nie in data-fragment-index uebersetzt -- die Fragmente einer
+                Formel kamen in DOM-Reihenfolge statt in der geschriebenen.
+             2. build/check.html wartet ebenfalls darauf und bleibt bei
+                "running..." stehen. Das Deck war mit dem Pruefwerkzeug des
+                Repos nicht pruefbar.
+
+           Sprachausgabe und Braille aus, und der Start wird fertig. Die
+           Anreicherung (enrich) bleibt an, also auch das assistive MathML,
+           auf das das Aufraeumen unten zielt. */
+        options: { menuOptions: { settings: { speech: false, braille: false } } }
+      }
+    }
+  });
+</script>
+
+<script>
+  // Fragmente in einer Formel.
+  //
+  // MathJax kann eine CSS-Klasse an einen Teil einer Formel haengen
+  // (\class{...}{...}), und reveal findet ein .fragment auch im SVG, das
+  // dabei herauskommt. Zwei Dinge muessen danach noch geradegerueckt werden:
+  //
+  //   1. MathJax schreibt jede Klasse auch in den Barrierefreiheitszweig
+  //      (mjx-assistive-mml). Der ist unsichtbar, zaehlte aber als zweites
+  //      Fragment und kostete einen Klick ins Leere.
+  //   2. Ein data-fragment-index laesst sich in TeX nicht schreiben. Statt
+  //      dessen traegt die Formel eine Klasse `schritt-N`, die hier in das
+  //      Attribut uebersetzt wird -- so koennen Text und Formel im selben
+  //      Schritt erscheinen.
+  //
+  // Danach ein Reveal.sync(), damit die neue Ordnung auch gilt.
+  (function () {
+    function aufraeumen() {
+      document.querySelectorAll('mjx-assistive-mml .fragment').forEach(function (e) {
+        e.classList.remove('fragment');
+      });
+      document.querySelectorAll('.fragment[class*="schritt-"]').forEach(function (e) {
+        var treffer = /schritt-(\d+)/.exec(e.getAttribute('class'));
+        if (treffer) e.setAttribute('data-fragment-index', treffer[1]);
+      });
+      /* Reveal.sync(), damit die neue Ordnung auch gilt.
+
+         Was das nicht heilt: ein Direktlink mitten in eine Formel, etwa
+         #/14/0/3. Reveal liest die Nummer aus der Adresse, bevor MathJax
+         gesetzt hat, und kennt zu dem Zeitpunkt nur die Absatz-Fragmente der
+         Folie; die Klammern in der Formel bekommen hier zwar ihre Ordnung,
+         aber die Folie steht dann auf einem anderen Schritt, als die Adresse
+         sagt. Beim Durchblaettern stimmt alles -- geprueft: 1, 2, 3, die drei
+         Teile von Schritt 4 zusammen, dann 5. Nur der Sprung auf eine
+         einzelne Stelle innerhalb einer Formel trifft daneben.
+
+         Zwei Anlaeufe, das hier nachzuziehen (gemerkte Indizes; die Nummer
+         aus location.hash), haben beide daneben getroffen -- einmal zu viel,
+         einmal zu wenig. Reveal rechnet data-fragment-index beim sync() um,
+         und welcher Schritt danach gemeint ist, haengt an dieser Umrechnung.
+         Lieber die bekannte Schwaeche als ein Griff, der sie verschiebt. */
+      if (window.Reveal && Reveal.sync) Reveal.sync();
+    }
+    (function warten(versuche) {
+      if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+        MathJax.startup.promise.then(aufraeumen);
+      } else if (versuche > 0) {
+        setTimeout(function () { warten(versuche - 1); }, 100);
+      } else {
+        console.warn('[S02] MathJax nicht gefunden; Formelfragmente bleiben ungeordnet.');
+      }
+    })(100);
+  })();
+</script>
+</body>
+</html>
