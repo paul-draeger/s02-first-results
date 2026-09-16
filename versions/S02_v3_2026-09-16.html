@@ -12,8 +12,10 @@
 
        v3 arbeitet an der Orientierung im Vortrag, an fuenf Stellen:
 
-         * Die Folie "Basilisk Tests" ist raus; der Loeser steht mit der
-           Methodenfolie allein da.
+         * Die Folie "Basilisk Tests" war zwischenzeitlich raus und steht
+           jetzt wieder hinter der Methodenfolie -- mit dem Fall, an dem der
+           Loeser geprueft ist: aufsteigende Blase nach Bhaga & Weber,
+           Simulation neben Aufnahme.
          * Das Institut auf der Titelfolie steht in Weiss statt in Grau 40.
          * Die Themenzeile ueber jedem Folientitel traegt die Nummer, unter
            der das Thema auf der Uebersicht steht -- "3. FLUIDICS" und nicht
@@ -551,6 +553,139 @@
     die auf den beiden Folien zur adaptiven Verfeinerung und im Ausblick
     (Level 9) gemeint ist. Übersetzt wird mit <code>qcc</code>, dem
     Präprozessor, der Basilisk C nach C99 übersetzt.</p>
+  </aside>
+</section>
+
+<!-- ============================================== 3.2 — Basilisk Tests ==== -->
+<!-- Hinter der Methode der Nachweis, dass sie traegt: ein Fall, an dem
+     Basilisk gegen ein Experiment geprueft ist. Bhaga & Weber (1981) ist dafuer
+     der uebliche -- eine einzelne Blase steigt in einer zaehen Fluessigkeit auf,
+     die Form ist allein durch zwei Kennzahlen festgelegt, und die Arbeit gibt
+     zu jedem Paar eine Aufnahme. Links die Rechnung, rechts die Aufnahme; die
+     Folie wird von links nach rechts gesprochen, und die Frage lautet, ob das
+     Gerechnete die Aufnahme trifft.
+
+     WELCHER Fall, und warum dieser. Das Repositorium rechnet drei Paare und
+     nennt sie in Eo und Ga, die Arbeit tabelliert ihre Aufnahmen in Eo (dort
+     E), Morton M und Reynolds R. Die Bruecke ist M = Eo^3 / Ga^4, was aus der
+     Entdimensionierung des Loesers folgt (rho = g = d = 1, mu = 1/Ga,
+     sigma = 1/Eo). Damit:
+
+         Repositorium      M = Eo^3/Ga^4      Abbildung 2 der Arbeit
+         339 / 30,8        43,3               (g)  E 339, M 43,1, R 18,3
+         115 / 135         4,58e-3            (e)  E 115, M 4,63e-3, R 94,0
+         243 / 80          0,350              -- kein Eintrag; (d) hat zwar
+                                              E 243, aber M 266
+
+     Zwei der drei Faelle sind also fotografiert, der dritte nicht. Gezeigt ist
+     deshalb 339 / 30,8, die Blase mit glatter Schuerze -- der markanteste der
+     beiden und der haertere Test.
+
+     Die Abbildung links ist der dritte der drei Kaesten aus
+     bhaga_velocity_fields.png des Repositoriums (misc/phd_basilisk, Stand
+     0dff5b4). Die drei Kaesten teilen sich eine Achsenreihe: die Rahmen liegen
+     bei 94..382, 396..684 und 698..986, alle auf den Zeilen 10..521. Die
+     y-Beschriftung ist einmal links vom ERSTEN Rahmen gezeichnet, die
+     x-Beschriftung einmal unter dem MITTLEREN. Beide sind an den dritten
+     zurueckgesetzt -- dieselben Glyphen auf denselben Zeilen, es wandert also
+     kein Teilstrich. Links im Kasten der Betrag der Geschwindigkeit, rechts
+     die Stromlinien, beides im mitbewegten System.
+
+     Die Aufnahme rechts ist Abbildung 2(g) der Arbeit, aus dem PDF in
+     misc/phd_basilisk geschnitten: Seite 4 traegt die Tafel als eingebettetes
+     JPEG (753 x 1150 bei 150 ppi), der Kasten (g) liegt darin bei x 447..735
+     und y 566..795. Das Raster im Hintergrund misst 2 x 2 cm.
+
+     Die Groessen passen von selbst zusammen: im Rahmen der Rechnung sind 1,8
+     Einheiten x-quer auf 198 Punkte abgebildet, die Blase misst rund 1,7
+     davon, also etwa 190 Punkte -- und in der Aufnahme bei 320 Punkten Breite
+     misst sie ungefaehr ebenso viel. Die beiden Blasen stehen also in
+     aehnlichem Massstab nebeneinander, ohne dass eine skaliert waere.
+
+     Zitiert sind die drei Quellen, aus denen die Folie besteht: die Arbeit,
+     zu der der Loeser gehoert [@weiner], das Repositorium mit dem Quellcode
+     [@weiner_phd_basilisk] -- neu in shared/literatur.bib, danach lief
+     S00_main/build/sync_shared.py -- und das Experiment [@bhaga1981bubbles].
+
+     Die beiden Weiner-Quellen stehen an zwei Stellen und nicht in einer
+     Klammer: der Renderer setzt Autor und Jahr, beide tragen 2020, und
+     nebeneinander las sich das als "[Weiner, 2020; Weiner, 2020]". Die Arbeit
+     steht jetzt bei der Beschreibung des Falls, das Repositorium unter der
+     Abbildung, die daraus stammt. Im Verzeichnis trennen sie die Titel.
+
+     Die Kaesten stehen absolut in der Buehne (1136 x 453). Die Rechnung ist
+     hochkant (389 x 580), die Aufnahme quer (293 x 234); sie stehen deshalb
+     nicht auf einer Grundlinie, sondern auf einer Mitte: die Rechnung bei 268
+     Punkten Breite ist 400 hoch, ihre Mitte liegt bei 200, und die Aufnahme
+     bei 320 Punkten Breite ist 256 hoch, faengt also bei 200 - 128 = 72 an.
+     Unterschrift und Bildabstand messen zusammen rund 42 Punkte; 400 + 42
+     bleibt unter der Buehne, auch wenn eine Unterschrift zweizeilig wird. -->
+<section data-layout="fill">
+  <h2><span class="topic">2. Basilisk</span>Tests</h2>
+  <div class="stage">
+
+    <div style="left:14px; top:30px; width:350px;">
+      <h3>Aufsteigende Blase</h3>
+      <ul>
+        <li>achsensymmetrisch, Volume-of-Fluid</li>
+        <li>\(\mathrm{Eo} = 339\), \(\mathrm{Ga} = 30{,}8\)</li>
+        <li>\(\mathrm{M} = 43{,}1\), \(\mathrm{Re} = 18{,}3\)</li>
+        <li>Schürze, glatt („skirted, smooth“)</li>
+      </ul>
+      <p><small>Löser und Fall aus [@weiner]</small></p>
+    </div>
+
+    <figure style="left:420px; top:0px; width:268px;">
+      <img src="../Figures/bhaga_weber_eo339_simulation.png"
+           style="width:100%"
+           alt="Berechnetes Feld um die aufgestiegene Blase im mitbewegten System:
+                links der Betrag der Geschwindigkeit als Isolinien, rechts die
+                Stromlinien, dazwischen die Kontur der Blase als Kappe mit einer
+                dünnen, nach unten gezogenen Schürze">
+      <figcaption>Simulation, Quellcode [@weiner_phd_basilisk]</figcaption>
+    </figure>
+
+    <figure style="left:740px; top:72px; width:320px;">
+      <img src="../Figures/bhaga_weber_eo339_experiment.png"
+           style="width:100%"
+           alt="Aufnahme derselben Blase im Experiment: dunkle Kappe mit einer
+                dünnen Schürze an beiden Rändern, vor einem Raster aus
+                Quadraten von zwei Zentimetern Kantenlänge">
+      <figcaption>Experiment, Abb.&nbsp;2(g) [@bhaga1981bubbles]</figcaption>
+    </figure>
+
+  </div>
+
+  <aside class="notes">
+    <p>Der Fall ist der Standardtest für einen Zweiphasenlöser mit freier
+    Grenzfläche: eine einzelne Blase steigt in einer ruhenden, zähen
+    Flüssigkeit auf, bis sie ihre Endgeschwindigkeit erreicht hat. Bhaga und
+    Weber haben 1981 das Feld der Kennzahlen experimentell vermessen und zu
+    jedem Paar die Form fotografiert; daraus stammt die Karte der
+    Blasenformen, die bis heute als Referenz dient. Das Raster im Hintergrund
+    der Aufnahme misst zwei mal zwei Zentimeter.</p>
+
+    <p>Zwei Kennzahlen legen alles fest. Der Löser nimmt sie als Eötvös-Zahl
+    \(\mathrm{Eo}\) — Auftrieb gegen Oberflächenspannung — und Galilei-Zahl
+    \(\mathrm{Ga}\) — Auftrieb gegen Zähigkeit. Die Arbeit tabelliert
+    stattdessen Morton- und Reynolds-Zahl. Aus der Entdimensionierung folgt
+    \(\mathrm{M} = \mathrm{Eo}^3/\mathrm{Ga}^4\), und damit ist
+    339/30,8 genau der Fall (g) der Abbildung 2: \(\mathrm{M} = 43{,}1\),
+    \(\mathrm{Re} = 18{,}3\). Die Reynolds-Zahl ist ein Ergebnis, keine
+    Vorgabe — sie folgt aus der Endgeschwindigkeit.</p>
+
+    <p>Gerechnet ist der Fall mit dem Löser aus André Weiners Dissertation,
+    der auf den Basilisk-Beispielen <code>bubble.c</code> und
+    <code>rising.c</code> aufsetzt und als Quellcode öffentlich ist. Der
+    Aufruf nimmt drei Argumente: Verfeinerungsstufe, \(\mathrm{Eo}\) und
+    \(\mathrm{Ga}\).</p>
+
+    <p>Was die Abbildung zeigt: im mitbewegten System links den Betrag der
+    Geschwindigkeit als Isolinien, rechts die Stromlinien. Beide Längen sind
+    mit dem Radius der volumengleichen Kugel entdimensioniert. Die Schürze ist
+    die Probe aufs Exempel — sie ist nach Bhaga und Weber nur etwa 100
+    Mikrometer dick, also weit unter der Zellweite, und ein Löser, der sie
+    überhaupt hält, löst die Grenzfläche an der richtigen Stelle auf.</p>
   </aside>
 </section>
 
@@ -1123,13 +1258,38 @@
 <!-- =================================== 5.1 — Nächste Schritte =========== -->
 <section>
   <h2><span class="topic">4. Ausblick</span>Nächste Schritte</h2>
-  <ol>
-    <li>Studie zu verschiedenen Manövern</li>
-    <li>Simulation mit höherer Verfeinerung auf HPC Cluster (Level 9)</li>
-    <li>Untersuchung parasitärer Strömungen</li>
-    <li><code>integral.h</code> anstelle von <code>tension.h</code> in Basilisk</li>
-    <li>Realistische Tankgeometrie</li>
-  </ol>
+
+  <!-- Das Bild gehoert zu Punkt 3 und steht deshalb auf dieser Folie: die
+       parasitaeren Stroemungen sind auf den Feldern davor nur ein heller Fleck
+       am Meniskus, hier sind es die Zellen selbst -- im Gas +7, in der
+       Fluessigkeit daneben 0,3, und das lange nachdem der Tank aufgedreht hat.
+       Der Punkt "Untersuchung" hat damit einen Gegenstand statt nur einen
+       Namen.
+
+       Rechts und nicht darunter: die Liste ist fuenf kurze Zeilen und laesst
+       die halbe Breite frei, und der Ausschnitt ist hochkant. Uebereinander
+       gestellt braeuchten beide mehr Hoehe, als die Folie hat. -->
+  <div class="cols w-2-1 center">
+    <ol>
+      <li>Studie zu verschiedenen Manövern</li>
+      <li>Simulation mit höherer Verfeinerung auf HPC Cluster (Level 9)</li>
+      <li>Untersuchung parasitärer Strömungen</li>
+      <li><code>integral.h</code> anstelle von <code>tension.h</code> in Basilisk</li>
+      <li>Realistische Tankgeometrie</li>
+    </ol>
+
+    <figure>
+      <!-- 704 x 800 px, gezeichnet fuer genau die 352 x 400 px, die diese
+           Spalte unter dem 400-px-Deckel von `.cols figure img` hergibt: eine
+           Folienpixel sind zwei Bildpixel, es wird nichts skaliert. -->
+      <img class="transparent"
+           src="../Figures/spurious_currents_ux_l8_deck_dark.png"
+           alt="Ausschnitt des Geschwindigkeitsfeldes u_x am Fuß des Meniskus
+                bei Level 8: über wenige Zellen wechselnde rote und blaue
+                Zellen direkt an der Grenzfläche, während die Flüssigkeit
+                darunter einfarbig bleibt">
+    </figure>
+  </div>
 </section>
 
 <!-- ================================== 5.2 — Diskussionspunkte =========== -->
@@ -1158,7 +1318,7 @@
 <script src="../reveal/plugin/search/search.js?h=f1007d46"></script>
 <script src="../reveal/plugin/zoom/zoom.js?h=abc58f29"></script>
 <script src="../reveal/plugin/math/math.js?h=0beb491c"></script>
-<script src="../lib/shared_data.js?h=f1bda0ec"></script>
+<script src="../lib/shared_data.js?h=88f40d36"></script>
 <script src="../lib/tud-slides.js?h=f0e68237"></script>
 
 <script>
