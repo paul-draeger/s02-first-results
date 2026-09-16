@@ -174,9 +174,10 @@
            Kurve welche ist, und ein vierter Eintrag, der keine Kurve meint,
            wird als eine gelesen.
          * Drei Folien bauen sich jetzt auf, statt fertig dazustehen:
-           "aktuelle Aufgaben" in vier Schritten (zwei, zwei, drei, dann
-           AP 1.4 -- die Grenze zwischen dem zweiten und dem dritten ist der
-           Stand, den der Pfeil im Zeitplan meint), "Kraftberechnung alt" mit
+           "aktuelle Aufgaben" in fuenf Schritten (zwei, zwei, drei, dann
+           faerben sich die ersten vier rot, dann AP 1.4 -- die Grenze
+           zwischen dem zweiten und dem dritten Klick ist der Stand, den der
+           Pfeil im Zeitplan meint), "Kraftberechnung alt" mit
            der diskreten Fassung und ihrer Nummer auf einen Klick, und
            "Naechste Schritte" Punkt fuer Punkt, mit dem Bild beim dritten,
            zu dem es gehoert.
@@ -453,11 +454,17 @@
       color: var(--tud-gelb-2);
     }
 
-    /* Auf der Schrittliste ist .markiert nur noch die Farbe: die vier ersten
-       Schritte kommen in Rot herein, statt dazustehen und sich auf Klick zu
-       faerben. Die Regel, die dem Fragment das Verstecken nimmt, gilt deshalb
-       oben nur noch fuer die Tabellenzeile -- dort steht die Zeile von Anfang
-       an und darf beim Schalten allein die Farbe wechseln, hier nicht.
+    /* Auf der Schrittliste kommen die Schritte einzeln und faerben sich
+       danach: das Kommen ist ihr eigener data-fragment-index, das Faerben
+       haengt an einem leeren Fragment davor. Ein Element kann nur einen Index
+       tragen, und hier sind zwei Dinge zu schalten.
+
+       `.schalter` ist deshalb ein Fragment ohne Inhalt und ohne Hoehe --
+       sichtbar wird an ihm nichts, es traegt nur die Klasse `visible`, auf
+       die der Geschwisterselektor unten wartet. Die Regel, die einem
+       .markiert das Verstecken nimmt, gilt weiter oben nur fuer die
+       Tabellenzeile der FLUIDICS-Fallfolie; hier sollen die Schritte ja
+       kommen und nicht dastehen.
 
        Rot ist auch hier der Stand des Projekts, dieselbe Farbe wie der Pfeil
        auf der Folie davor.
@@ -470,9 +477,10 @@
        sich deshalb mit. `::marker` nimmt ausserdem keine Uebergaenge an; sie
        springt um, waehrend der Text dahinter laeuft, und das faellt bei zwei
        Zehntelsekunden nicht auf. */
-    .reveal ol.steps li.fragment.markiert { transition: color .2s ease; }
-    .reveal ol.steps li.fragment.markiert.visible { color: var(--rot); }
-    .reveal ol.steps li.fragment.markiert.visible::marker { color: var(--rot); }
+    .reveal .schalter { display: block; height: 0; margin: 0; }
+    .reveal ol.steps li.markiert { transition: color .2s ease; }
+    .reveal .schalter.visible ~ ol.steps li.markiert { color: var(--rot); }
+    .reveal .schalter.visible ~ ol.steps li.markiert::marker { color: var(--rot); }
 
     /* Was der Pfeil nebenbei sagte, sagt jetzt niemand mehr sichtbar: die
        Markierung ist Farbe, und Farbe allein ist keine Angabe. Der Satz steht
@@ -719,10 +727,16 @@
        Rest, der noch aussteht -- und wer sie ganz vor sich hat, liest schon
        am Ende, waehrend vorn gesprochen wird.
 
-       Die ersten vier sind rot: das ist der Stand des Projekts, dieselbe
-       Farbe wie der Pfeil auf der Folie davor. Sie erscheinen in Rot, statt
-       sich auf einen Klick zu faerben -- was einzeln kommt, braucht keine
-       zweite Bewegung, um erkannt zu werden.
+       Die Liste kommt dabei in der Schrift der Folie und nicht schon in Rot:
+       erst wenn sie ganz dasteht, faerben sich die vier ersten Schritte. Das
+       ist eine eigene Aussage -- nicht "hier ist die Liste", sondern "bis
+       hierher sind wir" -- und die braucht ihren eigenen Klick, sonst geht
+       sie im Aufbauen unter.
+
+       Geschaltet wird sie von einem Fragment ohne Inhalt, das vor der Liste
+       steht: ein Element kann nur einen data-fragment-index tragen, und die
+       vier Schritte brauchen zwei -- einen fuers Kommen, einen fuers Faerben.
+       Die Regel dazu steht oben bei ol.steps.
 
        Dass es genau vier sind, sagt die Folie davor: der Pfeil im Zeitplan
        steht in der Mitte des dritten Monats von AP 1.3, und das ist Schritt 4
@@ -731,6 +745,7 @@
 
        Der Platz steht von Anfang an: ein Fragment, das noch nicht dran ist,
        ist durchsichtig und nicht weg, also springt nichts, wenn es kommt. -->
+  <span class="fragment schalter" data-fragment-index="4" aria-hidden="true"></span>
   <ol class="steps">
     <li class="fragment markiert" data-fragment-index="1">Einarbeitung Literatur<span
         class="nur-vorlesen">, abgeschlossen</span></li>
@@ -744,7 +759,7 @@
     <li class="fragment" data-fragment-index="3">Sensitivitätsstudie zu 5.</li>
     <li class="fragment" data-fragment-index="3">Implementierung von Schnittstellen</li>
   </ol>
-  <p class="ap ap-next fragment" data-fragment-index="4"><span class="tag">AP 1.4</span>Sloshing ML-Ersatzmodell
+  <p class="ap ap-next fragment" data-fragment-index="5"><span class="tag">AP 1.4</span>Sloshing ML-Ersatzmodell
     <span class="dur">(6 Monate)</span></p>
 </section>
 
