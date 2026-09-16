@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- S02 v3, aus v2 vom 2026-09-16 am 2026-09-16.
+  <!-- S02 v4, aus v3 vom 2026-09-16 am 2026-09-16.
        v1 stammte aus S01_v17_2026-09-15; von da an eine eigene Reihe.
 
        v2 raeumte das Deck an S00_main aus: alles, was das Theme inzwischen
@@ -30,8 +30,28 @@
            der Seite. Das nimmt dem Start 18,7 der rund 24 MB -- siehe den
            Absatz vor der Simulationsfolie.
 
-       Die Abbildungen sind unberuehrt bis auf gantt.svg, das neu erzeugt
-       wurde. -->
+       v4 baut den Abschnitt Basilisk aus. Er bestand aus zwei Folien --
+       Methode und ein einzelner Testfall -- und traegt jetzt, was der Loeser
+       fuer dieses Projekt schon geleistet hat:
+
+         * Die Folie "Tests" heisst "Ausgangspunkt 1": sie zeigt keinen Test,
+           den wir gemacht haben, sondern den Stand, auf dem wir aufsetzen.
+           Statt "Loeser und Fall aus [Weiner, 2020]" steht dort jetzt die
+           Adresse des Repositoriums -- im Saal ist das die Angabe, die
+           jemand mitschreibt.
+         * "Ausgangspunkt 2" ist die Tabelle der vier Faelle A bis D mit
+           ihren Kennzahlen und der Endgeschwindigkeit, die Basilisk dafuer
+           erreicht, neben dem Wert aus der Literatur.
+         * Vier Folien, je ein Fall: das adaptive Gitter auf der groebsten
+           und auf der feinsten Stufe, daneben die Aufstiegsgeschwindigkeit
+           ueber alle gerechneten Stufen.
+
+       Die zwoelf Bilder dieser vier Folien kommen aus dem internen Bericht
+       IR15 und sind fuer den dunklen Satz umgefaerbt -- Figures/
+       make_basilisk_refinement.py sagt, wie und warum aus dem PDF und nicht
+       aus den Daten.
+
+       Die uebrigen Abbildungen sind unberuehrt. -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -638,28 +658,35 @@
      775. Unterschrift und Bildabstand messen zusammen rund 42 Punkte; 400 + 42
      bleibt unter der Buehne, auch wenn eine Unterschrift zweizeilig wird.
 
-     Zitiert sind die drei Quellen, aus denen die Folie besteht: die Arbeit,
-     zu der der Loeser gehoert [@weiner], das Repositorium mit dem Quellcode
-     [@weiner_phd_basilisk] -- neu in shared/literatur.bib, danach lief
-     S00_main/build/sync_shared.py -- und das Experiment [@bhaga1981bubbles].
+     Zitiert sind die zwei Quellen, aus denen die Folie besteht: das
+     Repositorium mit dem Quellcode [@weiner_phd_basilisk] und das Experiment
+     [@bhaga1981bubbles].
 
-     Die beiden Weiner-Quellen stehen an zwei Stellen und nicht in einer
-     Klammer: der Renderer setzt Autor und Jahr, beide tragen 2020, und
-     nebeneinander las sich das als "[Weiner, 2020; Weiner, 2020]". Die Arbeit
-     steht jetzt bei der Beschreibung des Falls, das Repositorium unter der
-     Abbildung, die daraus stammt. Im Verzeichnis trennen sie die Titel. -->
+     Die Dissertation [@weiner], aus der der Fall stammt, stand hier unter der
+     Aufzaehlung und ist der Adresse des Repositoriums gewichen. Sie faellt
+     damit aus dem Literaturverzeichnis: zitiert wird, was auf einer Folie
+     steht. Soll sie wieder hinein, ohne dass eine Folie sie nennt, ist
+     `includeReferences` am Fuss dieser Datei der Ort dafuer. -->
 <section data-layout="fill">
-  <h2><span class="topic">2. Basilisk</span>Tests</h2>
+  <h2><span class="topic">2. Basilisk</span>Ausgangspunkt <span class="page-of">1</span></h2>
   <div class="stage">
 
-    <div style="left:14px; top:40px; width:360px;">
+    <div style="left:14px; top:40px; width:420px;">
       <h3>Aufsteigende Blase</h3>
       <ul>
         <li>achsensymmetrisch, VoF</li>
         <li>\(\mathrm{Eo} = 115\), \(\mathrm{Ga} = 135\)</li>
         <li>\(\mathrm{M} = 4{,}58\cdot 10^{-3}\), \(\mathrm{Re} = 91{,}6\)</li>
       </ul>
-      <p><small>Löser und Fall aus [@weiner]</small></p>
+      <!-- Die Adresse steht als Text und nicht als Zitat: sie ist das, was
+           im Saal jemand mitschreibt, und im Verzeichnis findet sie sich
+           ohnehin -- die Bildunterschrift daneben zitiert dasselbe
+           Repositorium. Als <code> gesetzt, damit die Schraegstriche nicht
+           wie Fliesstext gelesen werden, und eine Spur kleiner als der Rest:
+           die Schreibmaschinenschrift baut breiter, und die Adresse soll in
+           einer Zeile stehen -- ein Pfad, der mittendrin umbricht, wird im
+           Saal falsch abgeschrieben. -->
+      <p><code style="font-size:0.75em">github.com/AndreWeiner/phd_basilisk</code></p>
     </div>
 
     <figure style="left:447px; top:0px; width:268px;">
@@ -716,6 +743,282 @@
     Aufruf nimmt drei Argumente: Verfeinerungsstufe, \(\mathrm{Eo}\) und
     \(\mathrm{Ga}\). Beide Längen der Abbildung sind mit dem Radius der
     volumengleichen Kugel entdimensioniert.</p>
+  </aside>
+</section>
+
+<!-- ========================= 2.2 — Basilisk Ausgangspunkt 2 ============== -->
+<!-- Die vier Faelle, mit denen der Loeser fuer dieses Projekt gerechnet
+     wurde. Sie stammen aus der Validierung des PEFS-Moduls und spannen das
+     Feld der Kennzahlen auf: A ist kugelnah und schnell, D zaeh und langsam,
+     B und C liegen dazwischen -- B wegen der verzoegerten Abloesung, C wegen
+     des grossen Nachlaufs.
+
+     Die Endgeschwindigkeit steht in zwei Zeilen untereinander und nicht in
+     einer Spalte nebeneinander: so steht der Vergleich zwischen Rechnung und
+     Literatur senkrecht unter der Zahl, um die es geht. Fall A hat keinen
+     Literaturwert -- der Strich sagt das; eine leere Zelle liesse offen, ob
+     die Zahl fehlt oder nur nicht hierher gehoert.
+
+     Dieselbe Tabellenklasse wie bei den FLUIDICS-Faellen: fuenf Spalten, auf
+     70 % der Textbreite, mittig. Die Zahlen stehen als Text und nur die
+     Zehnerpotenzen als Formel -- .num gibt Tabellenziffern, und die wirken
+     nur auf Text; eine ganze Tabelle aus MathJax-SVG stuende daneben. -->
+<section>
+  <h2><span class="topic">2. Basilisk</span>Ausgangspunkt <span class="page-of">2</span></h2>
+
+  <table class="cases">
+    <thead>
+      <tr>
+        <th>Fall</th>
+        <th class="num">A</th>
+        <th class="num">B</th>
+        <th class="num">C</th>
+        <th class="num">D</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="no">\(\eo\)</td>
+          <td class="num">\(0{,}23\)</td><td class="num">\(3{,}21\)</td>
+          <td class="num">\(32{,}1\)</td><td class="num">\(116\)</td></tr>
+      <tr><td class="no">\(\mo\)</td>
+          <td class="num">\(1{,}04\cdot 10^{-10}\)</td>
+          <td class="num">\(6{,}2\cdot 10^{-7}\)</td>
+          <td class="num">\(8{,}2\cdot 10^{-4}\)</td>
+          <td class="num">\(266\)</td></tr>
+      <tr><td class="no">\(\ga\)</td>
+          <td class="num">\(104\)</td><td class="num">\(85{,}5\)</td>
+          <td class="num">\(79{,}7\)</td><td class="num">\(8{,}75\)</td></tr>
+      <tr><td class="no">\(\re\) Basilisk</td>
+          <td class="num">\(257{,}5\)</td><td class="num">\(101{,}2\)</td>
+          <td class="num">\(52{,}6\)</td><td class="num">\(3{,}64\)</td></tr>
+      <tr><td class="no">\(\re\) Referenz</td>
+          <td class="num">—</td><td class="num">\(100\)</td>
+          <td class="num">\(53{,}2\)</td><td class="num">\(3{,}67\)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Der Umbruch steht fest und nicht dort, wo die Zeile zufaellig ausgeht:
+       ohne ihn riss sie nach "C und D" und liess die Quelle allein in der
+       naechsten Zeile stehen. -->
+  <p class="xs quelle">Referenz: B [@cano2013wake]<br>C und D [@bhaga1981bubbles]</p>
+
+  <p class="xs bond-note">
+    \(\re\) … bei Endgeschwindigkeit &nbsp;·&nbsp;
+    \(l_\mathrm{ref} = 9 \ldots 12\) je Fall &nbsp;·&nbsp;
+    Läufe und Gitter: interner Bericht IR15
+  </p>
+
+  <aside class="notes">
+    <p>Vier Fälle, die das Feld aufspannen, in dem sich die Blasen dieses
+    Projekts bewegen. Die beiden Kennzahlen, die alles festlegen, sind
+    Eötvös- und Galilei-Zahl; die Morton-Zahl steht daneben, weil die
+    Literatur in ihr tabelliert — sie folgt aus den beiden anderen.</p>
+
+    <p>Die Reynolds-Zahl ist keine Vorgabe, sondern das Ergebnis: sie folgt
+    aus der Endgeschwindigkeit. Deshalb stehen zwei Zeilen da — was Basilisk
+    erreicht und was die Quelle nennt. Die Abweichung liegt bei rund einem
+    Prozent, im Fall C bei gut einem. Für Fall A gibt es keinen
+    Literaturwert; dort ist die Basilisk-Rechnung selbst die Referenz.</p>
+
+    <p>Das Rechengebiet ist in allen Fällen ein Zylinder, Radius
+    \(R = 4D\), frei beweglich in \(z\) und haftend an der Wand bei
+    \(r = R\); die Blase startet bei \(z_0 = 2{,}5 D\). Die Höhe ist
+    \(24 D\) in Fall A und \(16 D\) sonst — A ist der schnellste Fall
+    und braucht den längsten Weg. Verfeinert wird adaptiv bis zur Stufe 12,
+    gesteuert über eine Geschwindigkeitstoleranz von \(10^{-5}\), die
+    zwischen den Stufen nicht verändert wurde.</p>
+  </aside>
+</section>
+
+<!-- ============================== 2.3 — Basilisk Fall A ================= -->
+<section data-layout="fill">
+  <h2><span class="topic">2. Basilisk</span>Fall A</h2>
+  <div class="stage">
+
+    <figure style="left:0px; top:52px; width:360px;">
+      <img class="transparent" style="height:339px"
+           src="../Figures/basilisk_grid_A_l10_deck_dark.png"
+           alt="Adaptives Gitter um die Blase bei Verfeinerungsstufe 10:
+                die Farbe einer Zelle sagt, wie fein sie ist, die rote Linie
+                ist die Phasengrenze">
+      <figcaption>Gitter, \(l_\mathrm{ref} = 10\)</figcaption>
+    </figure>
+
+    <figure style="left:385px; top:52px; width:360px;">
+      <img class="transparent" style="height:339px"
+           src="../Figures/basilisk_grid_A_l12_deck_dark.png"
+           alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
+                um die Phasengrenze ist deutlich schmaler und folgt ihr
+                enger">
+      <figcaption>Gitter, \(l_\mathrm{ref} = 12\)</figcaption>
+    </figure>
+
+    <figure style="left:770px; top:52px; width:366px;">
+      <img class="transparent" style="height:339px"
+           src="../Figures/basilisk_ascent_A_deck_dark.png"
+           alt="Aufstiegsgeschwindigkeit über der Zeit für drei
+                Gitterauflösungen; die drei Kurven liegen nahezu
+                übereinander">
+      <figcaption>Aufstieg, alle Stufen</figcaption>
+    </figure>
+
+  </div>
+
+  <aside class="notes">
+    <p>Fall A: \(\eo = 0{,}23\), \(\ga = 104\) — kugelnah und schnell, ohne Abloesung.</p>
+    <p>Der schnellste der vier Fälle: \(\re \approx 258\), die Blase bleibt kugelnah und löst nicht ab. Einen Literaturwert gibt es dafür nicht — hier ist die Basilisk-Rechnung selbst die Referenz, gegen die das PEFS-Modul geprüft wurde.</p>
+    <p>Links und in der Mitte dasselbe Bild zur selben Zeit
+    \(t\sqrt{g/d} = 6\), einmal auf der gröbsten und einmal auf der
+    feinsten gerechneten Stufe. Die Farbe einer Zelle ist ihre Größe; was
+    zwischen den beiden Bildern passiert, ist, dass der feine Saum um die
+    Grenzfläche schmaler wird und die Blase selbst mehr Zellen bekommt.
+    Rechts steht, was das für das Ergebnis bedeutet: nichts, was man sähe —
+    die Kurven liegen übereinander. Genau das ist die Aussage dieser
+    Folie.</p>
+  </aside>
+</section>
+
+<!-- ============================== 2.4 — Basilisk Fall B ================= -->
+<section data-layout="fill">
+  <h2><span class="topic">2. Basilisk</span>Fall B</h2>
+  <div class="stage">
+
+    <figure style="left:0px; top:49px; width:357px;">
+      <img class="transparent" style="height:346px"
+           src="../Figures/basilisk_grid_B_l10_deck_dark.png"
+           alt="Adaptives Gitter um die Blase bei Verfeinerungsstufe 10:
+                die Farbe einer Zelle sagt, wie fein sie ist, die rote Linie
+                ist die Phasengrenze">
+      <figcaption>Gitter, \(l_\mathrm{ref} = 10\)</figcaption>
+    </figure>
+
+    <figure style="left:381px; top:49px; width:357px;">
+      <img class="transparent" style="height:346px"
+           src="../Figures/basilisk_grid_B_l12_deck_dark.png"
+           alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
+                um die Phasengrenze ist deutlich schmaler und folgt ihr
+                enger">
+      <figcaption>Gitter, \(l_\mathrm{ref} = 12\)</figcaption>
+    </figure>
+
+    <figure style="left:763px; top:49px; width:373px;">
+      <img class="transparent" style="height:346px"
+           src="../Figures/basilisk_ascent_B_deck_dark.png"
+           alt="Aufstiegsgeschwindigkeit über der Zeit für drei
+                Gitterauflösungen; die drei Kurven liegen nahezu
+                übereinander">
+      <figcaption>Aufstieg, alle Stufen</figcaption>
+    </figure>
+
+  </div>
+
+  <aside class="notes">
+    <p>Fall B: \(\eo = 3{,}21\), \(\ga = 85{,}5\) — elliptisch, mit verzoegerter Abloesung.</p>
+    <p>Der Fall mit der verzögerten Ablösung nach Cano-Lozano. Die Endgeschwindigkeit liegt bei \(\re = 101{,}2\) gegen \(100\) in der Quelle.</p>
+    <p>Links und in der Mitte dasselbe Bild zur selben Zeit
+    \(t\sqrt{g/d} = 6\), einmal auf der gröbsten und einmal auf der
+    feinsten gerechneten Stufe. Die Farbe einer Zelle ist ihre Größe; was
+    zwischen den beiden Bildern passiert, ist, dass der feine Saum um die
+    Grenzfläche schmaler wird und die Blase selbst mehr Zellen bekommt.
+    Rechts steht, was das für das Ergebnis bedeutet: nichts, was man sähe —
+    die Kurven liegen übereinander. Genau das ist die Aussage dieser
+    Folie.</p>
+  </aside>
+</section>
+
+<!-- ============================== 2.5 — Basilisk Fall C ================= -->
+<section data-layout="fill">
+  <h2><span class="topic">2. Basilisk</span>Fall C</h2>
+  <div class="stage">
+
+    <figure style="left:0px; top:48px; width:357px;">
+      <img class="transparent" style="height:347px"
+           src="../Figures/basilisk_grid_C_l9_deck_dark.png"
+           alt="Adaptives Gitter um die Blase bei Verfeinerungsstufe 9:
+                die Farbe einer Zelle sagt, wie fein sie ist, die rote Linie
+                ist die Phasengrenze">
+      <figcaption>Gitter, \(l_\mathrm{ref} = 9\)</figcaption>
+    </figure>
+
+    <figure style="left:382px; top:48px; width:358px;">
+      <img class="transparent" style="height:347px"
+           src="../Figures/basilisk_grid_C_l12_deck_dark.png"
+           alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
+                um die Phasengrenze ist deutlich schmaler und folgt ihr
+                enger">
+      <figcaption>Gitter, \(l_\mathrm{ref} = 12\)</figcaption>
+    </figure>
+
+    <figure style="left:766px; top:48px; width:370px;">
+      <img class="transparent" style="height:347px"
+           src="../Figures/basilisk_ascent_C_deck_dark.png"
+           alt="Aufstiegsgeschwindigkeit über der Zeit für drei
+                Gitterauflösungen; die drei Kurven liegen nahezu
+                übereinander">
+      <figcaption>Aufstieg, alle Stufen</figcaption>
+    </figure>
+
+  </div>
+
+  <aside class="notes">
+    <p>Fall C: \(\eo = 32{,}1\), \(\ga = 79{,}7\) — Kappe mit grossem Nachlauf.</p>
+    <p>Der Fall mit dem größten Nachlauf und der stärksten Verformung. Die Geschwindigkeit schwingt über, bevor sie einläuft — das sieht man in der Kurve, und es ist der Grund, warum dieser Fall dabei ist. \(\re = 52{,}6\) gegen \(53{,}2\) bei Bhaga und Weber. Er beginnt eine Verfeinerungsstufe tiefer als die anderen.</p>
+    <p>Links und in der Mitte dasselbe Bild zur selben Zeit
+    \(t\sqrt{g/d} = 6\), einmal auf der gröbsten und einmal auf der
+    feinsten gerechneten Stufe. Die Farbe einer Zelle ist ihre Größe; was
+    zwischen den beiden Bildern passiert, ist, dass der feine Saum um die
+    Grenzfläche schmaler wird und die Blase selbst mehr Zellen bekommt.
+    Rechts steht, was das für das Ergebnis bedeutet: nichts, was man sähe —
+    die Kurven liegen übereinander. Genau das ist die Aussage dieser
+    Folie.</p>
+  </aside>
+</section>
+
+<!-- ============================== 2.6 — Basilisk Fall D ================= -->
+<section data-layout="fill">
+  <h2><span class="topic">2. Basilisk</span>Fall D</h2>
+  <div class="stage">
+
+    <figure style="left:0px; top:48px; width:358px;">
+      <img class="transparent" style="height:347px"
+           src="../Figures/basilisk_grid_D_l10_deck_dark.png"
+           alt="Adaptives Gitter um die Blase bei Verfeinerungsstufe 10:
+                die Farbe einer Zelle sagt, wie fein sie ist, die rote Linie
+                ist die Phasengrenze">
+      <figcaption>Gitter, \(l_\mathrm{ref} = 10\)</figcaption>
+    </figure>
+
+    <figure style="left:383px; top:48px; width:358px;">
+      <img class="transparent" style="height:347px"
+           src="../Figures/basilisk_grid_D_l12_deck_dark.png"
+           alt="Dasselbe Gitter bei Verfeinerungsstufe 12: der feine Saum
+                um die Phasengrenze ist deutlich schmaler und folgt ihr
+                enger">
+      <figcaption>Gitter, \(l_\mathrm{ref} = 12\)</figcaption>
+    </figure>
+
+    <figure style="left:766px; top:48px; width:370px;">
+      <img class="transparent" style="height:347px"
+           src="../Figures/basilisk_ascent_D_deck_dark.png"
+           alt="Aufstiegsgeschwindigkeit über der Zeit für drei
+                Gitterauflösungen; die drei Kurven liegen nahezu
+                übereinander">
+      <figcaption>Aufstieg, alle Stufen</figcaption>
+    </figure>
+
+  </div>
+
+  <aside class="notes">
+    <p>Fall D: \(\eo = 116\), \(\ga = 8{,}75\) — zaeh und langsam, hoechste Eötvös-Zahl.</p>
+    <p>Der zäheste Fall: \(\eo = 116\), \(\re = 3{,}64\) gegen \(3{,}67\) bei Bhaga und Weber. Die Kappe ist breit, der Aufstieg langsam, und das Gitter steht entsprechend weit um die Blase herum.</p>
+    <p>Links und in der Mitte dasselbe Bild zur selben Zeit
+    \(t\sqrt{g/d} = 6\), einmal auf der gröbsten und einmal auf der
+    feinsten gerechneten Stufe. Die Farbe einer Zelle ist ihre Größe; was
+    zwischen den beiden Bildern passiert, ist, dass der feine Saum um die
+    Grenzfläche schmaler wird und die Blase selbst mehr Zellen bekommt.
+    Rechts steht, was das für das Ergebnis bedeutet: nichts, was man sähe —
+    die Kurven liegen übereinander. Genau das ist die Aussage dieser
+    Folie.</p>
   </aside>
 </section>
 
