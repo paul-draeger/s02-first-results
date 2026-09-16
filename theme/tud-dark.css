@@ -86,10 +86,77 @@
   --tud-bg:           #191919;
   --tud-fg:           var(--tud-grau-10);
   --tud-fg-strong:    var(--tud-weiss);
-  --tud-fg-muted:     var(--tud-grau-60);
+  /* Grau 40, nicht Grau 60: die Rolle traegt die Nebenangaben -- das Thema
+     ueber dem Folientitel, Bildunterschriften, .muted -- und die standen auf
+     einem #191919-Grund zu schwach. 4,87:1 gegen 7,83:1, beides aus der CD. */
+  --tud-fg-muted:     var(--tud-grau-40);
   --tud-accent:       var(--tud-blau-2);
   --tud-accent-2:     var(--tud-tuerkis-2);
-  --tud-rule:         var(--tud-grau-100);
+  /* Die drei Linienstaerken haben je einen Ton, und der wird mit der Staerke
+     heller: eine Hilfslinie soll zuruecktreten, das Gezeichnete nicht. Die
+     Staerke allein taete es nicht -- zwischen 1 und 3 px liegen zwei Punkte,
+     und die sieht aus dem Saal niemand. Die Namen L1..L3 stehen so auf der
+     Stilfolie.
+
+     Grau 100 und Grau 80 tragen nichts mehr: sie waren die dunkelsten Toene
+     und standen mit 1,63:1 und 2,86:1 so dicht am Grund, dass eine Linie
+     darin auf einem Beamer im hellen Raum verschwand. */
+  --tud-l1:           var(--tud-grau-60);   /* 1 px */
+  --tud-l2:           var(--tud-grau-40);   /* 2 px */
+  --tud-l3:           var(--tud-grau-20);   /* 3 px */
+  /* Die zwei Farben, die auf eine Stelle zeigen. Sie stehen hier als Rolle und
+     nicht als Ton, damit eine Folie "Hinweispfeil" sagen kann und nicht
+     "Gelb 2" -- und damit ein Deck, das Gelb 2 fuer etwas anderes braucht,
+     nicht versehentlich das eine mit dem anderen faerbt. */
+  --tud-hinweis:      var(--tud-gelb-2);
+  /* Rot 1,5: kein Ton des CD, sondern die Mitte zwischen Rot 1 (#d20f41) und
+     Rot 2 (#ffaaa5). Rot 1 ist fuer weisses Papier gemischt und auf #191919
+     das dunkelste Element der Folie; Rot 2 ist so hell, dass es neben Weiss
+     nicht mehr als Warnfarbe liest. */
+  --tud-markierung:   #eb6c72;
+
+  /* --- Schriftgroessen: fuenf Stufen, mehr nicht ------------------------
+     Die Staffel der Musterfolie (S02, "Schrift und Farbe"). Feste Pixel und
+     keine em-Vielfachen, und das ist der Punkt: em multipliziert sich beim
+     Schachteln. Ein .sm in einer .cols stand vorher bei 0,78 x 0,86 x Grund
+     = 0,67 em, also weder auf der einen noch auf der anderen Stufe -- eine
+     Groesse, die niemand gewaehlt hat und die keiner Zeile der Musterfolie
+     entspricht. Mit festen Werten ist eine Stufe eine Stufe, gleich wie tief
+     sie liegt.
+
+     px sind hier Folieneinheiten: reveal skaliert die ganze Folie, die
+     1280 x 720 bleiben 1280 x 720.
+
+     Fuenf Stufen tragen alles, was auf einer Folie Text ist. Was frueher
+     dazwischen lag -- Autorenzeile, Tabelle, Kasten, Zitat, Anhang, die
+     Beschriftungen der Zeichnungen -- ist auf die naechstliegende Stufe
+     gerueckt und nicht auf eine sechste. Wo zwei Rollen dadurch gleich gross
+     werden, trennt sie Farbe, Schnitt oder Einzug; das ist billiger als eine
+     Stufe, die nur einmal vorkommt.
+
+     Fliesstext steht eine Stufe unter Spalten, Listen und Schritten, und das
+     ist kein Versehen: Fliesstext ist hier der lose Absatz zwischen zwei
+     Bloecken ("diskret implementiert:") und die abgesetzte Formel. Eine
+     Formel traegt Brueche, Integralzeichen und Indizes uebereinander und
+     baut aus derselben Punktzahl gut das Doppelte an Hoehe wie eine Zeile
+     Prosa -- auf der Stufe der Listen nimmt sie die halbe Folie. Die Liste
+     dagegen wird abgeschritten und soll aus dem Saal die groessere sein.
+
+     Ausgenommen sind die Plots: die kommen als PNG aus matplotlib und tragen
+     die Schrift des PEFS-Manuskripts. */
+  --tud-fs-titel:     60px;   /* h1, Abschnittstitel */
+  --tud-fs-folie:     36px;   /* h2, der Folientitel */
+  --tud-fs-text:      27px;   /* THEMA, Inhaltsverzeichnis, h3/h4, Autoren */
+  --tud-fs-fliess:    24px;   /* Grundwert: Absatz, Liste, Tabelle, Formel,
+                                 Achsenbeschriftung */
+  --tud-fs-klein:     20px;   /* Bildunterschrift, Beschriftung in Skizzen,
+                                 Zitat, Formelnummer, Seitenzahl, Code, Anhang,
+                                 Achsen-Ticks in Plots */
+  /* Kein eigenes Token fuer die Achsen-Ticks mehr: sie stehen auf derselben
+     Stufe wie alles Kleine, und ein zweiter Name fuer 20px waere ein Wert,
+     der beim naechsten Umstellen zurueckbleibt. Das Stylesheet setzt sie
+     ohnehin nicht -- ein Plot kommt als PNG aus matplotlib und bringt seine
+     Schrift mit; die Zeile oben sagt, was es sein soll. */
   --tud-surface:      #0d1218;
 
   /* One margin on all four edges. The slide number is the last line inside
@@ -108,7 +175,7 @@ html, body { background: var(--tud-bg); }
 
 .reveal {
   font-family: 'Noto Sans TUD', 'Noto Sans', -apple-system, 'Segoe UI', sans-serif;
-  font-size: 34px;
+  font-size: var(--tud-fs-fliess);
   font-weight: 400;
   color: var(--tud-fg);
   -webkit-font-smoothing: antialiased;
@@ -136,10 +203,10 @@ html, body { background: var(--tud-bg); }
   margin: 0 0 0.6em;
   text-shadow: none;
 }
-.reveal h1 { font-size: 2.0em; }
-.reveal h2 { font-size: 1.05em; }   /* the slide title; see STYLE_LOG */
-.reveal h3 { font-size: 1.05em; color: var(--tud-accent); }
-.reveal h4 { font-size: 0.9em;  color: var(--tud-accent); font-weight: 600; }
+.reveal h1 { font-size: var(--tud-fs-titel); }
+.reveal h2 { font-size: var(--tud-fs-folie); }   /* the slide title; see STYLE_LOG */
+.reveal h3 { font-size: var(--tud-fs-text); color: var(--tud-accent); }
+.reveal h4 { font-size: var(--tud-fs-text); color: var(--tud-accent); font-weight: 600; }
 
 /* A slide title carries the CD's blue rule under it. The wrapper variants are
    for the slides whose content tud-slides.js wraps in a grid — the heading is
@@ -149,21 +216,40 @@ html, body { background: var(--tud-bg); }
 .reveal .fill-grid > h2:first-child,
 .reveal .fill-grid > h3:first-child {
   padding-top: var(--tud-margin-y);
-  padding-bottom: 0.35em;
-  border-bottom: 3px solid var(--tud-accent);
+  /* 0,35 em plus die 3 px, die der blaue Strich getragen hat. Der Strich ist
+     weg -- er zog den Blick auf den Rahmen statt auf den Inhalt, und die
+     Zugehoerigkeit der Folie sagt schon das Thema links im Titel. Sein Platz
+     bleibt: haette man ihn ersatzlos herausgenommen, rutschte der Inhalt
+     jeder Folie um drei Punkte hoch und jede gemessene Hoehe waere hin. */
+  padding-bottom: calc(0.35em + 3px);
   margin-bottom: 0.8em;
+}
+
+/* Auf einer Abbildungsfolie ruecken Titel und Bild enger zusammen: 0,25 em
+   statt 0,8 em, also zwanzig Punkte weniger. Die gehen nicht verloren, sie
+   gehen ans Bild -- der Platz darunter waechst damit von 460 auf 480.
+
+   Nur hier, und das ist der Punkt: auf einer Textfolie traegt derselbe
+   Abstand die Luft zwischen Ueberschrift und erstem Absatz, und die soll
+   bleiben. Eine Abbildung braucht sie nicht, sie hat ihren eigenen Rand. */
+.reveal .fill-grid > h2:first-child,
+.reveal .fill-grid > h3:first-child {
+  margin-bottom: 0.25em;
 }
 
 /* --- Body copy ----------------------------------------------------------- */
 
-.reveal p { line-height: 1.4; margin: 0 0 0.7em; }
+.reveal p { font-size: var(--tud-fs-fliess); line-height: 1.4; margin: 0 0 0.7em; }
 .reveal strong, .reveal b { color: var(--tud-fg-strong); font-weight: 600; }
 .reveal em, .reveal i { font-style: italic; }
-.reveal small { font-size: 0.62em; color: var(--tud-fg-muted); }
+.reveal small { font-size: var(--tud-fs-klein); color: var(--tud-fg-muted); }
 
-.reveal a { color: var(--tud-accent); text-decoration: none; border-bottom: 1px solid var(--tud-grau-100); }
+.reveal a { color: var(--tud-accent); text-decoration: none; border-bottom: 1px solid var(--tud-l1); }
 .reveal a:hover { color: var(--tud-accent-2); border-bottom-color: currentColor; }
 
+/* Keine eigene Groesse: eine Liste traegt den Grundwert wie der Absatz
+   daneben. Die 27 px sind dem Inhaltsverzeichnis vorbehalten, das eine Liste
+   ist, die allein auf ihrer Folie steht. */
 .reveal ul, .reveal ol { display: block; margin: 0 0 0.7em; }
 .reveal ul { list-style: none; padding-left: 1.1em; }
 .reveal ul li { position: relative; }
@@ -174,11 +260,38 @@ html, body { background: var(--tud-bg); }
   width: 0.34em; height: 0.34em;
   background: var(--tud-accent);
 }
-.reveal ul ul li::before { background: none; border: 1px solid var(--tud-grau-60); }
+.reveal ul ul li::before { background: none; border: 1px solid var(--tud-l1); }
 .reveal ol { padding-left: 1.4em; }
 .reveal ol li::marker { color: var(--tud-accent); }
 .reveal li { line-height: 1.35; margin-bottom: 0.35em; }
-.reveal li li { font-size: 0.9em; }
+
+/* --- Inhaltsverzeichnis --------------------------------------------------
+   Die Uebersicht des Vortrags: ein paar Punkte, keine Unterpunkte. Die Nummern
+   stehen in der Akzentfarbe, damit der Blick die Gliederung zaehlt und nicht
+   liest, und die Liste traegt als einzige die 27er Stufe -- sie steht allein
+   auf ihrer Folie und wird aus dem Saal ueberflogen.
+
+   Zentriert wird der Block und nicht die Zeile: `width: max-content` gibt der
+   Liste die Breite ihres laengsten Punktes, die beiden `auto` stellen sie in
+   die Mitte. Die Punkte bleiben dabei linksbuendig, so dass die Nummern
+   untereinander stehen -- bei `text-align: center` zentrierte sich jeder Punkt
+   fuer sich und die Nummernspalte zerfiele. */
+.reveal .agenda {
+  list-style: none;
+  counter-reset: agenda;
+  margin: 1.4em auto 0;
+  width: max-content;
+  max-width: 100%;
+  padding: 0;
+  font-size: var(--tud-fs-text);
+}
+.reveal .agenda li { counter-increment: agenda; margin: 0 0 0.85em; }
+.reveal .agenda li::before {
+  content: counter(agenda) ".";
+  color: var(--tud-accent);
+  font-weight: 600;
+  margin-right: 0.65em;
+}
 
 .reveal blockquote {
   width: auto;
@@ -200,22 +313,25 @@ html, body { background: var(--tud-bg); }
 .reveal pre code {
   font-family: 'DejaVu Sans Mono', 'Noto Sans Mono', ui-monospace, monospace;
 }
+/* Die Rolle und nicht der Ton: Code ist der sichtbarste Nutzer von Tuerkis 2
+   im ganzen Deck, und wer die Rolle im Theme umstellt, soll ihn mitnehmen.
+   Ueber --tud-tuerkis-2 haette er sich davon abgekoppelt. */
 .reveal :not(pre) > code {
-  color: var(--tud-tuerkis-2);
+  color: var(--tud-accent-2);
   background: var(--tud-surface);
   padding: 0.05em 0.3em;
   border-radius: 2px;
-  font-size: 0.85em;
+  font-size: var(--tud-fs-klein);
 }
 .reveal pre {
   width: 100%;
   box-shadow: none;
   margin: 0 0 0.7em;
-  font-size: 0.5em;
+  font-size: var(--tud-fs-klein);
 }
 .reveal pre code {
   background: var(--tud-surface);
-  border: 1px solid var(--tud-rule);
+  border: 1px solid var(--tud-l1);
   border-radius: 3px;
   padding: 0.8em 1em;
   max-height: 22em;
@@ -224,19 +340,24 @@ html, body { background: var(--tud-bg); }
 
 /* --- Tables -------------------------------------------------------------- */
 
-.reveal table { border-collapse: collapse; width: 100%; font-size: 0.8em; }
+.reveal table { border-collapse: collapse; width: 100%; font-size: var(--tud-fs-fliess); }
 .reveal table th,
 .reveal table td {
   border: none;
-  border-bottom: 1px solid var(--tud-rule);
+  border-bottom: 1px solid var(--tud-l1);
   padding: 0.3em 0.6em;
   text-align: left;
   vertical-align: top;
 }
+/* Der Trennstrich unter der Kopfzeile in derselben Farbe wie die Zeilenlinien
+   darunter, nur staerker. Er stand in der Akzentfarbe: die Kopfzeile hebt sich
+   aber ueber Farbe und Fettung schon genug ab, und ein zweiter, kraeftigerer
+   Strich in Blau macht daraus ein zweites Signal fuer dieselbe Sache. Eine
+   Tabelle traegt keine Farbe. */
 .reveal table th {
   color: var(--tud-fg-strong);
   font-weight: 600;
-  border-bottom: 2px solid var(--tud-accent);
+  border-bottom: 2px solid var(--tud-l2);
 }
 .reveal table tr:last-child td { border-bottom: none; }
 .reveal table .num { text-align: right; font-variant-numeric: tabular-nums; }
@@ -253,10 +374,48 @@ html, body { background: var(--tud-bg); }
 }
 .reveal figure img.transparent,
 .reveal figure img.on-dark { background: none; }
+/* Kursiv nach dem CD. Die Noto Sans bringt einen eigenen Kursivschnitt mit
+   (NotoSans-Italic.woff2, Gewicht 400) -- der Browser stellt also nicht die
+   Aufrechte schraeg, sondern nimmt gezeichnete Formen. */
 .reveal figcaption {
-  font-size: 0.6em;
+  font-size: var(--tud-fs-klein);
+  font-style: italic;
   color: var(--tud-fg-muted);
   line-height: 1.3;
+}
+
+/* Eine Anmerkung unter dem Inhalt: kleiner, zurueckgenommen, mit einem Mass,
+   das sich noch lesen laesst. Sie nennt die Quelle einer Zahl, eine Einheit
+   oder eine Einschraenkung -- alles, was zur Aussage gehoert, aber nicht die
+   Aussage ist. `.mittig` stellt sie unter etwas Zentriertes, etwa eine
+   Tabelle, damit beides ein Block bleibt. */
+.reveal .fussnote {
+  font-size: var(--tud-fs-klein);
+  color: var(--tud-fg-muted);
+  margin-top: 1.1em;
+  max-width: 44em;
+}
+.reveal .fussnote.mittig {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* Die Ueberschrift einer Spalte, wo der Folientitel schon vergeben ist: klein,
+   versalgesetzt, in Grau 40. Sie benennt die Spalte, ohne mit dem Folientitel
+   um den Rang zu streiten -- deshalb nicht h3, das im Text eine Zwischen-
+   ueberschrift in der Akzentfarbe ist. */
+.reveal .spaltentitel {
+  font-size: var(--tud-fs-klein);
+  /* Eigene Zeilenhoehe: die Rolle sitzt meist auf einem <p>, und dessen 1,4
+     ist fuer eine einzeilige Ueberschrift zu viel Luft. */
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--tud-fg-muted);
+  border: 0;
+  margin: 0 0 0.6em;
 }
 
 /* --- Layout helpers ------------------------------------------------------ */
@@ -275,18 +434,21 @@ html, body { background: var(--tud-bg); }
    1280 x 720 with a 546 px type area, so this is a slide measurement rather
    than a guess; a slide that wants more overrides it. */
 .reveal .cols figure img { max-height: 400px; }
-/* Columns are narrow, so they carry slightly smaller type by default. */
-.reveal .cols { font-size: 0.86em; }
-.reveal .cols .cols { font-size: 1em; }
+/* Eine Spalte ist ein Umbruch und keine Stufe: sie traegt den Grundwert wie
+   der Absatz ueber die volle Breite. Lesbar macht sie die schmalere Zeile,
+   nicht eine eigene Groesse. */
+.reveal .cols { font-size: var(--tud-fs-fliess); }
+/* .cols in .cols braucht keine Ruecksetzung mehr: feste Stufen
+   multiplizieren sich nicht. */
 
-.reveal .sm { font-size: 0.78em; }
-.reveal .xs { font-size: 0.64em; }
+.reveal .sm { font-size: var(--tud-fs-klein); }
+.reveal .xs { font-size: var(--tud-fs-klein); }
 
 .reveal .box {
   background: var(--tud-surface);
   border-left: 3px solid var(--tud-accent);
   padding: 0.6em 0.9em;
-  font-size: 0.85em;
+  font-size: var(--tud-fs-fliess);
 }
 .reveal .box.warn  { border-left-color: var(--tud-orange-1); }
 .reveal .box.good  { border-left-color: var(--tud-gruen-2); }
@@ -315,13 +477,12 @@ html, body { background: var(--tud-bg); }
   transform: translate(-50%, -50%);   /* left/top is the label's centre */
   white-space: nowrap;
   line-height: 1;
-  font-size: 17px;
+  font-size: var(--tud-fs-klein);
   color: var(--tud-fg);
 }
 /* ...unless it is hung off a point: .l ends at it, .r starts at it. */
 .reveal .vg .lbl.l { transform: translate(-100%, -50%); }
 .reveal .vg .lbl.r { transform: translate(0, -50%); }
-.reveal .vg .lbl.sm { font-size: 14px; }
 .reveal .vg .lbl.muted { color: var(--tud-fg-muted); }
 
 /* A slide that positions its parts in slide coordinates: the sketches, the
@@ -408,17 +569,30 @@ html, body { background: var(--tud-bg); }
   justify-content: center;
 }
 .reveal section.title-slide h1 {
-  font-size: 1.75em;
+  font-size: var(--tud-fs-titel);
   font-weight: 500;
   color: var(--tud-accent);
   margin: auto 0 0.42em;          /* the auto centres the title group; see above */
   max-width: 16em;
 }
 .reveal section.title-slide .subtitle {
-  font-size: 1.0em;
+  font-size: var(--tud-fs-text);
   color: var(--tud-fg);
   margin: -0.15em 0 0.2em;
   max-width: 24em;
+}
+
+/* Die Zeile mit Anlass und Datum. Sie liegt hinter .authors, dessen
+   `margin-bottom: auto` den freien Raum der Titelfolie aufbraucht -- sie sitzt
+   damit ueber der Logozeile und nicht an der Gruppe aus Titel und Autoren.
+
+   Gelb 2, die Rolle --tud-hinweis: derselbe Ton, den ein Hinweispfeil traegt.
+   Auf der Titelfolie ist das Datum die einzige Angabe, die man sucht, und die
+   einzige, die veraltet. */
+.reveal section.title-slide .event {
+  font-size: var(--tud-fs-text);
+  color: var(--tud-hinweis);
+  margin: 0 0 1.1em;
 }
 
 /* Row 2 — one column per author, wrapping to a second line past four or so. */
@@ -434,14 +608,14 @@ html, body { background: var(--tud-bg); }
 }
 .reveal section.title-slide .author-block > * { margin: 0; }
 .reveal section.title-slide .author {
-  font-size: 0.82em;
+  font-size: var(--tud-fs-text);
   color: var(--tud-fg-strong);
   font-weight: 500;
   margin: 0 0 0.1em;
   white-space: nowrap;
 }
 .reveal section.title-slide .email {
-  font-size: 0.72em;
+  font-size: var(--tud-fs-klein);
   color: var(--tud-fg-strong);
   margin: 0;
   white-space: nowrap;
@@ -466,7 +640,7 @@ html, body { background: var(--tud-bg); }
 .reveal .title-imprint { flex: 0 1 auto; text-align: left; }
 .reveal section.title-slide .affiliation,
 .reveal section.title-slide .occasion {
-  font-size: 0.62em;
+  font-size: var(--tud-fs-klein);
   color: var(--tud-fg-muted);
   line-height: 1.5;
   margin: 0;
@@ -480,7 +654,7 @@ html, body { background: var(--tud-bg); }
 .reveal section.section-slide h2 {
   border: none;
   padding: 0;
-  font-size: 1.7em;
+  font-size: var(--tud-fs-titel);
   margin: 0;
 }
 .reveal section.section-slide h2::before {
@@ -492,7 +666,7 @@ html, body { background: var(--tud-bg); }
 }
 .reveal section.section-slide .lead {
   color: var(--tud-fg-muted);
-  font-size: 0.8em;
+  font-size: var(--tud-fs-text);
   margin-top: 0.8em;
   max-width: 26em;
 }
@@ -508,7 +682,7 @@ html, body { background: var(--tud-bg); }
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  font-size: 15px;
+  font-size: var(--tud-fs-klein);
   line-height: 1;
   color: var(--tud-fg-muted);
   pointer-events: none;
@@ -523,8 +697,15 @@ html, body { background: var(--tud-bg); }
   font-variant-numeric: tabular-nums;
   text-align: right;
 }
-.reveal .tud-footer .slide-no .sep { color: var(--tud-grau-80); margin: 0 0.25em; }
-.reveal .tud-footer .slide-no .total { color: var(--tud-grau-60); }
+/* Nur die Seitenzahl, nicht "2 / 7". Der Gesamtumfang ist eine Angabe ueber
+   den Vortrag und nicht ueber die Folie; auf jeder einzelnen Folie wiederholt,
+   zaehlt das Publikum die verbleibenden Folien mit, statt zuzuhoeren.
+
+   Ausgeblendet und nicht weggelassen: die Laufzeit baut beide Elemente, und
+   ein Deck, das den Umfang zeigen will -- ein Handout etwa --, macht sie mit
+   einer Zeile wieder sichtbar. */
+.reveal .tud-footer .slide-no .sep,
+.reveal .tud-footer .slide-no .total { display: none; }
 
 /* --- Maths --------------------------------------------------------------- */
 /* Formulas keep the maths typeface; only the surrounding text is Noto Sans. */
@@ -534,21 +715,61 @@ html, body { background: var(--tud-bg); }
 .reveal mjx-container[display='true'] { margin: 0.7em 0; }
 .reveal mjx-container svg { max-width: 100%; }
 
-.reveal .eq {                      /* display equation with a right-hand tag */
-  display: grid;
-  grid-template-columns: 1fr auto;
+/* Abgesetzte Formel mit einer Angabe rechts daneben -- Nummer oder Quelle.
+
+   Flex mit Umbruch und nicht ein Raster aus `1fr auto`: im Raster nimmt sich
+   die rechte Spalte, was sie braucht, und die Formel bekommt den Rest. Solange
+   dort [1] stand, waren das zwanzig Punkte. Seit dort [Dalmon et al., 2019]
+   steht, sind es zweihundert -- und in einem schmalen Kasten blieb der Formel
+   weniger als die Haelfte. Ueberlaufen ist sie deshalb nicht: `max-width` am
+   svg rechnet sie herunter, und sie steht dann still in halber Groesse da,
+   ohne dass eine Hoehenmessung etwas merkt.
+
+   `flex: 0 0 auto` heisst: die Formel wird nicht gestaucht. Passt die Angabe
+   nicht mehr neben sie, rueckt sie in die naechste Zeile.
+
+   Die Nummer steht dicht neben der Formel und nicht am rechten Rand des
+   Satzspiegels. Am Rand gehoerte sie optisch zur Folie und nicht zur Formel:
+   bei einer kurzen Formel lagen einen halben Meter dazwischen, und welche
+   Nummer zu welcher Zeile gehoert, musste man sich zusammensuchen. */
+.reveal .eq {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  column-gap: 1.2em;
   margin: 0.6em 0;
 }
-.reveal .eq .tag { color: var(--tud-fg-muted); font-size: 0.7em; }
+.reveal .eq > * { flex: 0 0 auto; max-width: 100%; }
+.reveal .eq .tag,
+.reveal .eq p.muted { color: var(--tud-fg-muted); font-size: var(--tud-fs-klein); }
 
 /* --- Citations and the generated back matter ----------------------------- */
 
+/* Grau 40 und nicht die Akzentfarbe: Blau 2 traegt den Titel, und ein Zitat
+   ist eine Nebenangabe. Vorher hatte die Folie zwei blaue Dinge mit ganz
+   verschiedenem Rang.
+
+   Das gilt fuer beide Zitatstile. `nowrap`: [1] passt immer in die Zeile und
+   [Dalmon et al., 2018] auch, und ein Umbruch mitten in der Klammer sieht
+   nach zwei Quellen aus, wo eine steht. */
 .reveal .cite {
-  color: var(--tud-accent);
-  font-size: 0.85em;
+  color: var(--tud-fg-muted);
+  font-size: var(--tud-fs-klein);
   white-space: nowrap;
   vertical-align: baseline;
+}
+
+
+/* Das Thema vor dem Folientitel: kleiner und zurueckgenommen, damit die Titel
+   selbst ueberall gleich gross sind und die Folge FLUIDICS ... als
+   Zugehoerigkeit gelesen wird und nicht als Teil der Ueberschrift. Dieselbe
+   Bauart wie das "1 / 3" im Rueckstand darunter. */
+.reveal h2 .topic {
+  font-size: var(--tud-fs-text);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--tud-fg-muted);
+  margin-right: 0.6em;
 }
 
 .reveal h2 .page-of {
@@ -556,30 +777,40 @@ html, body { background: var(--tud-bg); }
   font-weight: 400;
   font-variant-numeric: tabular-nums;
 }
-.reveal h2 .page-of .sep { margin: 0 0.15em; color: var(--tud-grau-80); }
+.reveal h2 .page-of .sep { margin: 0 0.15em; color: var(--tud-grau-60); }
 
-.reveal .backmatter { font-size: 0.62em; }
+.reveal .backmatter { font-size: var(--tud-fs-klein); }
 .reveal .backmatter h4 {
   margin: 0.9em 0 0.3em;
-  font-size: 1.05em;
+  font-size: var(--tud-fs-text);
   color: var(--tud-accent);
   font-weight: 600;
 }
 .reveal .backmatter h4:first-child { margin-top: 0; }
 
-.reveal table.nomenclature { font-size: 1em; }
+.reveal table.nomenclature { font-size: var(--tud-fs-klein); }
 .reveal table.nomenclature td.sym  { width: 4.5em; white-space: nowrap; }
 .reveal table.nomenclature td.unit { width: 7em;  color: var(--tud-grau-40); white-space: nowrap; }
 .reveal table.nomenclature td.desc .note {
   display: block;
   color: var(--tud-fg-muted);
-  font-size: 0.85em;
 }
 
 .reveal ol.bibliography { padding-left: 2.2em; }
-.reveal ol.bibliography li { margin-bottom: 0.45em; line-height: 1.35; }
-.reveal ol.bibliography .bib-title  { color: var(--tud-fg-strong); }
-.reveal ol.bibliography .bib-source { font-style: italic; }
+.reveal .bibliography li { margin-bottom: 0.45em; line-height: 1.35; }
+.reveal .bibliography .bib-title  { color: var(--tud-fg-strong); }
+.reveal .bibliography .bib-source { font-style: italic; }
+
+/* Das Verzeichnis zum Quellenstil: ohne Nummer, weil keine Folie auf eine
+   zeigt, und ohne das Aufzaehlungszeichen des Themes -- gesucht wird nach dem
+   Namen, und der soll als erstes an der Kante stehen. Haengender Einzug, damit
+   die Folgezeilen unter den Titel und nicht unter den Namen ruecken. */
+.reveal ul.bibliography.autor { list-style: none; padding-left: 0; }
+.reveal ul.bibliography.autor li {
+  padding-left: 1.6em;
+  text-indent: -1.6em;
+}
+.reveal ul.bibliography.autor li::before { content: none; }
 
 /* Back matter is dense; let it scroll rather than overflow the slide. */
 .reveal section.backmatter-slide {
@@ -592,11 +823,11 @@ html, body { background: var(--tud-bg); }
 .reveal .progress {
   color: var(--tud-accent);
   height: 3px;
-  background: var(--tud-rule);
+  background: var(--tud-l1);
   top: 0;
   bottom: auto;                     /* the footer owns the bottom edge */
 }
-.reveal .controls { color: var(--tud-grau-80); }
+.reveal .controls { color: var(--tud-grau-60); }
 .reveal .controls .navigate-left.enabled,
 .reveal .controls .navigate-right.enabled,
 .reveal .controls .navigate-up.enabled,

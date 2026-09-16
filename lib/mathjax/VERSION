@@ -1,1 +1,25 @@
 MathJax 3.2.2 (npm tarball, es5/tex-svg-full.js), Apache-2.0 — https://mathjax.org
+    Der Vorgabe-Satz aller Decks. Die Schrift ist MathJax' eigene TeX-Schrift,
+    eine Computer-Modern-Variante; MathJax 3 kann keine andere.
+
+MathJax 4.1.3 (npm @mathjax/mathjax-stix2-font, tex-mml-svg-mathjax-stix2.js),
+Apache-2.0 — https://mathjax.org
+    Ein einziges Buendel aus TeX-Eingabe, SVG-Ausgabe und STIX Two Math. Es
+    setzt die Formeln in der Matheschrift des PEFS-Manuskripts (dessen PDF
+    STIXMath-Regular/-Italic samt Script-, Extensions- und Blackboard-Schnitten
+    einbettet) statt in Computer Modern.
+
+    Ein Buendel und keine Komponenten: MathJax 4 laedt Schriftdaten sonst zur
+    Laufzeit nach, und ein Deck, das als file:// geoeffnet wird, darf das
+    nicht. Hier steht alles in der einen Datei.
+
+    Daneben input/tex/extensions/ aus demselben Release: das Buendel bringt
+    nur die Grundpakete mit, und was ein Deck darueber hinaus braucht -- hier
+    boldsymbol (\bm) und html (\class) -- liegt dort als einzelne Datei und
+    wird ueber loader.load geholt. Was schon im Buendel steckt (ams), darf
+    nicht in loader.load stehen: es wird dann daneben gesucht und nicht
+    gefunden, und MathJax startet nicht fertig.
+
+    Benutzt bisher nur von S02; die Vorgabe oben bleibt fuer die anderen Decks.
+    Ein Deck schaltet um mit
+        reveal: { mathjax3: { mathjax: '../lib/mathjax/tex-mml-svg-mathjax-stix2.js' } }

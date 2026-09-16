@@ -1,8 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="26 -6 232 348" width="232" height="348" font-family="'Noto Sans TUD','Noto Sans',sans-serif">
 <defs>
-<marker id="dim" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a5aeb8"/></marker>
-<marker id="axis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d0d5dc"/></marker>
-<marker id="spin" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ffe483"/></marker>
+<marker id="dim" viewBox="0 0 7.28 5.3" refX="7.28" refY="2.65" markerWidth="7.28" markerHeight="5.3" orient="auto-start-reverse"><path d="M 7.28 2.65 L 0 5.3 C 1.32 3.7524 1.32 1.5476 0 0 Z" fill="#a5aeb8"/></marker>
+<marker id="axis" viewBox="0 0 7.28 5.3" refX="7.28" refY="2.65" markerWidth="7.28" markerHeight="5.3" orient="auto-start-reverse"><path d="M 7.28 2.65 L 0 5.3 C 1.32 3.7524 1.32 1.5476 0 0 Z" fill="#d0d5dc"/></marker>
 </defs>
 <line x1="180" y1="182" x2="180" y2="312" stroke="#d0d5dc" fill="none" stroke-width="3.13"/>
 <circle cx="180" cy="108" r="74" fill="none" stroke="#d0d5dc" stroke-width="3.13"/>
@@ -12,7 +11,7 @@
 <path d="M 174 213 l 12 12 M 186 213 l -12 12" stroke="#d0d5dc" fill="none" stroke-width="1.8"/>
 <circle cx="180" cy="312" r="8" stroke="#d0d5dc" fill="none" stroke-width="1.6"/>
 <circle cx="180" cy="312" r="2.6" fill="#d0d5dc"/>
-<path d="M 164.4 327.6 A 22.06 22.06 0 1 0 195.6 296.4" fill="none" stroke="#ffe483" stroke-width="2" marker-end="url(#spin)"/>
+<path d="M 164.40 327.60 A 22.06 22.06 0 0 0 200.75 304.50" fill="none" stroke="#ffe483" stroke-width="1.6"/><path d="M 198.47 295.24 L 205.48 305.47 C 202.55 304.04 199.14 304.91 197.26 307.57 Z" fill="#ffe483"/>
 <g stroke="#a5aeb8" fill="none" stroke-width="1.13" stroke-dasharray="4.54 4.54">
 <path d="M 179.04 107.82 H 42.01"/>
 <path d="M 179.64 219.21 H 85.15"/>
@@ -24,13 +23,13 @@
 <line x1="54" y1="108" x2="54" y2="312"/>
 <line x1="105.99" y1="19.16" x2="252.00" y2="19.16"/>
 </g>
-<text x="182.99" y="71.04" text-anchor="start" dominant-baseline="central" font-family="'Latin Modern Math','STIX Two Math','Cambria Math',Georgia,serif" font-size="17" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic" font-weight="700">e</tspan><tspan dy="5.10" font-size="11.9" font-style="normal">y</tspan></text>
-<text x="208.17" y="98.75" text-anchor="start" dominant-baseline="central" font-family="'Latin Modern Math','STIX Two Math','Cambria Math',Georgia,serif" font-size="17" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic" font-weight="700">e</tspan><tspan dy="5.10" font-size="11.9" font-style="normal">x</tspan></text>
-<text x="178.14" y="121.13" text-anchor="end" dominant-baseline="central" font-family="'Latin Modern Math','STIX Two Math','Cambria Math',Georgia,serif" font-size="17" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">C</tspan></text>
-<text x="168.12" y="209.8" text-anchor="end" dominant-baseline="central" font-family="'Latin Modern Math','STIX Two Math','Cambria Math',Georgia,serif" font-size="17" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">S</tspan></text>
-<text x="172.01" y="300.87" text-anchor="end" dominant-baseline="central" font-family="'Latin Modern Math','STIX Two Math','Cambria Math',Georgia,serif" font-size="17" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">O</tspan></text>
-<text x="206.997" y="326.74" text-anchor="start" dominant-baseline="central" font-family="'Latin Modern Math','STIX Two Math','Cambria Math',Georgia,serif" font-size="17" fill="#ffe483" xml:space="preserve"><tspan font-style="normal">Ω</tspan><tspan font-style="normal"> </tspan><tspan font-style="italic" font-weight="700">e</tspan><tspan dy="5.10" font-size="11.9" font-style="normal">z</tspan></text>
-<text x="89.74" y="158.9" text-anchor="end" dominant-baseline="central" font-family="'Latin Modern Math','STIX Two Math','Cambria Math',Georgia,serif" font-size="17" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">L</tspan><tspan dy="5.10" font-size="11.9" font-style="normal">se</tspan></text>
-<text x="42" y="210" text-anchor="end" dominant-baseline="central" font-family="'Latin Modern Math','STIX Two Math','Cambria Math',Georgia,serif" font-size="17" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">L</tspan></text>
-<text x="179.0" y="9.1" text-anchor="middle" dominant-baseline="central" font-family="'Latin Modern Math','STIX Two Math','Cambria Math',Georgia,serif" font-size="17" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">D</tspan><tspan dy="5.10" font-size="11.9" font-style="normal">t</tspan></text>
+<text x="182.99" y="71.04" text-anchor="start" dominant-baseline="central" font-family="'STIX Two Math','Latin Modern Math','Cambria Math',Georgia,serif" font-size="17.38" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic" font-weight="700">e</tspan><tspan dy="5.21" font-size="12.2" font-style="normal">y</tspan></text>
+<text x="208.17" y="98.75" text-anchor="start" dominant-baseline="central" font-family="'STIX Two Math','Latin Modern Math','Cambria Math',Georgia,serif" font-size="17.38" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic" font-weight="700">e</tspan><tspan dy="5.21" font-size="12.2" font-style="normal">x</tspan></text>
+<text x="178.14" y="121.13" text-anchor="end" dominant-baseline="central" font-family="'STIX Two Math','Latin Modern Math','Cambria Math',Georgia,serif" font-size="17.38" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">C</tspan></text>
+<text x="168.12" y="209.8" text-anchor="end" dominant-baseline="central" font-family="'STIX Two Math','Latin Modern Math','Cambria Math',Georgia,serif" font-size="17.38" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">S</tspan></text>
+<text x="172.01" y="300.87" text-anchor="end" dominant-baseline="central" font-family="'STIX Two Math','Latin Modern Math','Cambria Math',Georgia,serif" font-size="17.38" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">O</tspan></text>
+<text x="206.997" y="326.74" text-anchor="start" dominant-baseline="central" font-family="'STIX Two Math','Latin Modern Math','Cambria Math',Georgia,serif" font-size="17.38" fill="#ffe483" xml:space="preserve"><tspan font-style="normal">Ω</tspan><tspan font-style="normal"> </tspan><tspan font-style="italic" font-weight="700">e</tspan><tspan dy="5.21" font-size="12.2" font-style="normal">z</tspan></text>
+<text x="89.74" y="158.9" text-anchor="end" dominant-baseline="central" font-family="'STIX Two Math','Latin Modern Math','Cambria Math',Georgia,serif" font-size="17.38" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">L</tspan><tspan dy="5.21" font-size="12.2" font-style="normal">se</tspan></text>
+<text x="42" y="210" text-anchor="end" dominant-baseline="central" font-family="'STIX Two Math','Latin Modern Math','Cambria Math',Georgia,serif" font-size="17.38" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">L</tspan></text>
+<text x="179.0" y="9.1" text-anchor="middle" dominant-baseline="central" font-family="'STIX Two Math','Latin Modern Math','Cambria Math',Georgia,serif" font-size="17.38" fill="#e7e9ed" xml:space="preserve"><tspan font-style="italic">D</tspan><tspan dy="5.21" font-size="12.2" font-style="normal">t</tspan></text>
 </svg>
