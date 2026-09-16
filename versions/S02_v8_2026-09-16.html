@@ -161,6 +161,8 @@
            mit der zweiten Zeile: neben der ersten allein haengt sie unter ihr
            im Leeren, weil sie auf halber Hoehe beider Zeilen steht.
          * Der Dank bekommt sein Ausrufezeichen.
+         * Im Rueckstand steht die Literatur vor der Nomenklatur: gefragt wird
+           nach der Quelle, nicht nach dem Zeichen.
          * Die Achsenbeschriftung der zwoelf Basilisk-Bilder hat zwei Masse
            statt einem: das "w/sqrt(gd)" der Aufstiegsplots steht auf 24
            Folienpixeln, das "z/R" der Gitterbilder auf 18. Vorher waren beide
@@ -1985,8 +1987,14 @@
 </section>
 
 <!-- ==================================================== back matter ===== -->
-<section data-generate="nomenclature"></section>
+<!-- Erst die Literatur, dann die Nomenklatur. In der Diskussion wird nach der
+     Quelle gefragt, nicht nach dem Zeichen; was zuerst gebraucht wird, steht
+     zuerst, und die Nomenklatur bleibt als letztes stehen, wo man sie beim
+     Zurueckblaettern sucht. Die Laufzeit ersetzt jeden dieser beiden
+     Platzhalter durch so viele Folien, wie der Inhalt braucht -- die
+     Reihenfolge hier ist die Reihenfolge im Rueckstand. -->
 <section data-generate="bibliography"></section>
+<section data-generate="nomenclature"></section>
 
 
 </div>
